@@ -1,8 +1,8 @@
-package example;
-import example.RequestClass;
-import example.ResponseClass;
+package com.hackriti.lamda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.hackriti.lamda.RequestClass;
+import com.hackriti.lamda.ResponseClass;
 
 public class HelloPojo implements RequestHandler<RequestClass, ResponseClass>{
 

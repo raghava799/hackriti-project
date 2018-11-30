@@ -1,4 +1,4 @@
-package example;
+package com.hackriti.lamda;
 
 public class ResponseClass {
 String greetings;
