@@ -1,4 +1,4 @@
-package com.alacriti.hackriti.gmail.api.utils;
+package com.alacriti.hackriti.gmail.api.user.account;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ public class MailAccessor {
 	private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String TOKENS_DIRECTORY_PATH = "tokens";
-	private static final String MAX_RESULTS = "1";
+	private static final String MAX_RESULTS = "10";
 	private static final String LABEL_INBOX = "INBOX";
 
 	/**
@@ -45,7 +45,7 @@ public class MailAccessor {
 		Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
 				.setApplicationName(APPLICATION_NAME).build();
 
-		String user = "me";
+		String user = "asha@alacriti.co.in";
 
 		List<Message> messages = getMessagesWithLabels(service, user, Arrays.asList(LABEL_INBOX));
 
@@ -55,10 +55,10 @@ public class MailAccessor {
 				message = readMessage(service, user, message.getId());
 				if (message != null && message.getPayload() != null && message.getPayload().getHeaders().size() > 0) {
 					System.out.println("snippet :" + message.getSnippet() + "\n");
-					for (MessagePartHeader header : message.getPayload().getHeaders()) {
+/*					for (MessagePartHeader header : message.getPayload().getHeaders()) {
 						System.out.println(header.getName() + ":" + header.getValue() + "\n");
 					}
-				}
+*/				}
 			}
 		}
 
