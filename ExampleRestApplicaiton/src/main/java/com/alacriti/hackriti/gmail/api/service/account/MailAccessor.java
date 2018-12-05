@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -28,6 +30,9 @@ public class MailAccessor {
 	private static final String SERVICE_ACCOUNT_USER = "raghava@alacriti.co.in";
 	private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_LABELS, GmailScopes.GMAIL_READONLY);
 	private static final String CREDENTIALS_P12_FILE_NAME = "/src/main/resources/credentials.p12";
+
+	private static long currentEpochTime;
+	private static long beforeEpochTime;
 
 	public static void main(String[] args) throws IOException, GeneralSecurityException {
 
@@ -79,10 +84,14 @@ public class MailAccessor {
 		// in:sent
 		// before : yyyy/mm/dd indicates exclusive of the date mentioned
 		// after : yyyy/mm/dd indicates inclusive of the date mentioned
+		// newer_than:1d d (day), m (month), and y (year)
 
 		// we can use Epoch time for after and before keys
-		ListMessagesResponse response = service.users().messages().list(userId).setQ("after:1543533540")
-				.setLabelIds(labelIds).setMaxResults(Long.parseLong(MAX_RESULTS)).execute();
+		getTimeIntervalsInEpochTime();
+
+		ListMessagesResponse response = service.users().messages().list(userId)
+				.setQ("after:" + beforeEpochTime + " " + "before:" + currentEpochTime).setLabelIds(labelIds)
+				.setMaxResults(Long.parseLong(MAX_RESULTS)).execute();
 
 		List<Message> messages = null;
 
@@ -94,6 +103,16 @@ public class MailAccessor {
 		}
 
 		return messages;
+	}
+
+	public static void getTimeIntervalsInEpochTime() {
+		Calendar calendar = Calendar.getInstance();
+		Date today = Calendar.getInstance().getTime();
+		currentEpochTime = TimeUtils.getEpochTime(calendar);
+		System.out.println("currentEpochTime:" + currentEpochTime);
+		beforeEpochTime = TimeUtils.getEpochTime(TimeUtils.getBeforeTime(today));
+		System.out.println("before:" + beforeEpochTime);
+
 	}
 
 	/*
