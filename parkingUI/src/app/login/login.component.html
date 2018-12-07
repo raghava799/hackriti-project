@@ -1,22 +1,92 @@
-<div class="login-form">
-  <div (click)="onSubmit()">
-  <input type="submit" class="p-container" value="Login With Gmail">
+<div fxLayout="row"
+     fxLayout.xs="column"
+     fxFlexFill>
+
+  <div fxFlex="30">
+
   </div>
-  <!--<div class="head">
-    <img src="" alt="photo">
-  </div>-->
-    <!--<li>
-      <input type="text" class="text" value="USERNAME" onfocus="this.value = '';"
-             onblur="if (this.value == '') {this.value = 'USERNAME';}"><a class=" icon fa fa-user"
-                                                                          aria-hidden="true"></a>
-    </li>
-    <li>
-      <input type="password" value="Password" onfocus="this.value = '';"
-             onblur="if (this.value == '') {this.value = 'Password';}"><a class=" icon fa fa-lock"
-                                                                          aria-hidden="true"></a>
-    </li>-->
-    <!--<div class="p-container">
-      <input type="submit" value="SIGN IN WITH GMAIL">
-      <div class="clear"></div>
-    </div>-->
+
+  <div fxFlex="40" class="login-card-container">
+    <mat-progress-bar mode="query" *ngIf="loading"></mat-progress-bar>
+    <mat-card class="login-card">
+      <mat-card-header>
+        <div mat-card-avatar mat-card-sm-image class="parking-logo-image"></div>
+        <mat-card-title>Parking Slot Management</mat-card-title>
+<!--
+        <mat-card-subtitle>Hackriti</mat-card-subtitle>
+-->
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="!isLoggedIn">
+          <div class="signBlock">
+            <h2>You Are Not Logged In !!!</h2>
+            <br>
+
+            <mat-toolbar class="gmail-btn"   *ngIf="!code">
+              <img style="width: 40px; height: 40px; margin: 10px;"
+                   src="assets/images/aws-cognito.png">
+<!--
+              <div class="g-signin2"></div>
+-->
+              <a  [href]="googleUrl" >Sign In With Google</a>
+            </mat-toolbar>
+
+            <p class="text-center col-offset-8" *ngIf="code">
+              <i class="fa fa-refresh fa-spin" style="font-size:24px"></i> Please Wait...</p>
+          </div>
+        </div>
+
+        <div *ngIf="isLoggedIn">
+          <h2>Hii {{getUserName()}}</h2>
+          <br>
+          <table>
+            <tr *ngIf="admin.emailId">
+              <td>email id :</td>
+              <td>{{admin.emailId}}</td>
+            </tr>
+            <tr *ngIf="admin.role">
+              <td>role :</td>
+              <td>{{admin.role}}</td>
+            </tr>
+            <tr *ngIf="admin.clientKey">
+              <td>client key :</td>
+              <td>{{admin.clientKey}}</td>
+            </tr>
+          </table>
+          <br>
+          <button mat-raised-button color="primary" (click)="goToSite()">Go to Dashbord</button>
+          <!--<button class="btn btn-info" (click)="goToSite()">Go to Dashbord</button>-->
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div fxFlex="30">
+
+  </div>
+
 </div>
+
+
+<!--        <div>
+          <qr-code [value]="'this is my qr code data'"  [size]="150"></qr-code>
+
+
+          {
+  "mfaKey": {
+    "id": 2,
+    "googleId": "109496070412299594252",
+    "mfaKey": "TTFGTQGSMSONIYI7",
+    "createdON": 1507098777000
+  },
+  "otpAuthURL": "https://chart.googleapis.com/chart?chs=200x200&chld=M%7C0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2FAlacriti.com%3Aadmin%40alacriti.com%3Fsecret%3DTTFGTQGSMSONIYI7%26issuer%3DAlacriti.com"
+}
+
+{
+  "userName": "109496070412299594252",
+  "emailId": "rahulkumar.kumawat@alacriti.com",
+  "role": "admin",
+  "mfaVerified": true
+}
+        </div>-->

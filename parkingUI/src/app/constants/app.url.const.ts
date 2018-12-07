@@ -1,11 +1,8 @@
-// google api calls
-export const ACCESS_TOKEN = 'https://www.googleapis.com/oauth2/v4/token';
-export const PROFILE = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
-
 // api calls
 
-export const BASE_URL = '';
+export const BASE_URL = 'http://localhost:8080/ExampleRestApplicaiton';
+export const GET_EMPLOYEE = '/parking/getemployee';
+export const ADD_SLOT = '/parking/addSlot';
+export const CANCEL_SLOT = '/parking/cancelSlot';
 
-// session
 
-export const login = '/login';

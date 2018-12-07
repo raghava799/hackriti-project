@@ -1,0 +1,19 @@
+.login-card-container {
+  padding-top: 5%;
+}
+.login-card {
+}
+.parking-logo-image {
+  background-image: url(../../assets/images/logo.jpg);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/*Login Page*/
+.signBlock{
+
+  /*background: #f5f5f5;*/
+  /*padding: 23px;*/
+  /*margin-top: 33%;*/
+  text-align: center;
+}

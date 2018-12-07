@@ -3,7 +3,7 @@ package com.alacriti.hackriti.rest.handlers;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Application;
 
-@Path("")
+@Path("/")
 public class RootApplication extends Application {
 
 	public RootApplication() {

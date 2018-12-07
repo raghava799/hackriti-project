@@ -13,10 +13,10 @@ export class TopnavComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getAccessToken();
+        // this.getAccessToken();
     }
 
-    getAccessToken() {
+    /*getAccessToken() {
 
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
@@ -49,5 +49,5 @@ export class TopnavComponent implements OnInit {
             // to do api call
         });
     }
-
+*/
 }

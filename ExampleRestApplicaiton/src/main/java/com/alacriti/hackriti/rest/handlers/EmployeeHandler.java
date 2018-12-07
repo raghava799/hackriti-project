@@ -14,7 +14,7 @@ import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.employee.forms.GetEmployeeRequestForm;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 
-@Path("/parking")
+@Path("parking")
 public class EmployeeHandler {
 
 	final static Logger logger = Logger.getLogger(EmployeeHandler.class);
