@@ -14,7 +14,7 @@ public class BaseDAO {
 		try {
 
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://192.168.35.69:3306/user", "AWSRDS", "Hacriti123");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "user_name", "password");
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

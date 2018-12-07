@@ -15,7 +15,7 @@
     </context-param>
      
      <!-- <listener>
-        <listener-class>
+        <listener-class>Log4JInitServlet
             org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
         </listener-class>
     </listener> -->
@@ -24,16 +24,23 @@
     <listener-class>net.codejava.servlet.ContextListener</listener-class>
     </listener> -->
      
+    <!-- <servlet>
+        <servlet-name>RootApplication</servlet-name>
+        <servlet-class>
+            com.alacriti.hackriti.rest.handlers.RootApplication
+        </servlet-class>
+    </servlet> -->
+    
     <servlet>
         <servlet-name>resteasy-servlet</servlet-name>
         <servlet-class>
             org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
         </servlet-class>
     </servlet>
-  
+      
     <servlet>
-		<servlet-name>Log4JInitServlet</servlet-name>
-		<servlet-class>com.alacriti.hackriti.logging.utils.Log4JInitServlet</servlet-class>
+		<servlet-name>ResourceInitServlet</servlet-name>
+		<servlet-class>com.alacriti.hackriti.logging.utils.ResourceInitServlet</servlet-class>
 		<init-param>
 			<param-name>log4j-properties-location</param-name>
 			<param-value>WEB-INF/log4j.properties</param-value>
@@ -45,5 +52,10 @@
         <servlet-name>resteasy-servlet</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+	    
+    <!-- <servlet-mapping>
+        <servlet-name>RootApplication</servlet-name>
+        <url-pattern>/parking/*</url-pattern>
+    </servlet-mapping> -->
 	
 </web-app>

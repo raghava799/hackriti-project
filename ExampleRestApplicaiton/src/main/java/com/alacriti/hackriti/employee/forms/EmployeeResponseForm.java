@@ -7,7 +7,7 @@ import com.alacriti.hackriti.response.forms.BaseResponseForm;
 import com.alacriti.hackriti.response.forms.Error;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GetEmployeeResponseForm implements BaseResponseForm, Serializable {
+public class EmployeeResponseForm implements BaseResponseForm, Serializable {
 
 	/**
 	 * 
@@ -17,8 +17,8 @@ public class GetEmployeeResponseForm implements BaseResponseForm, Serializable {
 	@JsonProperty("employee_id")
 	private String employee_id;
 
-	@JsonProperty("employee_mail")
-	private String employee_mail;
+	@JsonProperty("employee_mail_id")
+	private String employee_mail_id;
 
 	@JsonProperty("employee_name")
 	private String employee_name;
@@ -37,12 +37,12 @@ public class GetEmployeeResponseForm implements BaseResponseForm, Serializable {
 		this.employee_id = employee_id;
 	}
 
-	public String getEmployee_mail() {
-		return employee_mail;
+	public String getEmployee_mail_id() {
+		return employee_mail_id;
 	}
 
-	public void setEmployee_mail(String employee_mail) {
-		this.employee_mail = employee_mail;
+	public void setEmployee_mail_id(String employee_mail) {
+		this.employee_mail_id = employee_mail;
 	}
 
 	public String getEmployee_name() {
