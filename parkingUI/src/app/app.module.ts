@@ -7,12 +7,13 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TopnavComponent} from './topnav/topnav.component';
-import {AuthInterceptor} from './login/auth-interceptor';
+import {AuthInterceptor} from './services/auth-interceptor';
 import {LoginComponent} from './login/login.component';
-import {DemoMaterialModule} from './login/demo-material.module';
-import {AuthenticationService} from './login/authentication.service';
-import {GlobalService} from './login/global.service';
-import {AuthService} from './login/auth.service';
+import {materialModule} from './material.module';
+import {AuthenticationService} from './services/authentication.service';
+import {GlobalService} from './services/global.service';
+import {AuthService} from './services/auth.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 const appRoutes: Routes = [
@@ -56,7 +57,8 @@ const appRoutes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        DemoMaterialModule,
+        BrowserAnimationsModule,
+        materialModule,
         RouterModule.forRoot(appRoutes)
     ],
     providers: [AuthenticationService,

@@ -1,1 +1,12 @@
-<div>dashbaord</div>
+<div>
+    <div class="pull-right">
+        <mat-form-field class="example-full-width">
+            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <span class="clearfix"></span>
+    <mat-card class="no-available-slots">Oops , No slots are available</mat-card>
+</div>
+

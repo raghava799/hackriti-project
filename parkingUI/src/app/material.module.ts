@@ -92,10 +92,10 @@ import {ReactiveFormsModule} from '@angular/forms';
 
   ]
 })
-export class DemoMaterialModule {
+export class materialModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: DemoMaterialModule,
+      ngModule: materialModule,
       providers: []
     };
   }

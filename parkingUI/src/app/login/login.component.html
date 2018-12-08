@@ -40,7 +40,7 @@
           <h2>Hii {{getUserName()}}</h2>
           <br>
           <table>
-            <tr *ngIf="admin.emailId">
+            <tr *ngIf="admin?.emailId">
               <td>email id :</td>
               <td>{{admin.emailId}}</td>
             </tr>
