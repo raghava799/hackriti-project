@@ -70,10 +70,21 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
     private ArrayList<String> getAllowedPaths() {
         ArrayList<String> allowedPaths = new ArrayList<String>();
+        
         allowedPaths.add( RestConstants.UrlConstants.OAUTH + RestConstants.UrlConstants.LOGIN);
         allowedPaths.add( RestConstants.UrlConstants.OAUTH + RestConstants.UrlConstants.REFRESH_TOKEN);
         allowedPaths.add( RestConstants.UrlConstants.OAUTH + RestConstants.UrlConstants.LOGIN_REDIRECT);
         allowedPaths.add( RestConstants.UrlConstants.OAUTH + RestConstants.UrlConstants.AUTH_PAGE);
+        
+        
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.GET_EMPLOYEE);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.GET_OWNER_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.GET_USER_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.ADD_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.CANCEL_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.AVAILABLE_SLOTS);
+
+
         return allowedPaths;
     }
 

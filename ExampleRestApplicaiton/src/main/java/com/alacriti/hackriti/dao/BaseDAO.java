@@ -7,14 +7,19 @@ import java.sql.SQLException;
 import com.alacriti.hackriti.exceptions.BOException;
 
 public class BaseDAO {
+	
+	protected static Connection con;
+
+	public void setCon(Connection con) {
+		this.con = con;
+	}
 
 	public static Connection getConnection() throws BOException {
 
-		Connection con = null;
 		try {
 
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "user_name", "password");
+			con = DriverManager.getConnection("jdbc:mysql://hacriti.cb8bmzqnvpfv.us-east-2.rds.amazonaws.com:3306/user", "AWSRDS", "Hacriti123");
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

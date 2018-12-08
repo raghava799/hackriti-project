@@ -5,5 +5,5 @@ import com.alacriti.hackriti.exceptions.BOException;
 
 public interface BaseApiHandler {
 
-	public void handleRequest(RequestContext context) throws BOException;
+	public void handleRequest(RequestContext context) throws BOException,Exception;
 }

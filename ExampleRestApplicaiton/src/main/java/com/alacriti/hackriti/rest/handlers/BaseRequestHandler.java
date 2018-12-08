@@ -13,7 +13,7 @@ import com.alacriti.hackriti.utils.response.BaseResponseFormGenerator;
 
 public class BaseRequestHandler {
 
-	public static Response process(RequestContext context, BaseRequestForm form) {
+	public static Response process(RequestContext context, BaseRequestForm form, String... apis)  {
 
 		// 1. preProcess does form level data validation and prepares the
 		// request (form to java obj)
@@ -28,7 +28,7 @@ public class BaseRequestHandler {
 		if (!context.isError()) {
 			// calling doProcess if no errors found in request
 
-			doProcess(context);
+			doProcess(context,apis);
 		}
 
 		// postProcess gets called in all cases (success or error)
@@ -41,32 +41,41 @@ public class BaseRequestHandler {
 	public static RequestContext preProcess(RequestContext context, BaseRequestForm form) {
 
 		context = form.validate(context);
+		
+		if(!context.isError()){
+			
+			RequestPreparer requestPreparer = new RequestPreparer();
 
-		RequestPreparer requestPreparer = new RequestPreparer();
-
-		requestPreparer.prepareRequest(context, form);
-
+			requestPreparer.prepareRequest(context, form);
+		}
+		
 		return context;
 	}
 
-	public static void doProcess(RequestContext context) {
+	public static void doProcess(RequestContext context, String... apis) {
 
-		BaseApiHandler apiHandler = getApiHandler(context);
+		for(String api : apis){
+			
+			BaseApiHandler apiHandler = getApiHandler(context,api);
+			//TODO need to handle NPException
+			try {
+				apiHandler.handleRequest(context);
 
-		try {
-			apiHandler.handleRequest(context);
+			} catch (BOException e) {
 
-		} catch (BOException e) {
-
-			context.setError(true);
-			e.printStackTrace();
+				context.setError(true);
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
-
 	}
 
-	private static BaseApiHandler getApiHandler(RequestContext context) {
+	private static BaseApiHandler getApiHandler(RequestContext context,String api) {
 
-		return (BaseApiHandler) ResourceFactory.getApiHandlers().get(context.getApiName());
+		return (BaseApiHandler) ResourceFactory.getApiHandlers().get(api);
 	}
 
 	public static Response postProcess(RequestContext context) {
@@ -75,7 +84,7 @@ public class BaseRequestHandler {
 		BaseResponseForm form = null;
 
 		if (!context.isError()) {
-
+			//TODO - Handle NPException
 			BaseResponseFormGenerator responseGenerator = getResponseFormGenerator(context);
 			form = responseGenerator.generateResponse(context);
 		}

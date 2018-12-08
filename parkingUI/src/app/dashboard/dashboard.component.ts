@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
     constructor(private http: HttpService) {
         const date = new Date();
         this.minDate = new Date();
-        //this.maxDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        // this.maxDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         this.selectedDate = new Date();
     }
 

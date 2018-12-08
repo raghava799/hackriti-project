@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alacriti.hackriti.response.forms.Error;
 import com.alacriti.hackriti.vo.Employee;
+import com.alacriti.hackriti.vo.Slot;
 
 public class RequestContext {
 
@@ -31,6 +32,26 @@ public class RequestContext {
 	public Employee getEmployee() {
 
 		return this.contextContainer.getEmployee();
+	}
+	
+	public void setSlot(Slot slot) {
+
+		this.contextContainer.setSlot(slot);
+	}
+
+	public Slot getSlot() {
+
+		return this.contextContainer.getSlot();
+	}
+	
+	public void setSlots(List<Slot> slot) {
+
+		this.contextContainer.setSlots(slot);
+	}
+
+	public List<Slot> getSlots() {
+
+		return this.contextContainer.getSlots();
 	}
 
 	public ContextContainer getContextContainer() {

@@ -16,6 +16,9 @@ public class EmployeeResponseForm implements BaseResponseForm, Serializable {
 
 	@JsonProperty("employee_id")
 	private String employee_id;
+	
+	@JsonProperty("employee_number")
+	private String employee_number;
 
 	@JsonProperty("employee_mail_id")
 	private String employee_mail_id;
@@ -28,13 +31,25 @@ public class EmployeeResponseForm implements BaseResponseForm, Serializable {
 
 	@JsonProperty("employee_role")
 	private String employee_role;
+	
+	@JsonProperty("parking_info")
+	private ParkingInfo parking_info;
 
 	public String getEmployee_id() {
 		return employee_id;
 	}
 
+
 	public void setEmployee_id(String employee_id) {
 		this.employee_id = employee_id;
+	}
+
+	public String getEmployee_number() {
+		return employee_number;
+	}
+
+	public void setEmployee_number(String employee_id) {
+		this.employee_number = employee_id;
 	}
 
 	public String getEmployee_mail_id() {
@@ -68,6 +83,16 @@ public class EmployeeResponseForm implements BaseResponseForm, Serializable {
 	public void setEmployee_role(String employee_role) {
 		this.employee_role = employee_role;
 	}
+
+	public ParkingInfo getParking_info() {
+		return parking_info;
+	}
+
+
+	public void setParking_info(ParkingInfo parking_info) {
+		this.parking_info = parking_info;
+	}
+
 
 	@Override
 	public void setErrors(List<Error> errors) {

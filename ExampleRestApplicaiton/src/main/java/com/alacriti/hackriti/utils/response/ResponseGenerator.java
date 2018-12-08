@@ -24,7 +24,7 @@ public class ResponseGenerator {
 		EmployeeResponseForm form = new EmployeeResponseForm();
 
 		form.setDate_of_joining(response.getDateOfJoining());
-		form.setEmployee_id(response.getEmployeeId());
+		form.setEmployee_number(response.getEmployeeNumber());
 		form.setEmployee_mail_id(response.getEmployeeMail());
 		form.setEmployee_name(response.getEmployeeName());
 		form.setEmployee_role(response.getEmployeeRole());

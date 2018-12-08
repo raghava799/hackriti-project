@@ -11,7 +11,7 @@ export class HttpService {
 
     getEmployeeDetails() {
         const body = {
-            employee_mail: 'asha@alacriti.co.in'
+            employee_mail_id: 'asha@alacriti.co.in'
         };
         return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.GET_EMPLOYEE, body).toPromise();
     }

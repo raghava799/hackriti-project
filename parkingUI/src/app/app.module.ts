@@ -14,62 +14,64 @@ import {AuthenticationService} from './services/authentication.service';
 import {GlobalService} from './services/global.service';
 import {AuthService} from './services/auth.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpService} from './httpService';
 
 
 const appRoutes: Routes = [
 
-    {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'parking',
-        component: TopnavComponent,
-        children: [
-            {
-                path: 'dashboard',
-                component: DashboardComponent
-            }
-        ]
-    },
-    {
-        path: '**',
-        redirectTo: 'login',
-        pathMatch: 'full'
-    }
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'parking',
+    component: TopnavComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  }
 
 ];
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        LoginComponent,
-        DashboardComponent,
-        TopnavComponent
-    ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        materialModule,
-        RouterModule.forRoot(appRoutes)
-    ],
-    providers: [AuthenticationService,
-        GlobalService,
-        AuthService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true,
-        }],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    DashboardComponent,
+    TopnavComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    materialModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+  providers: [AuthenticationService,
+    GlobalService,
+    AuthService,
+    HttpService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

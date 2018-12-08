@@ -15,6 +15,22 @@ public class Validations {
 		return (email.length() <= 100) && (Pattern.matches(
 				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", email));
 	}
+	
+	public static boolean isValidEmployeeNumber(String empId) {
+
+		return (Pattern.matches("^[A-Za-z0-9]{1,30}$", empId));
+	}
+	
+	public static boolean isValidSlotNumber(String slot) {
+
+		return (Pattern.matches("^[A-Za-z0-9]{1,30}$", slot));
+	}
+	
+	public static boolean isValidDate(String date) {
+
+		return (Pattern.matches("^(?:[0-9]{2})?[0-9]{2}/[0-3]?[0-9]/[0-3]?[0-9]$", date));
+	}
+
 
 	public static RequestContext addErrorToContext(String errorField, RequestContext context) {
 

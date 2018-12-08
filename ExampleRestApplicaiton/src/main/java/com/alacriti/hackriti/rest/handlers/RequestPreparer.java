@@ -2,8 +2,11 @@ package com.alacriti.hackriti.rest.handlers;
 
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.employee.forms.BaseRequestForm;
+import com.alacriti.hackriti.employee.forms.GetAvailableSlotsRequestForm;
 import com.alacriti.hackriti.employee.forms.GetEmployeeRequestForm;
+import com.alacriti.hackriti.employee.forms.GetSlotRequestForm;
 import com.alacriti.hackriti.vo.Employee;
+import com.alacriti.hackriti.vo.Slot;
 
 public class RequestPreparer {
 
@@ -26,6 +29,44 @@ public class RequestPreparer {
 
 			context.setEmployee(employee);
 
+		}
+		
+		if (form instanceof GetSlotRequestForm) {
+
+			Slot slot;
+
+			if (context.getSlot() == null) {
+
+				slot = new Slot();
+
+			} else {
+
+				slot = context.getSlot();
+			}
+
+			slot.setEmpId(((GetSlotRequestForm) form).getEmployee_id());
+			slot.setDate(((GetSlotRequestForm) form).getDate());
+			slot.setSlotNumber(((GetSlotRequestForm) form).getSlot_number());
+
+			context.setSlot(slot);
+		}
+		
+		if (form instanceof GetAvailableSlotsRequestForm) {
+
+			Slot slot;
+
+			if (context.getSlot() == null) {
+
+				slot = new Slot();
+
+			} else {
+
+				slot = context.getSlot();
+			}
+
+			slot.setDate(((GetAvailableSlotsRequestForm) form).getDate());
+
+			context.setSlot(slot);
 		}
 	}
 
