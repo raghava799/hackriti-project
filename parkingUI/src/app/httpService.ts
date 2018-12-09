@@ -17,14 +17,14 @@ export class HttpService {
     }
 
     bookSlot(slotDetails) {
-        return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.ADD_SLOT, slotDetails).toPromise();
+        return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.BOOK_SLOT, slotDetails).toPromise();
     }
     cancelSlot(slotDetails) {
         return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.CANCEL_SLOT, slotDetails).toPromise();
 
     }
     getAvailableSlots(employeeDetails) {
-        return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.CANCEL_SLOT, employeeDetails).toPromise();
+        return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.AVAILABLE_SLOTS, employeeDetails).toPromise();
 
     }
     handleError(error: any): Promise<any> {

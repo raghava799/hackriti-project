@@ -5,8 +5,10 @@ import java.io.Serializable;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.utils.constants.StringConstants;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetSlotRequestForm implements BaseRequestForm, Serializable {
 
 	

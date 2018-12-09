@@ -19,10 +19,11 @@ public class RestConstants {
 		public static final String GET_OWNER_SLOT = "/owner/slot";
 		public static final String GET_USER_SLOT = "/user/slot";
 		
-		public static final String AVAILABLE_SLOTS = "/slots/available/{date}";
+		public static final String AVAILABLE_SLOTS = "/slots/available";
 
-		public static final String ADD_SLOT = "/addslot";
-		public static final String CANCEL_SLOT = "/cancelslot";
+		public static final String BOOK_SLOT = "/book/slot";
+		public static final String CANCEL_OWNER_SLOT = "/cancel/owner/slot";
+		public static final String CANCEL_USER_SLOT = "/cancel/user/slot";
 
 
 

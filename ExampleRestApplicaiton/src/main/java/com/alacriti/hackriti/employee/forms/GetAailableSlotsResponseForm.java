@@ -1,13 +1,15 @@
 package com.alacriti.hackriti.employee.forms;
 
 import java.io.Serializable;
+
 import java.util.List;
 
 import com.alacriti.hackriti.response.forms.BaseResponseForm;
 import com.alacriti.hackriti.response.forms.Error;
-import com.alacriti.hackriti.vo.Slot;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties({"parking_info"})
 public class GetAailableSlotsResponseForm implements BaseResponseForm, Serializable {
 	
 	/**

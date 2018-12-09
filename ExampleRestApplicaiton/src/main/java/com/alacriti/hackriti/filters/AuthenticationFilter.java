@@ -80,8 +80,9 @@ public class AuthenticationFilter implements ContainerRequestFilter
         allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.GET_EMPLOYEE);
         allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.GET_OWNER_SLOT);
         allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.GET_USER_SLOT);
-        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.ADD_SLOT);
-        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.CANCEL_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.BOOK_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.CANCEL_OWNER_SLOT);
+        allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.CANCEL_USER_SLOT);
         allowedPaths.add( RestConstants.UrlConstants.PARKING + RestConstants.UrlConstants.AVAILABLE_SLOTS);
 
 

@@ -15,6 +15,7 @@ import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.employee.forms.GetAvailableSlotsRequestForm;
 import com.alacriti.hackriti.employee.forms.GetEmployeeRequestForm;
 import com.alacriti.hackriti.employee.forms.GetSlotRequestForm;
+import com.alacriti.hackriti.employee.forms.ManageSlotRequestForm;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 
 @Path("parking")
@@ -77,6 +78,57 @@ public class EmployeeHandler {
 		requestContext.setApiName(StringConstants.ApiConstants.GET_AVAILABLE_SLOTS);
 
 		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.GET_AVAILABLE_SLOTS);
+
+		return response;
+	}
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/book/slot")
+	public Response bookSlot(ManageSlotRequestForm form) {
+
+		logger.info("got getDate in request :" + form.getDate());
+		logger.info("got getEmployee_id in request :" + form.getEmployee_id());
+		logger.info("got getParker_id in request :" + form.getParker_id());
+		logger.info("got getSlot_number in request :" + form.getSlot_number());
+
+
+
+		RequestContext requestContext = new RequestContext();
+		requestContext.setApiName(StringConstants.ApiConstants.BOOK_SLOT);
+
+		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.BOOK_SLOT);
+
+		return response;
+	}
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/cancel/owner/slot")
+	public Response cancelOwnerSlot(ManageSlotRequestForm form) {
+
+		logger.info("got date in request :" + form.getDate());
+
+		RequestContext requestContext = new RequestContext();
+		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
+
+		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
+
+		return response;
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/cancel/user/slot")
+	public Response canceUserlSlot(ManageSlotRequestForm form) {
+
+		logger.info("got date in request :" + form.getDate());
+
+		RequestContext requestContext = new RequestContext();
+		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_USER_SLOT);
+
+		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.CANCEL_USER_SLOT);
 
 		return response;
 	}

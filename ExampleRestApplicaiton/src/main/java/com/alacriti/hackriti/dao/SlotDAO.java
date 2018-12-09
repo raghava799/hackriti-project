@@ -113,14 +113,13 @@ public class SlotDAO extends BaseDAO {
 
 			if (rs != null) {
 
-				
 				while (rs.next()) {
-					
+
 					Slot slotResponse = new Slot();
-					
+
 					slotResponse.setSlotNumber(rs.getString("parking_slot_no"));
 					slotResponse.setEmpId(rs.getString("owner_id"));
-					// slot.setParkerId(rs.getString("parker_id"));
+					//slot.setParkerId(rs.getString("parker_id"));
 					// slot.setDate(rs.getString("date_of_availability"));
 					slotResponse.setParkingType(rs.getString("parking_type"));
 					slotResponse.setParkingLevel(rs.getString("parking_level"));
@@ -131,18 +130,20 @@ public class SlotDAO extends BaseDAO {
 					employee.setEmployeeName(rs.getString(StringConstants.EMP_NAME));
 					employee.setDateOfJoining(rs.getString("date_of_joining"));
 					employee.setEmployeeMail(rs.getString("emp_email"));
+					employee.setEmployeeId(rs.getString("owner_id"));
 
 					ParkingInfo parkingInfo = new ParkingInfo();
 
 					parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
 					parkingInfo.setParkingType(rs.getString("parking_type"));
 					parkingInfo.setParkingLevel(rs.getString("parking_level"));
-
+					parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
+					
 					employee.setParkingInfo(parkingInfo);
 
 					slotResponse.setEmployee(employee);
 					slots.add(slotResponse);
-					
+
 				}
 			}
 			return slots;
@@ -165,6 +166,130 @@ public class SlotDAO extends BaseDAO {
 			}
 		}
 
+	}
+
+	public Slot bookSlot(Slot slot) throws SQLException, BOException, ParseException {
+
+		Connection conn = getConnection();
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		Date parsed = format.parse(slot.getDate());
+		java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+
+		System.out.println("sqlDate : " + sqlDate.toString());
+		System.out.println("slot.getEmpId() : " + slot.getEmpId());
+
+		PreparedStatement preparedStmt;
+
+		try {
+			String sqlQuery = SqlQueryHelper.getUpdateParkingDetailsQuery();
+
+			preparedStmt = conn.prepareStatement(sqlQuery);
+
+			preparedStmt.setDate(2, sqlDate);
+			preparedStmt.setString(3, slot.getEmpId());
+			preparedStmt.setString(1, slot.getParkerId());
+			preparedStmt.setString(4, slot.getSlotNumber());
+
+			System.out.println("preparedStmt.toString()" + preparedStmt.toString());
+
+			System.out.println("query" + sqlQuery);
+
+			int recordsUpdated = preparedStmt.executeUpdate();
+
+			if (recordsUpdated == 1) {
+				if (!conn.getAutoCommit()) {
+					System.out.println("commiting ....");
+					conn.commit();
+				}
+			}
+
+			System.out.println("number of records updated " + recordsUpdated);
+
+		}
+
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+
+		return slot;
+	}
+
+	public Slot cancelSlot(Slot slot, String api) throws SQLException, BOException, ParseException {
+
+		Connection conn = getConnection();
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		Date parsed = format.parse(slot.getDate());
+		java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+
+		System.out.println("sqlDate : " + sqlDate.toString());
+		System.out.println("slot.getEmpId() : " + slot.getEmpId());
+
+		PreparedStatement preparedStmt;
+
+		try {
+			String sqlQuery = "";
+			
+			if (api.equals(StringConstants.ApiConstants.CANCEL_OWNER_SLOT)) {
+				sqlQuery=SqlQueryHelper.getInsertParkingDetailsQuery();
+			} 
+			else if (api.equals(StringConstants.ApiConstants.CANCEL_USER_SLOT)) {
+				sqlQuery=SqlQueryHelper.getCancelUserSlotQuery();
+			}
+
+			preparedStmt = conn.prepareStatement(sqlQuery);
+
+			preparedStmt.setDate(3, sqlDate);
+			preparedStmt.setString(2, slot.getEmpId());
+			preparedStmt.setString(1, slot.getSlotNumber());
+
+			System.out.println("preparedStmt.toString()" + preparedStmt.toString());
+
+			System.out.println("query" + sqlQuery);
+
+			int recordsUpdated = preparedStmt.executeUpdate();
+
+			if (recordsUpdated == 1) {
+				if (!conn.getAutoCommit()) {
+					System.out.println("commiting ....");
+					conn.commit();
+				}
+			}
+
+			System.out.println("number of records inserted " + recordsUpdated);
+
+		}
+
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+
+		return slot;
 	}
 
 }

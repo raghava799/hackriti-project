@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.alacriti.hackriti.bo.BookSlotApiHandler;
+import com.alacriti.hackriti.bo.CancelSlotApiHandler;
 import com.alacriti.hackriti.bo.EmployeeApiHandler;
 import com.alacriti.hackriti.bo.GetOwnerSlotApiHandler;
 import com.alacriti.hackriti.bo.SearchAvailableSlotsApiHandler;
@@ -12,6 +14,7 @@ import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.utils.response.EmployeeResponseGenerator;
 import com.alacriti.hackriti.utils.response.GetAvailableSlotsResponseGenerator;
 import com.alacriti.hackriti.utils.response.OwnerSlotDetailsResponseGenerator;
+import com.alacriti.hackriti.utils.response.SlotResponseGenerator;
 
 public class ResourceFactory {
 
@@ -43,6 +46,9 @@ public class ResourceFactory {
 		
 		responseGenerators.put(StringConstants.ApiConstants.GET_OWNER_SLOT, new OwnerSlotDetailsResponseGenerator());
 		responseGenerators.put(StringConstants.ApiConstants.GET_AVAILABLE_SLOTS, new GetAvailableSlotsResponseGenerator());
+		responseGenerators.put(StringConstants.ApiConstants.BOOK_SLOT, new SlotResponseGenerator());
+		responseGenerators.put(StringConstants.ApiConstants.CANCEL_OWNER_SLOT, new SlotResponseGenerator());
+		responseGenerators.put(StringConstants.ApiConstants.CANCEL_USER_SLOT, new SlotResponseGenerator());
 
 	}
 
@@ -52,6 +58,10 @@ public class ResourceFactory {
 		apiHandlers.put(StringConstants.ApiConstants.GET_PARKING_DETAILS, new EmployeeApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.GET_OWNER_SLOT, new GetOwnerSlotApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.GET_AVAILABLE_SLOTS, new SearchAvailableSlotsApiHandler());
+		apiHandlers.put(StringConstants.ApiConstants.BOOK_SLOT, new BookSlotApiHandler());
+		apiHandlers.put(StringConstants.ApiConstants.CANCEL_OWNER_SLOT, new CancelSlotApiHandler());
+		apiHandlers.put(StringConstants.ApiConstants.CANCEL_USER_SLOT, new CancelSlotApiHandler());
+
 		
 	}
 

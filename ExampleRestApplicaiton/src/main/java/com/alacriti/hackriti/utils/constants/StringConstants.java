@@ -10,8 +10,7 @@ public class StringConstants {
 		public static final String EMPLOYEE_NUMBER = "employee_number";
 		public static final String DATE = "date";
 		public static final String SLOT_NUMBER = "slot_number";
-
-
+		public static final String OWNER_ID = "owner_id";
 
 
 	}
@@ -29,7 +28,9 @@ public class StringConstants {
 		public static final String GET_OWNER_SLOT = "GET_OWNER_SLOT";
 		public static final String GET_USER_SLOT = "GET_USER_SLOT";
 		public static final String GET_AVAILABLE_SLOTS = "GET_AVAILABLE_SLOTS";
-
+		public static final String BOOK_SLOT = "BOOK_SLOT";
+		public static final String CANCEL_OWNER_SLOT = "CANCEL_OWNER_SLOT";
+		public static final String CANCEL_USER_SLOT = "CANCEL_USER_SLOT";
 
 	}
 

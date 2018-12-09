@@ -5,6 +5,7 @@ import com.alacriti.hackriti.employee.forms.BaseRequestForm;
 import com.alacriti.hackriti.employee.forms.GetAvailableSlotsRequestForm;
 import com.alacriti.hackriti.employee.forms.GetEmployeeRequestForm;
 import com.alacriti.hackriti.employee.forms.GetSlotRequestForm;
+import com.alacriti.hackriti.employee.forms.ManageSlotRequestForm;
 import com.alacriti.hackriti.vo.Employee;
 import com.alacriti.hackriti.vo.Slot;
 
@@ -65,6 +66,27 @@ public class RequestPreparer {
 			}
 
 			slot.setDate(((GetAvailableSlotsRequestForm) form).getDate());
+
+			context.setSlot(slot);
+		}
+		
+		if (form instanceof ManageSlotRequestForm) {
+
+			Slot slot;
+
+			if (context.getSlot() == null) {
+
+				slot = new Slot();
+
+			} else {
+
+				slot = context.getSlot();
+			}
+
+			slot.setDate(((ManageSlotRequestForm) form).getDate());
+			slot.setEmpId(((ManageSlotRequestForm) form).getEmployee_id());
+			slot.setParkerId(((ManageSlotRequestForm) form).getParker_id());
+			slot.setSlotNumber(((ManageSlotRequestForm) form).getSlot_number());
 
 			context.setSlot(slot);
 		}

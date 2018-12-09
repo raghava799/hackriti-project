@@ -48,14 +48,20 @@ public class SqlQueryHelper {
 
 	public static String getUpdateParkingDetailsQuery() {
 
-		return "update parking_slot_mgmt_tbl set parker_id=? where date_of_availability = ? and owner_id=?;";
+		return "update parking_slot_mgmt_tbl set parker_id=? where date_of_availability = ? and owner_id=? and parking_slot_no=?";
+
+	}
+	
+	public static String getCancelUserSlotQuery() {
+
+		return "update parking_slot_mgmt_tbl set parker_id=NULL where parking_slot_no=? and owner_id=? and  date_of_availability = ?";
 
 	}
 
 	public static String getInsertParkingDetailsQuery() {
 
-		return "insert into parking_slot_mgmt_tbl (parking_slot_mgmt_id,parking_slot_no,owner_id,date_of_availability,date_created)"
-				+ " values(?,?,?,?,?);";
+		return "insert into parking_slot_mgmt_tbl (parking_slot_no,owner_id,date_of_availability,date_created)"
+				+ " values(?,?,?,now());";
 
 	}
 

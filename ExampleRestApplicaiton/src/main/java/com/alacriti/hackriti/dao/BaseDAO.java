@@ -20,6 +20,7 @@ public class BaseDAO {
 
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://hacriti.cb8bmzqnvpfv.us-east-2.rds.amazonaws.com:3306/user", "AWSRDS", "Hacriti123");
+			con.setAutoCommit(false);
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

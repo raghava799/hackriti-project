@@ -1,21 +1,25 @@
 package com.alacriti.hackriti.employee.forms;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.alacriti.hackriti.response.forms.BaseResponseForm;
+import com.alacriti.hackriti.response.forms.Error;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SlotsResponseForm implements Serializable{
+public class SlotsResponseForm  implements BaseResponseForm,Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6079976361183317495L;
 	
-	@JsonProperty("employee_id")
-	private String employee_id;
+	@JsonProperty("owner_id")
+	private String owner_id;
 	
-	@JsonProperty("employee_number")
-	private String employee_number;
+	@JsonProperty("owner_number")
+	private String owner_number;
 	
 	@JsonProperty("date")
 	private String date;
@@ -34,23 +38,23 @@ public class SlotsResponseForm implements Serializable{
 	@JsonProperty("parking_type")
 	private String parking_type;
 	
-	@JsonProperty("employee")
-	private EmployeeResponseForm employee;
+	@JsonProperty("owner")
+	private EmployeeResponseForm owner;
 
-	public String getEmployee_id() {
-		return employee_id;
+	public String getOwner_id() {
+		return owner_id;
 	}
 
-	public void setEmployee_id(String employee_id) {
-		this.employee_id = employee_id;
+	public void setOwner_id(String employee_id) {
+		this.owner_id = employee_id;
 	}
 
-	public String getEmployee_number() {
-		return employee_number;
+	public String getOwner_number() {
+		return owner_number;
 	}
 
-	public void setEmployee_number(String employee_number) {
-		this.employee_number = employee_number;
+	public void setOwner_number(String employee_number) {
+		this.owner_number = employee_number;
 	}
 
 	public String getDate() {
@@ -93,12 +97,18 @@ public class SlotsResponseForm implements Serializable{
 		this.parking_type = parking_type;
 	}
 
-	public EmployeeResponseForm getEmployee() {
-		return employee;
+	public EmployeeResponseForm getOwner() {
+		return owner;
 	}
 
-	public void setEmployee(EmployeeResponseForm employee) {
-		this.employee = employee;
+	public void setOwner(EmployeeResponseForm employee) {
+		this.owner = employee;
+	}
+
+	@Override
+	public void setErrors(List<Error> errors) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
