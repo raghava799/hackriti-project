@@ -81,7 +81,7 @@ public class GetSlotRequestForm implements BaseRequestForm, Serializable {
 			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE, context);
 		}
 		
-		if (this.slot_number == null || !Validations.isValidSlotNumber(this.slot_number)) {
+		if (!(this.slot_number == null) && !Validations.isValidSlotNumber(this.slot_number)) {
 
 			context.setError(true);
 			Validations.addErrorToContext(StringConstants.ReqeustConstants.SLOT_NUMBER, context);

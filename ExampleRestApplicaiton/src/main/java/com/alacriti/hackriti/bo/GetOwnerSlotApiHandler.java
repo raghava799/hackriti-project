@@ -19,12 +19,12 @@ public class GetOwnerSlotApiHandler implements BaseApiHandler{
 
 			Slot slot = context.getContextContainer().getSlot();
 
-			slot = getSlotDetails(slot);
+			slot = getSlotDetails(slot,context);
 		}
 
 	}
 	
-	public Slot getSlotDetails(Slot slot) throws BOException, ParseException {
+	public Slot getSlotDetails(Slot slot,RequestContext context) throws BOException, ParseException {
 
 		SlotDAO dao = new SlotDAO();
 		//Connection conn = BaseDAO.getConnection();
@@ -32,7 +32,7 @@ public class GetOwnerSlotApiHandler implements BaseApiHandler{
 
 		try {
 
-			slot = dao.getSlotDetails(slot);
+			slot = dao.getSlotDetails(slot,context.getApiName());
 
 		} catch (SQLException e) {
 

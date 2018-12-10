@@ -4,11 +4,8 @@ public class SqlQueryHelper {
 
 	public static String getEmployeeDetailsQuery() {
 
-		return "select et.emp_id, et.emp_no,et.emp_name,et.emp_email,et.emp_role,et.date_of_joining, \n "
-				+ "ept.parking_slot_id, \n " + "pst.parking_slot_no,pst.parking_type,pst.parking_level \n "
-				+ "from r_employee_tbl et join r_parking_slot_tbl pst \n "
-				+ "join employee_parking_tbl ept on (et.emp_id= ept.emp_id and pst.parking_slot_id=ept.parking_slot_id)  \n "
-				+ "where emp_email=? \n ";
+		return "select emp_id, emp_no,emp_name,emp_email,emp_role,date_of_joining \n "
+				+ "from r_employee_tbl ";
 
 	}
 
@@ -20,13 +17,23 @@ public class SqlQueryHelper {
 				+ "join employee_parking_tbl ept on pst.parking_slot_id=ept.parking_slot_id where ept.emp_id=?";
 	}
 
-	public static String getEmployeeParkingMgmtDetailsQuery() {
+	public static String getOwnerSlotDetailsQuery() {
 
 		// get all the records with date
 
 		return "select psmt.parking_slot_no,psmt.owner_id,psmt.parker_id,psmt.date_of_availability,pst.parking_type,pst.parking_level "
 				+ "from parking_slot_mgmt_tbl psmt join r_parking_slot_tbl pst "
 				+ "on pst.parking_slot_no=psmt.parking_slot_no where psmt.date_of_availability=? and psmt.owner_id=?";
+	}
+	
+	
+	public static String getUserSlotDetailsQuery() {
+
+		// get all the records with date
+
+		return "select psmt.parking_slot_no,psmt.owner_id,psmt.parker_id,psmt.date_of_availability,pst.parking_type,pst.parking_level "
+				+ "from parking_slot_mgmt_tbl psmt join r_parking_slot_tbl pst "
+				+ "on pst.parking_slot_no=psmt.parking_slot_no where psmt.date_of_availability=? and psmt.parker_id=?";
 	}
 
 	public static String searchAvailableSlotsQuery() {

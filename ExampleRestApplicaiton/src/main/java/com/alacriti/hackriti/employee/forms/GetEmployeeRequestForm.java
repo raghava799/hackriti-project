@@ -18,6 +18,17 @@ public class GetEmployeeRequestForm implements BaseRequestForm, Serializable {
 
 	@JsonProperty("employee_mail_id")
 	private String employee_mail_id;
+	
+	@JsonProperty("employee_id")
+	private String employee_id;
+
+	public String getEmployee_id() {
+		return employee_id;
+	}
+
+	public void setEmployee_id(String employee_id) {
+		this.employee_id = employee_id;
+	}
 
 	public String getEmployee_mail_id() {
 		return employee_mail_id;
@@ -30,10 +41,15 @@ public class GetEmployeeRequestForm implements BaseRequestForm, Serializable {
 	@Override
 	public RequestContext validate(RequestContext context) {
 
-		if (this.employee_mail_id == null || !Validations.isValidEmail(this.employee_mail_id)) {
+		if (!(this.employee_mail_id == null) && !Validations.isValidEmail(this.employee_mail_id)) {
 
 			context.setError(true);
 			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_MAIL_ID, context);
+		}
+		if (!(this.employee_id == null) && !Validations.isValidEmployeeNumber(this.employee_id)) {
+
+			context.setError(true);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER, context);
 		}
 
 		return context;

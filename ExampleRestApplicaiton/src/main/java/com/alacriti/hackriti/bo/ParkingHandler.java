@@ -6,6 +6,7 @@ import com.alacriti.hackriti.api.handlers.BaseApiHandler;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.dao.EmployeeDAO;
 import com.alacriti.hackriti.exceptions.BOException;
+import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.vo.Employee;
 
 public class ParkingHandler implements BaseApiHandler {
@@ -17,7 +18,7 @@ public class ParkingHandler implements BaseApiHandler {
 
 			Employee employee = context.getContextContainer().getEmployee();
 
-			if (employee.getEmployeeRole() == null) {
+			if (employee.getEmployeeRole() == StringConstants.ReqeustConstants.EMP_ROLE_OWNER) {
 				
 				employee = getParkingDetails(employee);
 			}

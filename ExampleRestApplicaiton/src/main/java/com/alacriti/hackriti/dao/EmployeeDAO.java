@@ -23,71 +23,99 @@ import com.alacriti.hackriti.vo.ParkingSlotVO;
 public class EmployeeDAO extends BaseDAO {
 	final static Logger logger = Logger.getLogger(EmployeeDAO.class);
 
-    public Employee getEmployeeDetails(Employee employee) throws SQLException, BOException {
+	public Employee getEmployeeDetails(Employee employee) throws SQLException, BOException {
 
-        Connection conn = getConnection();
+		Connection conn = getConnection();
 
-        PreparedStatement preparedStmt;
+		PreparedStatement preparedStmt = null;
 
-        try {
-            String sqlQuery = SqlQueryHelper.getEmployeeDetailsQuery();
+		try {
+			String sqlQuery = SqlQueryHelper.getEmployeeDetailsQuery();
+			if (employee.getEmployeeMail() != null) {
+				sqlQuery = sqlQuery + "where emp_email=? \n";
+				preparedStmt = conn.prepareStatement(sqlQuery);
+				preparedStmt.setString(1, employee.getEmployeeMail());
+			} else if (employee.getEmployeeId() != null) {
+				sqlQuery = sqlQuery + "where emp_id=? \n";
+				preparedStmt = conn.prepareStatement(sqlQuery);
+				preparedStmt.setString(1, employee.getEmployeeId());
+			}
 
-            preparedStmt = conn.prepareStatement(sqlQuery);
-            preparedStmt.setString(1, employee.getEmployeeMail());
+			ResultSet rs = preparedStmt.executeQuery();
 
-            ResultSet rs = preparedStmt.executeQuery();
+			if (rs != null && rs.next()) {
+				employee.setEmployeeNumber(rs.getString("emp_no"));
+				employee.setEmployeeName(rs.getString(StringConstants.EMP_NAME));
+				employee.setDateOfJoining(rs.getString("date_of_joining"));
+				employee.setEmployeeId(rs.getString("emp_id"));
+				employee.setEmployeeRole(rs.getString("emp_role"));
+				employee.setEmployeeMail(rs.getString("emp_email"));
 
-            if (rs != null && rs.next()) {
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
 
+			try {
+				if (conn != null) {
+					preparedStmt.close();
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
 
-                ParkingInfo parkingInfo = new ParkingInfo();
+		return employee;
+	}
 
-                employee.setEmployeeNumber(rs.getString("emp_no"));
-                employee.setEmployeeName(rs.getString(StringConstants.EMP_NAME));
-                employee.setDateOfJoining(rs.getString("date_of_joining"));
-                employee.setEmployeeId(rs.getString("emp_id"));
-                employee.setEmployeeRole(rs.getString("emp_role"));
+	public Employee getParkingDetails(Employee employee) throws SQLException, BOException {
 
-                parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
-                parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
-                parkingInfo.setParkingType(rs.getString("parking_type"));
-                parkingInfo.setParkingLevel(rs.getString("parking_level"));
+		Connection conn = getConnection();
 
-                employee.setParkingInfo(parkingInfo);
+		PreparedStatement preparedStmt = null;
 
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw e;
-        } finally {
+		try {
+			String sqlQuery = SqlQueryHelper.getParkingSlotDetailsQuery();
 
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                throw e;
-            }
-        }
+			preparedStmt = conn.prepareStatement(sqlQuery);
+			preparedStmt.setString(1, employee.getEmployeeId());
 
-        return employee;
-    }
+			ResultSet rs = preparedStmt.executeQuery();
 
+			if (rs != null && rs.next()) {
 
-    public Employee getParkingDetails(Employee employee) throws SQLException, BOException {
+				ParkingInfo parkingInfo = new ParkingInfo();
 
-        Connection conn = getConnection();
+				parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
+				parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
+				parkingInfo.setParkingType(rs.getString("parking_type"));
+				parkingInfo.setParkingLevel(rs.getString("parking_level"));
 
-        PreparedStatement preparedStmt;
+				employee.setParkingInfo(parkingInfo);
 
-        try {
-            String sqlQuery = SqlQueryHelper.getParkingSlotDetailsQuery();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
 
-            preparedStmt = conn.prepareStatement(sqlQuery);
-            preparedStmt.setString(1, employee.getEmployeeId());
+			try {
+				if (conn != null) {
+					preparedStmt.close();
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
 
+		return employee;
             ResultSet rs = preparedStmt.executeQuery();
 
             if (rs != null && rs.next()) {

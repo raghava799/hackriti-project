@@ -1,12 +1,75 @@
 <div>
-    <div class="pull-right">
-        <mat-form-field class="example-full-width">
-            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="displayableSelectedDate" (dateChange)="onDateChange()">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+  <div class="pull-right">
+    <mat-form-field class="example-full-width">
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="displayableSelectedDate"
+             (dateChange)="onDateChange()">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <span class="clearfix"></span>
+  <div *ngIf="!isloading">
+    <div *ngIf="isOwner">
+      <div *ngIf="isOwnerSlotBookedByUser">
+        <!--
+              <div>
+        -->
+        <div class="container">
+          <div class="card bg-light text-dark">
+            <div class="card-header" *ngIf="employeeDetails?.employee_name">Hi {{employeeDetails.employee_name}}</div>
+            <div class="card-body">Light card</div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!isOwnerSlotBookedByUser">
+        <div class="container">
+
+        </div>
+      </div>
     </div>
-    <span class="clearfix"></span>
-    <mat-card class="no-available-slots">Oops , No slots are available</mat-card>
+
+    <div *ngIf="!isOwner">
+      <div *ngIf="isSlotsAvailable">
+        <div class="container">
+          <h2>Available Slots</h2>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>john@example.com</td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>Moe</td>
+              <td>mary@example.com</td>
+            </tr>
+            <tr>
+              <td>July</td>
+              <td>Dooley</td>
+              <td>july@example.com</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div *ngIf="isloading" style="min-height: 100px">
+    <div class="response-loading-div" style="margin-top: 67px">
+      <img src="assets/images/loading.gif" alt="Loading...">
+      <span>LOADING</span>
+    </div>
+  </div>
 </div>
 

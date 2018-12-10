@@ -27,6 +27,8 @@ public class RequestPreparer {
 			}
 
 			employee.setEmployeeMail(((GetEmployeeRequestForm) form).getEmployee_mail_id());
+			employee.setEmployeeId(((GetEmployeeRequestForm) form).getEmployee_id());
+
 
 			context.setEmployee(employee);
 

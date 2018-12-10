@@ -10,11 +10,8 @@ export class HttpService {
     constructor(private http: HttpClient) {
     }
 
-    getEmployeeDetails(mail) {
-        const body = {
-            employee_mail_id: mail
-        };
-        return this.http.post<Employee>(APP_URL_CONST.BASE_URL + APP_URL_CONST.GET_EMPLOYEE, body).toPromise();
+    getEmployeeDetails(employeeDetails) {
+        return this.http.post<Employee>(APP_URL_CONST.BASE_URL + APP_URL_CONST.GET_EMPLOYEE, employeeDetails).toPromise();
     }
 
     bookSlot(slotDetails) {
@@ -36,8 +33,8 @@ export class HttpService {
         return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.OWNER_SLOT, slotDetails).toPromise();
 
     }
-    getUserSlot(slotDetails) {
-        return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.USER_SLOT, slotDetails).toPromise();
+    getUserSlot(employeeDetails) {
+        return this.http.post(APP_URL_CONST.BASE_URL + APP_URL_CONST.USER_SLOT, employeeDetails).toPromise();
 
     }
     handleError(error: any): Promise<any> {

@@ -11,7 +11,8 @@ public class StringConstants {
 		public static final String DATE = "date";
 		public static final String SLOT_NUMBER = "slot_number";
 		public static final String OWNER_ID = "owner_id";
-
+		public static final String EMP_ROLE_OWNER = "owner";
+		public static final String EMP_ROLE_USER = "user";
 
 	}
 
