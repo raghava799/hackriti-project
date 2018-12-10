@@ -4,7 +4,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -61,7 +60,8 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.GET_OWNER_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, slotForm,StringConstants.ApiConstants.GET_OWNER_SLOT);
+		Response response = BaseRequestHandler.process(requestContext, slotForm,
+				StringConstants.ApiConstants.GET_OWNER_SLOT);
 
 		return response;
 	}
@@ -94,10 +94,12 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.GET_AVAILABLE_SLOTS);
 
-		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.GET_AVAILABLE_SLOTS);
+		Response response = BaseRequestHandler.process(requestContext, form,
+				StringConstants.ApiConstants.GET_AVAILABLE_SLOTS);
 
 		return response;
 	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -109,15 +111,14 @@ public class EmployeeHandler {
 		logger.info("got getParker_id in request :" + form.getParker_id());
 		logger.info("got getSlot_number in request :" + form.getSlot_number());
 
-
-
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.BOOK_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.BOOK_SLOT);
+		Response response = BaseRequestHandler.process(requestContext, form, StringConstants.ApiConstants.BOOK_SLOT);
 
 		return response;
 	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -129,11 +130,12 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
+		Response response = BaseRequestHandler.process(requestContext, form,
+				StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
 
 		return response;
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -145,7 +147,8 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_USER_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.CANCEL_USER_SLOT);
+		Response response = BaseRequestHandler.process(requestContext, form,
+				StringConstants.ApiConstants.CANCEL_USER_SLOT);
 
 		return response;
 	}

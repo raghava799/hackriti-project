@@ -3,7 +3,10 @@ package com.alacriti.hackriti.calendar.api;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -23,14 +26,8 @@ import com.google.api.services.calendar.model.Events;
 public class CalendarAccessor {
 	private static final String APPLICATION_NAME = "ParkingSlotManagement";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-
-	/**
-	 * Global instance of the scopes required by this quickstart. If modifying
-	 * these scopes, delete your previously saved tokens/ folder.
-	 */
-
 	private static final String SERVICE_ACCOUNT = "raghavaserviceaccount@elm-system.iam.gserviceaccount.com";
-	private static final String SERVICE_ACCOUNT_USER = "asha@alacriti.co.in";
+	private static final String SERVICE_ACCOUNT_USER = "raghava@alacriti.co.in";
 	private static final List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
 	private static final String CREDENTIALS_P12_FILE_NAME = "/src/main/resources/credentials.p12";
 
@@ -65,16 +62,17 @@ public class CalendarAccessor {
 				getCredentials(HTTP_TRANSPORT, absoluteFilePath)).setApplicationName(APPLICATION_NAME).build();
 
 		// List the next 10 events from the primary calendar.
-		// getEvents(service);
-		// createEvent(service);
-		cancelEvent(service);
+		// getEvents(service, "2018/12/15");
+		createEvent(service, "2018/12/13");
+		// cancelEvent(service);
 	}
 
 	private static void cancelEvent(Calendar service) {
 
 		// Delete an event
 		try {
-			service.events().delete("primary", "14i13j5jfifagurn6gojkjb8u8").execute();
+			service.events().delete("primary", "N3FyODU3dm5xb2w3NGxjdGk4a3Q1NzlubzggcmFnaGF2YUBhbGFjcml0aS5jby5pbg")
+					.execute();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,22 +81,32 @@ public class CalendarAccessor {
 
 	}
 
-	private static void createEvent(Calendar service) {
+	private static void createEvent(Calendar service, String date) {
 
-		Event event = new Event().setSummary("SlotBooking").setLocation("Hyderabad").setDescription("Booking slottt");
+		Event event = new Event().setSummary("SlotBookingNewww").setLocation("Hyderabad")
+				.setDescription("Booking slottt");
 
-		DateTime startDateTime = new DateTime("2018-12-15T09:00:00-07:00");
-		EventDateTime start = new EventDateTime().setDateTime(startDateTime).setTimeZone("America/Los_Angeles");
-		event.setStart(start);
+		String nextDay = getNextDay(date);
+		Date eventStartDate = getJavaDate(date);
+		Date eventEndDate = getJavaDate(nextDay);
 
-		DateTime endDateTime = new DateTime("2018-12-20T17:00:00-07:00");
-		EventDateTime end = new EventDateTime().setDateTime(endDateTime).setTimeZone("America/Los_Angeles");
-		event.setEnd(end);
+		System.out.println("start date :" + eventStartDate);
+		System.out.println("end date : " + eventEndDate);
+
+		// DateTime startDateTime = new DateTime("2018-12-15T09:00:00-07:00");
+		// EventDateTime start = new
+		// EventDateTime().setDateTime(startDateTime).setTimeZone("America/Los_Angeles");
+		event.setStart(new EventDateTime().setDateTime(new DateTime(eventStartDate)));
+
+		// DateTime endDateTime = new DateTime("2018-12-20T17:00:00-07:00");
+		// EventDateTime end = new
+		// EventDateTime().setDateTime(endDateTime).setTimeZone("America/Los_Angeles");
+		event.setEnd(new EventDateTime().setDateTime(new DateTime(eventEndDate)));
 
 		// String[] recurrence = new String[] { "RRULE:FREQ=DAILY;COUNT=2" };
 		// event.setRecurrence(Arrays.asList(recurrence));
 
-		EventAttendee[] attendees = new EventAttendee[] { new EventAttendee().setEmail("raghava@alacriti.co.in"),
+		EventAttendee[] attendees = new EventAttendee[] { new EventAttendee().setEmail("asha@alacriti.co.in"),
 				new EventAttendee().setEmail("alacriti.co.in_3937343532363838393230@resource.calendar.google.com"), };
 		event.setAttendees(Arrays.asList(attendees));
 
@@ -112,7 +120,7 @@ public class CalendarAccessor {
 
 		String calendarId = "primary";
 		try {
-			event = service.events().insert(calendarId, event).execute();
+			event = service.events().insert(calendarId, event).setSendNotifications(true).execute();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,9 +128,14 @@ public class CalendarAccessor {
 		System.out.printf("Event created: %s\n", event.getHtmlLink());
 	}
 
-	private static void getEvents(Calendar service) throws IOException {
-		DateTime now = new DateTime(System.currentTimeMillis());
-		Events events = service.events().list(SERVICE_ACCOUNT_USER).setMaxResults(10).setTimeMin(now)
+	private static void getEvents(Calendar service, String date) throws IOException {
+
+		Date javaDate = getJavaDate(date);
+
+		System.out.println("Java date :" + javaDate);
+		System.out.println("DateTime calendar : " + new DateTime(javaDate));
+		// DateTime now = new DateTime(System.currentTimeMillis());
+		Events events = service.events().list(SERVICE_ACCOUNT_USER).setMaxResults(10).setTimeMin(new DateTime(javaDate))
 				.setOrderBy("startTime").setSingleEvents(true).execute();
 		List<Event> items = events.getItems();
 		if (items.isEmpty()) {
@@ -143,5 +156,34 @@ public class CalendarAccessor {
 				}
 			}
 		}
+	}
+
+	private static Date getJavaDate(String eventDate) {
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = null;
+		try {
+			date = format.parse(eventDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+
+	private static String getNextDay(String oldDate) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+		java.util.Calendar c = java.util.Calendar.getInstance();
+		try {
+			c.setTime(sdf.parse(oldDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// Incrementing the date by 1 day
+		c.add(java.util.Calendar.DAY_OF_MONTH, 1);
+		String newDate = sdf.format(c.getTime());
+
+		return newDate;
 	}
 }
