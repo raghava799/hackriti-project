@@ -132,4 +132,19 @@ public class EmployeeHandler {
 
 		return response;
 	}
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/slotallocation")
+	public Response empSlotAllocation(ManageSlotRequestForm form) {
+
+		logger.info("got date in request :" + form.getDate());
+
+		RequestContext requestContext = new RequestContext();
+		requestContext.setApiName(StringConstants.ApiConstants.EMP_SLOT_ALLOCATION);
+
+		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.EMP_SLOT_ALLOCATION);
+
+		return response;
+	}
 }

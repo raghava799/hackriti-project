@@ -1,7 +1,9 @@
 package com.alacriti.hackriti.context;
 
 import java.util.List;
+import java.util.Map;
 
+import com.alacriti.hackriti.vo.EmpParkingRespVO;
 import com.alacriti.hackriti.vo.Employee;
 import com.alacriti.hackriti.vo.Slot;
 
@@ -13,7 +15,17 @@ public class ContextContainer {
 	
 	private List<Slot> slots;
 	
+	private Map<String, EmpParkingRespVO> empDetail;
 	
+	
+
+	public Map<String, EmpParkingRespVO> getEmpDetail() {
+		return empDetail;
+	}
+
+	public void setEmpDetail(Map<String, EmpParkingRespVO> empDetailResp) {
+		this.empDetail = empDetailResp;
+	}
 
 	public Employee getEmployee() {
 		return employee;

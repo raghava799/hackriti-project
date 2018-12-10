@@ -31,6 +31,8 @@ public class StringConstants {
 		public static final String BOOK_SLOT = "BOOK_SLOT";
 		public static final String CANCEL_OWNER_SLOT = "CANCEL_OWNER_SLOT";
 		public static final String CANCEL_USER_SLOT = "CANCEL_USER_SLOT";
+		public static final String EMP_SLOT_ALLOCATION = "EMP_SLOT_ALLOCATION";
+		
 
 	}
 
