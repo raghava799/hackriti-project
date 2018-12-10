@@ -4,7 +4,7 @@ public class SqlQueryHelper {
 
 	public static String getEmployeeDetailsQuery() {
 
-		return "select et.emp_id, et.emp_no,et.emp_name,et.emp_email,et.date_of_joining, \n "
+		return "select et.emp_id, et.emp_no,et.emp_name,et.emp_email,et.emp_role,et.date_of_joining, \n "
 				+ "ept.parking_slot_id, \n " + "pst.parking_slot_no,pst.parking_type,pst.parking_level \n "
 				+ "from r_employee_tbl et join r_parking_slot_tbl pst \n "
 				+ "join employee_parking_tbl ept on (et.emp_id= ept.emp_id and pst.parking_slot_id=ept.parking_slot_id)  \n "

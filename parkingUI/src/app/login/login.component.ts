@@ -35,6 +35,11 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.authenticationService.getMyself().then( res => {
         this.admin = res;
+        console.log(this.admin);
+        if (sessionStorage.getItem('admin')) {
+          sessionStorage.removeItem('admin');
+        }
+        sessionStorage.setItem('admin', JSON.stringify(this.admin));
         this.loading = false;
       }).catch(err => {
         this.globalService.handleError(err);
@@ -62,7 +67,10 @@ export class LoginComponent implements OnInit {
           GlobalService.setToken(token);
         }
           this.admin = res['body'];
-
+        if (sessionStorage.getItem('admin')) {
+          sessionStorage.removeItem('admin');
+        }
+        sessionStorage.setItem('admin', JSON.stringify(this.admin));
         this.isLoggedIn = true;
         console.log('logged in');
         this.loading = false;
