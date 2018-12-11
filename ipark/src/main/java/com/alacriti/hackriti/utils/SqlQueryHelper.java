@@ -76,5 +76,31 @@ public class SqlQueryHelper {
 		"where ept.parking_slot_id=pt.parking_slot_id and ept.emp_id=? and et.emp_id = ept.emp_id and ut.emp_id=?";
 
 	}
+	
+	public static String getEmployeeParkingSlotDetails() {
+
+		return " SELECT ep.emp_parking_id, ep.emp_id, ep.parking_slot_id, p.parking_slot_no, "
+				+ "p.parking_type, p.parking_level, p.slot_mail_id FROM employee_parking_tbl ep, "
+				+ "r_employee_tbl e, r_parking_slot_tbl p WHERE  "
+				+ "e.emp_id = ep.emp_id AND e.emp_email = ? AND "
+				+ "ep.parking_slot_id = p.parking_slot_id";
+
+	}
+
+	public static String insertEmployeeLeaveDetails() {
+		return " INSERT INTO employee_leave_tbl(emp_id, from_date, to_date, leave_desc, date_created, last_updated) "
+				+ "VALUES(?, ?, ?, ?, now(), now()) ";
+	}
+
+	public static String insertLeaveDataForParkingFromMail() {
+		return "INSERT INTO parking_slot_mgmt_tbl(parking_slot_no, owner_id,date_of_availability, date_created, last_updated) "
+				+ "VALUES(?, ?, ?, now(), now()) ";
+	}
+
+	public static String getParkingLeaveData() 
+	{
+		return "SELECT COUNT(*) FROM parking_slot_mgmt_tbl WHERE parking_slot_no = ? AND owner_id = ? AND date_of_availability = ?";
+	}
+
 
 }

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +20,63 @@ import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.utils.constants.Excelconstants;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.vo.Employee;
+import com.alacriti.hackriti.vo.EmployeeParkingVO;
 import com.alacriti.hackriti.vo.EmployeeVO;
 import com.alacriti.hackriti.vo.ParkingInfo;
 import com.alacriti.hackriti.vo.ParkingSlotVO;
 
-public class EmployeeDAO extends BaseDAO {
+public class EmployeeDAO extends BaseDAO 
+{
 	final static Logger logger = Logger.getLogger(EmployeeDAO.class);
+	
+    public EmployeeDAO()
+    {
+    }
+
+    protected static Connection connection;
+    
+    public void setConnection(Connection conn)
+    {
+        connection = conn;
+    }
+
+	
+	/**
+     * Closes PreparedStatment
+     *
+     * @param ps
+     */
+    protected void close(PreparedStatement ps)
+    {
+        try
+        {
+            if (ps != null)
+                ps.close();
+        }
+        catch (SQLException sqe)
+        {
+        	System.out.println("Exception caught while closing prepared statement");
+        }
+    }
+
+    /**
+     * Closes ResultSet
+     *
+     * @param rs
+     */
+    protected void close(ResultSet rs)
+    {
+        try
+        {
+            if (rs != null)
+                rs.close();
+        }
+        catch (SQLException sqe)
+        {	
+        	System.out.println("Exception caught while closing result set");
+        }
+    }
+
 
 	public Employee getEmployeeDetails(Employee employee,RequestContext context) throws SQLException, BOException {
 
@@ -266,4 +319,138 @@ public class EmployeeDAO extends BaseDAO {
 		java.util.Date today = new java.util.Date();
 		return new java.sql.Date(today.getTime());
 	}
+	
+	
+	public int insertLeaveDates(EmployeeParkingVO vo, ArrayList<Date> leaveList, String messageSubject) {
+        
+		String command = SqlQueryHelper.insertEmployeeLeaveDetails();
+		int updatedCount = 0;
+        PreparedStatement ps = null;
+        try
+        {
+        	System.out.println("Date 1 : "+new java.sql.Date(leaveList.get(0).getTime()));
+        	System.out.println("Date 2 : "+new java.sql.Date(leaveList.get(1).getTime()));
+        	
+        	System.out.println("Utis Date: "+leaveList.get(0).getTime());
+        	System.out.println("Utis Date: "+leaveList.get(1).getTime());
+//        	Date date = leaveList.get(0).toLocaleString();
+            ps = connection.prepareStatement(command);
+            ps.setInt(1, vo.getEmpId());
+            ps.setDate(2, new java.sql.Date(leaveList.get(0).getTime()));
+            ps.setDate(3, new java.sql.Date(leaveList.get(1).getTime()));
+            ps.setString(4, messageSubject);
+            
+            updatedCount = ps.executeUpdate();
+            System.out.println("Updated count: "+updatedCount);
+            return updatedCount;
+            
+        }
+        catch (Exception e)
+        {
+        	System.out.println("Exception Caught while inserting the leave details : "+e);
+        	return updatedCount;
+        }
+        finally
+        {
+            close(ps);
+        }
+    }
+
+	public void insertLeaveDataForParking(EmployeeParkingVO vo, java.util.Date date, int leaveCount) {
+		String command = SqlQueryHelper.insertLeaveDataForParkingFromMail();
+        PreparedStatement ps = null;
+        PreparedStatement parkCheckingPreparedStatement = null;
+        ResultSet rs = null;
+        try
+        {
+            ps = connection.prepareStatement(command);
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            for (int i=0; i<leaveCount; i++)
+            {
+            	String checkIfAlreadyInserted = SqlQueryHelper.getParkingLeaveData();
+            	parkCheckingPreparedStatement = connection.prepareStatement(checkIfAlreadyInserted);
+            	
+            	parkCheckingPreparedStatement.setInt(1, vo.getParkingSlotNo());
+            	parkCheckingPreparedStatement.setInt(2, vo.getEmpId());
+            	parkCheckingPreparedStatement.setDate(3, new java.sql.Date(cal.getTime().getTime()));
+            	
+            	rs= parkCheckingPreparedStatement.executeQuery();
+            	int count = 0;
+            	if (rs.next())
+            	{
+            		count = rs.getInt(1);
+            		System.out.println("@@@@@@@@ COUNT ****: "+count);
+            	}
+            	if (count == 0)
+            	{
+            		ps.setInt(1, vo.getParkingSlotNo());
+            		ps.setInt(2, vo.getEmpId());
+            		ps.setDate(3, new java.sql.Date(cal.getTime().getTime()));
+            	
+            		int updatedCount = ps.executeUpdate();
+            		cal.add(Calendar.DATE, 1);
+            		System.out.println("dates inserted count: "+updatedCount);
+            	}
+            	else
+            	{
+            		System.out.println("Not Updating As it is already inserted");
+            	}
+            }
+            
+        }
+        catch (Exception e)
+        {
+        	System.out.println("Exception Caught while inserting leave details for Parking Slot "+e);
+        }
+        finally
+        {
+            close(ps);
+            close(parkCheckingPreparedStatement);
+            close(rs);
+        }	
+	}
+	
+	public EmployeeParkingVO getEmployeeParkingSlotDetails(String emailId)
+    {
+        
+		String command = SqlQueryHelper.getEmployeeParkingSlotDetails();
+		System.out.println("command: "+command);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        EmployeeParkingVO empParkingVo = null;
+        try
+        {
+            ps = connection.prepareStatement(command);
+            ps.setString(1, emailId);
+            rs = ps.executeQuery();
+            System.out.println("No results found");
+            if (rs.next())
+            {
+            	System.out.println("query executed");
+            	int i=0;
+            	empParkingVo =  new EmployeeParkingVO();
+            	empParkingVo.setEmpParkingId(rs.getInt(++i));
+            	empParkingVo.setEmpId(rs.getInt(++i));
+            	empParkingVo.setEmpParkingSlotId(rs.getInt(++i));
+            	empParkingVo.setParkingSlotNo(rs.getInt(++i));
+            	empParkingVo.setParkingType(rs.getString(++i));
+            	empParkingVo.setParkingLevel(rs.getString(++i));
+            	empParkingVo.setSlotMailID(rs.getString(++i));
+            }
+        }
+        catch (Exception e)
+        {
+        	System.out.println("Exception Caught while getting the Parking Slot Details");
+        	return empParkingVo;
+        }
+        finally
+        {
+            close(rs);
+            close(ps);
+        }
+        return empParkingVo;
+    }
+
 }
