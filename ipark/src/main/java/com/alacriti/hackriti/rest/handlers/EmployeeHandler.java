@@ -116,8 +116,7 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.BOOK_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, form, StringConstants.ApiConstants.BOOK_SLOT,
-				StringConstants.ApiConstants.PUSH_CALENDAR_EVENT);
+		Response response = BaseRequestHandler.process(requestContext, form, StringConstants.ApiConstants.BOOK_SLOT);
 
 		return response;
 	}

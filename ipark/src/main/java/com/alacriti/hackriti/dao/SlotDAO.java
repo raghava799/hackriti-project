@@ -42,14 +42,13 @@ public class SlotDAO extends BaseDAO {
 		PreparedStatement preparedStmt = null;
 		String sqlQuery = null;
 
-
 		try {
-			
-			if(api.equals(StringConstants.ApiConstants.GET_OWNER_SLOT)){
+
+			if (api.equals(StringConstants.ApiConstants.GET_OWNER_SLOT)) {
 				sqlQuery = SqlQueryHelper.getOwnerSlotDetailsQuery();
 			}
-			
-			if(api.equals(StringConstants.ApiConstants.GET_USER_SLOT)){
+
+			if (api.equals(StringConstants.ApiConstants.GET_USER_SLOT)) {
 				sqlQuery = SqlQueryHelper.getUserSlotDetailsQuery();
 			}
 
@@ -128,17 +127,15 @@ public class SlotDAO extends BaseDAO {
 				while (rs.next()) {
 
 					Slot slotResponse = new Slot();
-					
-					                                                                     
 
 					slotResponse.setSlotNumber(rs.getString("parking_slot_no"));
 					slotResponse.setEmpId(rs.getString("owner_id"));
-					//slotResponse.setParkerId(rs.getString("parker_id"));
+					// slotResponse.setParkerId(rs.getString("parker_id"));
 					slotResponse.setDate(slot.getDate()); // taking from request
 					slotResponse.setParkingType(rs.getString("parking_type"));
 					slotResponse.setParkingLevel(rs.getString("parking_level"));
 					slotResponse.setParkingSlotId(rs.getString("parking_slot_id"));
-					
+
 					Employee employee = new Employee();
 
 					employee.setEmployeeNumber(rs.getString("emp_no"));
@@ -147,14 +144,14 @@ public class SlotDAO extends BaseDAO {
 					employee.setEmployeeMail(rs.getString("emp_email"));
 					employee.setEmployeeId(rs.getString("owner_id"));
 					employee.setEmployeeRole(rs.getString("emp_role"));
-//					ParkingInfo parkingInfo = new ParkingInfo();
-//
-//					parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
-//					parkingInfo.setParkingType(rs.getString("parking_type"));
-//					parkingInfo.setParkingLevel(rs.getString("parking_level"));
-//					parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
-//
-//					employee.setParkingInfo(parkingInfo);
+					// ParkingInfo parkingInfo = new ParkingInfo();
+					//
+					// parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
+					// parkingInfo.setParkingType(rs.getString("parking_type"));
+					// parkingInfo.setParkingLevel(rs.getString("parking_level"));
+					// parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
+					//
+					// employee.setParkingInfo(parkingInfo);
 
 					slotResponse.setEmployee(employee);
 					slots.add(slotResponse);
@@ -184,9 +181,11 @@ public class SlotDAO extends BaseDAO {
 
 	}
 
-	public Slot bookSlot(Slot slot,RequestContext context) throws SQLException, BOException, ParseException {
+	public Slot bookSlot(Slot slot, RequestContext context) throws SQLException, BOException, ParseException {
 
 		Connection conn = getConnection();
+
+		conn.setAutoCommit(false);
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		Date parsed = format.parse(slot.getDate());
@@ -213,14 +212,20 @@ public class SlotDAO extends BaseDAO {
 
 			int recordsUpdated = preparedStmt.executeUpdate();
 
-			if (recordsUpdated == 1) {
+			pushEventToCalendar(context);
+
+			if (context.isError()) {
+
+				System.out.println("Got errors in creating calendar event, so rollback the connection...!");
+				conn.rollback();
+			}
+			
+			else if (recordsUpdated == 1 && !context.isError()) {
 				if (!conn.getAutoCommit()) {
 					System.out.println("commiting ....");
 					conn.commit();
 				}
 			}
-			
-			pushEventToCalendar(context);
 
 			System.out.println("number of records updated " + recordsUpdated);
 
@@ -311,27 +316,18 @@ public class SlotDAO extends BaseDAO {
 		return slot;
 	}
 
-	
 	private void pushEventToCalendar(RequestContext context) {
 
-		EventVO event = new EventVO();
-
-		context.getSlot().getDate();
-		context.getSlot().getSlotNumber();
-		context.getSlot().getDate();
-		context.getSlot().getDate();
-		context.getSlot().getDate();
-
-		event.setToDate("");
-		event.setOwnerMailId("");
-		event.setUserMailId("");
-		event.setSlotMailId("");
-		event.setSlotNumber("");
-		event.setFloor("");
-		event.setParkingType("");
-
 		CreateCalendarEventApiHandler handler = new CreateCalendarEventApiHandler();
-		handler.createCalendarEvent(context, event);
+		try {
+			handler.handleRequest(context);
+		} catch (BOException e) {
+			context.setError(true);
+			e.printStackTrace();
+		} catch (Exception e) {
+			context.setError(true);
+			e.printStackTrace();
+		}
 
 	}
 }

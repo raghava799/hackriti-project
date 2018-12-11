@@ -50,7 +50,7 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		getEventDetails(context);
 
 		if (!context.isError()) {
-			
+
 			System.out.println("going to push calendar event ....");
 			createCalendarEvent(context, context.getCalendarEvent());
 		} else {
@@ -58,7 +58,7 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		}
 	}
 
-	private void getEventDetails(RequestContext context) throws BOException {
+	public void getEventDetails(RequestContext context) throws BOException {
 
 		CalendarDAO dao = new CalendarDAO();
 
@@ -80,7 +80,8 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 
 	}
 
-	public RequestContext createCalendarEvent(RequestContext context, EventVO event) {
+	public RequestContext createCalendarEvent(RequestContext context, EventVO event)
+			throws GeneralSecurityException, IOException {
 
 		String workingDirectory = System.getProperty("user.dir");
 
@@ -88,31 +89,26 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 
 		NetHttpTransport HTTP_TRANSPORT = null;
 
-		if (event.getUserMailId() != null) {
+		if (event.getUserMailId() != null || event.getOwnerMailId() != null || event.getSlotMailId() != null) {
 
-			try {
+			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 
-				HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+			Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,
+					getCredentials(HTTP_TRANSPORT, absoluteFilePath, event.getUserMailId()))
+							.setApplicationName(APPLICATION_NAME).build();
 
-				Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-						getCredentials(HTTP_TRANSPORT, absoluteFilePath, event.getUserMailId()))
-								.setApplicationName(APPLICATION_NAME).build();
+			createEvent(service, context, event);
 
-				createEvent(service, context, event);
-
-			} catch (GeneralSecurityException | IOException e) {
-				context.setError(true);
-				e.printStackTrace();
-			}
 		} else {
 			context.setError(true);
-			Validations.addErrorToContext("userMailId", "userMailId is not there to push calendar event", context);
+			Validations.addErrorToContext("userMailId", "sufficient fields are not there to push calendar event",
+					context);
 		}
 
 		return context;
 	}
 
-	private void createEvent(Calendar service, RequestContext context, EventVO eventVo) {
+	private void createEvent(Calendar service, RequestContext context, EventVO eventVo) throws IOException {
 
 		System.out.println("eventVo.getFloor()" + eventVo.getFloor());
 		System.out.println("eventVo.getFromDate()" + eventVo.getFromDate());
@@ -122,7 +118,6 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		System.out.println("eventVo.getSlotNumber()" + eventVo.getSlotNumber());
 		System.out.println("eventVo.getToDate()" + eventVo.getToDate());
 		System.out.println("eventVo.getUserMailId()" + eventVo.getUserMailId());
-
 
 		String eventDate = eventVo.getFromDate();
 		String nextDay = CalendarUtils.getNextDay(eventDate);
@@ -151,13 +146,7 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		// .setOverrides(Arrays.asList(reminderOverrides));
 		// event.setReminders(reminders);
 
-		try {
-			event = service.events().insert(CALENDAR_ID, event).setSendNotifications(true).execute();
-		} catch (IOException e) {
-			System.out.println("Unknown Exception got from calendar api : SystemError");
-			context.setError(true);
-			e.printStackTrace();
-		}
+		event = service.events().insert(CALENDAR_ID, event).setSendNotifications(true).execute();
 		System.out.printf("Event created: %s\n", event.getHtmlLink());
 	}
 
