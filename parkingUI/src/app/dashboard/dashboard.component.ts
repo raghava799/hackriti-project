@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HttpService} from '../httpService';
 import {Employee} from '../models/employee';
 
@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
     tableHeaders = ['Parking Type', 'Parking Level', 'Parking Slot Number', 'Owner Email', 'Owner Name'];
 
     constructor(private http: HttpService) {
+
         if (sessionStorage.getItem('admin')) {
             const admin = JSON.parse(sessionStorage.getItem('admin'));
             this.loggedInUserEmail = admin['emailId'];

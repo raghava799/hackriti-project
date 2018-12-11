@@ -455,3 +455,19 @@ body {
 .main_block {
     padding-top: 20px;
 }
+.matcard {
+    background: aliceblue;
+}
+.text-left-align {
+    text-align: left;
+}
+.text-right-align {
+    text-align: right;
+}
+.headings {
+    font-size: 15px;
+    font-weight: 600;
+}
+.modal {
+    top: 35%;
+}
