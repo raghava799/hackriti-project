@@ -29,21 +29,7 @@ import com.google.api.services.calendar.model.EventDateTime;
 
 public class CreateCalendarEventApiHandler implements BaseApiHandler {
 
-	private static final String EVENT_SUMMURY = "Parking-Slot-Booking";
-
-	private static final String EVENT_LOCATION = "Hyderabad";
-
-	private static final String EVENT_DESCRIPTION = "Booking-slot";
-
-	private static final String CALENDAR_ID = "primary";
-
-	private static final String APPLICATION_NAME = "ParkingSlotManagement";
-	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-	private static final String SERVICE_ACCOUNT = "raghavaserviceaccount@elm-system.iam.gserviceaccount.com";
-	// private static final String SERVICE_ACCOUNT_USER = "asha@alacriti.co.in";
-	private static final List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
-	private static final String CREDENTIALS_P12_FILE_NAME = "credentials.p12";
-
+	
 	@Override
 	public void handleRequest(RequestContext context) throws BOException, Exception {
 
@@ -85,18 +71,13 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 
 		String workingDirectory = System.getProperty("user.dir");
 
-		String absoluteFilePath = workingDirectory + File.separator + CREDENTIALS_P12_FILE_NAME;
+		String absoluteFilePath = workingDirectory + File.separator + CalendarUtils.CREDENTIALS_P12_FILE_NAME;
 
-		NetHttpTransport HTTP_TRANSPORT = null;
 
-		if (event.getUserMailId() != null || event.getOwnerMailId() != null || event.getSlotMailId() != null) {
+		if (event.getUserMailId() != null && event.getOwnerMailId() != null && event.getSlotMailId() != null) {
 
-			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-
-			Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-					getCredentials(HTTP_TRANSPORT, absoluteFilePath, event.getUserMailId()))
-							.setApplicationName(APPLICATION_NAME).build();
-
+			Calendar service = CalendarUtils.getCalendarService(event.getUserMailId(), absoluteFilePath);
+			
 			createEvent(service, context, event);
 
 		} else {
@@ -124,8 +105,8 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		Date eventStartDate = CalendarUtils.getJavaDate(eventDate);
 		Date eventEndDate = CalendarUtils.getJavaDate(nextDay);
 
-		Event event = new Event().setSummary(EVENT_SUMMURY).setLocation(EVENT_LOCATION)
-				.setDescription(EVENT_DESCRIPTION);
+		Event event = new Event().setSummary(CalendarUtils.EVENT_SUMMURY).setLocation(CalendarUtils.EVENT_LOCATION)
+				.setDescription(CalendarUtils.EVENT_DESCRIPTION);
 
 		event.setStart(new EventDateTime().setDateTime(new DateTime(eventStartDate)));
 
@@ -146,17 +127,8 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		// .setOverrides(Arrays.asList(reminderOverrides));
 		// event.setReminders(reminders);
 
-		event = service.events().insert(CALENDAR_ID, event).setSendNotifications(true).execute();
+		event = service.events().insert(CalendarUtils.CALENDAR_ID, event).setSendNotifications(true).execute();
 		System.out.printf("Event created: %s\n", event.getHtmlLink());
-	}
-
-	private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, String absoluteFilePath, String sender)
-			throws GeneralSecurityException, IOException {
-
-		return new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT).setJsonFactory(JSON_FACTORY)
-				.setServiceAccountId(SERVICE_ACCOUNT).setServiceAccountPrivateKeyFromP12File(new File(absoluteFilePath))
-				.setServiceAccountScopes(SCOPES).setServiceAccountUser(sender).build();
-
 	}
 
 }

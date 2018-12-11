@@ -20,14 +20,14 @@ public class CancelSlotApiHandler implements BaseApiHandler {
 
 			Slot slot = context.getContextContainer().getSlot();
 
-			 slot = cancelSlot(slot,context.getApiName());
+			 slot = cancelSlot(slot,context);
 			
 			//context.setSlot(slot);
 		}
 
 	}
 	
-	public Slot cancelSlot(Slot slot,String api) throws BOException, ParseException {
+	public Slot cancelSlot(Slot slot,RequestContext context) throws BOException, ParseException {
 
 		SlotDAO dao = new SlotDAO();
 		//Connection conn = BaseDAO.getConnection();
@@ -35,7 +35,7 @@ public class CancelSlotApiHandler implements BaseApiHandler {
 
 		try {
 
-			return dao.cancelSlot(slot,api);
+			return dao.cancelSlot(slot,context);
 
 		} catch (SQLException e) {
 

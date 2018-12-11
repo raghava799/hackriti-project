@@ -89,7 +89,7 @@ public class ResourceFactory {
 		apiHandlers.put(StringConstants.ApiConstants.BOOK_SLOT, new BookSlotApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.CANCEL_OWNER_SLOT, new CancelSlotApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.CANCEL_USER_SLOT, new CancelSlotApiHandler());
-		apiHandlers.put(StringConstants.ApiConstants.PUSH_CALENDAR_EVENT, new CreateCalendarEventApiHandler());
+//		apiHandlers.put(StringConstants.ApiConstants.PUSH_CALENDAR_EVENT, new CreateCalendarEventApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.EMP_SLOT_ALLOCATION, new EmpSlotAllocation());
 
 	}

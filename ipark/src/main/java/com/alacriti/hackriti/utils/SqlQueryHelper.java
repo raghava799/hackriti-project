@@ -72,8 +72,16 @@ public class SqlQueryHelper {
 
 	public static String getEventDetailsQuery() {
 
-		return "select et.emp_email as owner_mail,pt.parking_slot_no,pt.parking_type,pt.parking_level,pt.slot_mail_id,ut.emp_email as parker_mail from r_employee_tbl ut, employee_parking_tbl ept,r_parking_slot_tbl pt,r_employee_tbl et "+
-		"where ept.parking_slot_id=pt.parking_slot_id and ept.emp_id=? and et.emp_id = ept.emp_id and ut.emp_id=?";
+		return "select et.emp_email as owner_mail,pt.parking_slot_no,pt.parking_type,pt.parking_level,pt.slot_mail_id,ut.emp_email as parker_mail from r_employee_tbl ut, employee_parking_tbl ept,r_parking_slot_tbl pt,r_employee_tbl et "
+				+ "where ept.parking_slot_id=pt.parking_slot_id and ept.emp_id=? and et.emp_id = ept.emp_id and ut.emp_id=?";
+
+	}
+
+	public static String getEventDetailsQueryToCancelOwnerEvent() {
+
+		return "select pt.parking_slot_no,pt.parking_type,pt.parking_level,pt.slot_mail_id,ut.emp_email "
+				+ "from r_employee_tbl ut,r_parking_slot_tbl pt,employee_parking_tbl ept where ept.parking_slot_id=pt.parking_slot_id "
+				+ "and ept.emp_id=ut.emp_id and ept.emp_id = ?";
 
 	}
 	

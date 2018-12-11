@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alacriti.hackriti.calendar.api.CancelCalendarEventApiHandler;
 import com.alacriti.hackriti.calendar.api.CreateCalendarEventApiHandler;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.exceptions.BOException;
@@ -251,9 +252,10 @@ public class SlotDAO extends BaseDAO {
 		return slot;
 	}
 
-	public Slot cancelSlot(Slot slot, String api) throws SQLException, BOException, ParseException {
+	public Slot cancelSlot(Slot slot, RequestContext context) throws SQLException, BOException, ParseException {
 
 		Connection conn = getConnection();
+		conn.setAutoCommit(false);
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		Date parsed = format.parse(slot.getDate());
@@ -267,9 +269,9 @@ public class SlotDAO extends BaseDAO {
 		try {
 			String sqlQuery = "";
 
-			if (api.equals(StringConstants.ApiConstants.CANCEL_OWNER_SLOT)) {
+			if (context.getApiName().equals(StringConstants.ApiConstants.CANCEL_OWNER_SLOT)) {
 				sqlQuery = SqlQueryHelper.getInsertParkingDetailsQuery();
-			} else if (api.equals(StringConstants.ApiConstants.CANCEL_USER_SLOT)) {
+			} else if (context.getApiName().equals(StringConstants.ApiConstants.CANCEL_USER_SLOT)) {
 				sqlQuery = SqlQueryHelper.getCancelUserSlotQuery();
 			}
 
@@ -283,6 +285,15 @@ public class SlotDAO extends BaseDAO {
 
 			System.out.println("query" + sqlQuery);
 
+			
+			cancelCalendarEvent(context);
+			
+			if (context.isError()) {
+
+				System.out.println("Got errors in cancelling calendar event, so rollback the connection...!");
+				conn.rollback();
+			}
+			
 			int recordsUpdated = preparedStmt.executeUpdate();
 
 			if (recordsUpdated == 1) {
@@ -292,7 +303,7 @@ public class SlotDAO extends BaseDAO {
 				}
 			}
 
-			System.out.println("number of records inserted " + recordsUpdated);
+			System.out.println("number of records updated/inserted " + recordsUpdated);
 
 		}
 
@@ -319,6 +330,21 @@ public class SlotDAO extends BaseDAO {
 	private void pushEventToCalendar(RequestContext context) {
 
 		CreateCalendarEventApiHandler handler = new CreateCalendarEventApiHandler();
+		try {
+			handler.handleRequest(context);
+		} catch (BOException e) {
+			context.setError(true);
+			e.printStackTrace();
+		} catch (Exception e) {
+			context.setError(true);
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void cancelCalendarEvent(RequestContext context) {
+
+		CancelCalendarEventApiHandler handler = new CancelCalendarEventApiHandler();
 		try {
 			handler.handleRequest(context);
 		} catch (BOException e) {

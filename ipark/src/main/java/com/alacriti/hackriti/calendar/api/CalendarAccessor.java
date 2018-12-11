@@ -62,8 +62,8 @@ public class CalendarAccessor {
 				getCredentials(HTTP_TRANSPORT, absoluteFilePath)).setApplicationName(APPLICATION_NAME).build();
 
 		// List the next 10 events from the primary calendar.
-		// getEvents(service, "2018/12/15");
-		createEvent(service, "2018/12/13");
+		 getEvents(service, "2018/12/10");
+		//createEvent(service, "2018/12/13");
 		// cancelEvent(service);
 	}
 
@@ -152,7 +152,8 @@ public class CalendarAccessor {
 				System.out.println("organizer :" + event.getOrganizer().getDisplayName());
 				List<EventAttendee> lists = event.getAttendees();
 				for (EventAttendee attendee : lists) {
-					System.out.println("attendee" + attendee.getDisplayName());
+					
+					System.out.println("attendee mail" + attendee.getEmail());
 				}
 			}
 		}

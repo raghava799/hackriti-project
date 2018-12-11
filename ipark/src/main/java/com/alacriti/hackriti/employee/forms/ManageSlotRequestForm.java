@@ -26,7 +26,7 @@ public class ManageSlotRequestForm extends GetSlotRequestForm {
 	
 	public RequestContext validate(RequestContext context) {
 		
-		if (this.parker_id == null || !Validations.isValidEmployeeNumber(this.parker_id)) {
+		if (!(this.parker_id == null) && !Validations.isValidEmployeeNumber(this.parker_id)) {
 
 			context.setError(true);
 			Validations.addErrorToContext(StringConstants.ReqeustConstants.OWNER_ID,StringConstants.ErrorConstants.ERROR_MESSAGE, context);

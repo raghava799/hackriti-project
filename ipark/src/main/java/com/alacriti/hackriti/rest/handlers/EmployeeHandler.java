@@ -24,6 +24,7 @@ public class EmployeeHandler {
 
 	@GET
 	@Path("/health")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response healthChecker() {
 
 		logger.info("log4j is initialized ....!!!");
@@ -133,7 +134,7 @@ public class EmployeeHandler {
 		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
 
 		Response response = BaseRequestHandler.process(requestContext, form,
-				StringConstants.ApiConstants.CANCEL_OWNER_SLOT,StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT);
+				StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
 
 		return response;
 	}
@@ -150,7 +151,7 @@ public class EmployeeHandler {
 		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_USER_SLOT);
 
 		Response response = BaseRequestHandler.process(requestContext, form,
-				StringConstants.ApiConstants.CANCEL_USER_SLOT,StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT);
+				StringConstants.ApiConstants.CANCEL_USER_SLOT);
 
 		return response;
 	}

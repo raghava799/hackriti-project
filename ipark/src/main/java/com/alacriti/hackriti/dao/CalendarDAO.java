@@ -68,5 +68,60 @@ public class CalendarDAO extends BaseDAO {
 
 		return event;
 	}
+	
+	public EventVO getEventDetailsToCancelOwnerEvent(RequestContext context) throws BOException, SQLException {
+
+		Connection conn = getConnection();
+
+		PreparedStatement preparedStmt = null;
+		EventVO event=null;
+
+		try {
+			
+			String sqlQuery = SqlQueryHelper.getEventDetailsQueryToCancelOwnerEvent();
+
+			preparedStmt = conn.prepareStatement(sqlQuery);
+			preparedStmt.setString(1, context.getSlot().getEmpId());
+
+			ResultSet rs = preparedStmt.executeQuery();
+
+			if (rs != null && rs.next()) {
+				
+				 event = new EventVO();
+				
+				event.setFloor(rs.getString("parking_level"));
+				event.setFromDate(context.getSlot().getDate()); // setting request value
+				event.setOwnerMailId(rs.getString("emp_email"));
+				event.setParkingType(rs.getString("parking_type"));
+				event.setSlotMailId(rs.getString("slot_mail_id"));
+				event.setSlotNumber(rs.getString("parking_slot_no"));
+				event.setToDate(""); // need to get from request
+
+			} else {
+				context.setError(true);
+				Validations.addErrorToContext("employee",
+						"Employee Not Found with the details given, Please provide valid details and try again.",
+						context);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+
+			try {
+				if (conn != null) {
+					preparedStmt.close();
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+
+		return event;
+	}
+
 
 }
