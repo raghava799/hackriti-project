@@ -3,13 +3,9 @@ package com.alacriti.hackriti.factory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alacriti.hackriti.bo.*;
 import org.apache.log4j.Logger;
 
-import com.alacriti.hackriti.bo.BookSlotApiHandler;
-import com.alacriti.hackriti.bo.CancelSlotApiHandler;
-import com.alacriti.hackriti.bo.EmployeeApiHandler;
-import com.alacriti.hackriti.bo.GetOwnerSlotApiHandler;
-import com.alacriti.hackriti.bo.SearchAvailableSlotsApiHandler;
 import com.alacriti.hackriti.delegate.EmpSlotAllocation;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.utils.response.EmpSlotAllocationResp;
@@ -85,7 +81,8 @@ public class ResourceFactory {
 	private void loadApiHandlers() {
 
 		apiHandlers.put(StringConstants.ApiConstants.GET_EMPLOYEE_DETAILS, new EmployeeApiHandler());
-		apiHandlers.put(StringConstants.ApiConstants.GET_PARKING_DETAILS, new EmployeeApiHandler());
+		apiHandlers.put(StringConstants.ApiConstants.GET_PARKING_DETAILS, new ParkingHandler()
+		);
 		apiHandlers.put(StringConstants.ApiConstants.GET_OWNER_SLOT, new GetOwnerSlotApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.GET_USER_SLOT, new GetOwnerSlotApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.GET_AVAILABLE_SLOTS, new SearchAvailableSlotsApiHandler());

@@ -84,6 +84,8 @@ public class EmployeeDAO extends BaseDAO {
 			preparedStmt = conn.prepareStatement(sqlQuery);
 			preparedStmt.setString(1, employee.getEmployeeId());
 
+			System.out.print("query in getParking deatils : " + preparedStmt.toString());
+
 			ResultSet rs = preparedStmt.executeQuery();
 
 			if (rs != null && rs.next()) {

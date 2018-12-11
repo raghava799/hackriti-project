@@ -1,75 +1,83 @@
-<div>
-  <div class="pull-right">
-    <mat-form-field class="example-full-width">
-      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="displayableSelectedDate"
-             (dateChange)="onDateChange()">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <span class="clearfix"></span>
-  <div *ngIf="!isloading">
-    <div *ngIf="isOwner">
-      <div *ngIf="isOwnerSlotBookedByUser">
-        <!--
-              <div>
-        -->
-        <div class="container">
-          <div class="card bg-light text-dark">
-            <div class="card-header" *ngIf="employeeDetails?.employee_name">Hi {{employeeDetails.employee_name}}</div>
-            <div class="card-body">Light card</div>
-          </div>
+<div class=" main_block">
+    <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <h3>Select Date:</h3>
+        <mat-card class="" style="background: aliceblue">
+            <mat-form-field class="">
+                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+                       [(ngModel)]="displayableSelectedDate"
+                       (dateChange)="onDateChange()">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-card>
+    </div>
+    </div>
+    <br>
+    <span class="clearfix"></span>
+    <div *ngIf="!isloading">
+        <div *ngIf="isOwner">
+            <div *ngIf="isOwnerSlotBookedByUser">
+                <!--
+                      <div>
+                -->
+                <div class="container">
+                    <div class="card bg-light text-dark">
+                        <div class="card-header" *ngIf="employeeDetails?.employee_name">
+                            Hi {{employeeDetails.employee_name}}</div>
+                        <div class="card-body">Light card</div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isOwnerSlotBookedByUser">
+                <div class="container">
+
+                </div>
+            </div>
         </div>
-      </div>
-      <div *ngIf="!isOwnerSlotBookedByUser">
-        <div class="container">
+        <div class="row" *ngIf="!isOwner" style="padding-top: 10px;">
+            <div class="col-sm-8 col-sm-offset-2" *ngIf="isSlotsAvailable">
+                <mat-card class="" style="background: aliceblue">
+                    <div class="">
+                        <h2>Available Slots</h2>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th *ngFor="let header of tableHeaders">{{header}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let slot of availableSlots">
+                                <td>{{slot.parking_type}}</td>
+                                <td>{{slot.parking_level}}</td>
+                                <td>{{slot.slot_number}}</td>
+                                <td>{{slot.owner_email}}</td>
+                                <td>{{slot.owner_name}}</td>
+                            </tr>
+                            <tr *ngFor="let slot of availableSlots">
+                                <td>{{slot.parking_type}}</td>
+                                <td>{{slot.parking_level}}</td>
+                                <td>{{slot.slot_number}}</td>
+                                <td>{{slot.owner_email}}</td>
+                                <td>{{slot.owner_name}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </mat-card>
+            </div>
 
         </div>
-      </div>
+
+
     </div>
 
-    <div *ngIf="!isOwner">
-      <div *ngIf="isSlotsAvailable">
-        <div class="container">
-          <h2>Available Slots</h2>
-          <table class="table table-hover">
-            <thead>
-            <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>John</td>
-              <td>Doe</td>
-              <td>john@example.com</td>
-            </tr>
-            <tr>
-              <td>Mary</td>
-              <td>Moe</td>
-              <td>mary@example.com</td>
-            </tr>
-            <tr>
-              <td>July</td>
-              <td>Dooley</td>
-              <td>july@example.com</td>
-            </tr>
-            </tbody>
-          </table>
+
+    <div *ngIf="isloading" style="min-height: 100px">
+        <div class="response-loading-div" style="margin-top: 67px">
+            <img src="assets/images/loading.gif" alt="Loading...">
+            <!--<span>LOADING</span>-->
         </div>
-      </div>
-
     </div>
-  </div>
-
-
-  <div *ngIf="isloading" style="min-height: 100px">
-    <div class="response-loading-div" style="margin-top: 67px">
-      <img src="assets/images/loading.gif" alt="Loading...">
-      <span>LOADING</span>
-    </div>
-  </div>
 </div>
-

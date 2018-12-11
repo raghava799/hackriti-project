@@ -19,7 +19,7 @@ public class ParkingHandler implements BaseApiHandler {
 			Employee employee = context.getContextContainer().getEmployee();
 
 			if (employee.getEmployeeRole() == StringConstants.ReqeustConstants.EMP_ROLE_OWNER) {
-				
+				System.out.print("calling getParking details...");
 				employee = getParkingDetails(employee);
 			}
 			else{

@@ -55,7 +55,7 @@ public class BaseRequestHandler {
 	public static void doProcess(RequestContext context, String... apis) {
 
 		for(String api : apis){
-			
+			System.out.println("calling api" + api);
 			BaseApiHandler apiHandler = getApiHandler(context,api);
 			//TODO need to handle NPException
 			try {

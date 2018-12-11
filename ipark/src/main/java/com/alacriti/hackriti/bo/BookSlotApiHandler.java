@@ -23,7 +23,7 @@ public class BookSlotApiHandler implements BaseApiHandler {
 
 			slot = bookSlot(slot);
 
-			pushEventToCalendar(context);
+			//pushEventToCalendar(context);
 
 			// context.setSlot(slot);
 		}

@@ -7,12 +7,12 @@ public class EnvVarConfig {
     }
 
     public static String getOauthClientId(){
-        return "560429940835-i9l86ctcptqektdh3vhffsk0fom3hmio.apps.googleusercontent.com";
+        return "799023887043-blv26lmp2q5ml00ti587q3bum508ks2a.apps.googleusercontent.com";
     }
 
 
     public static String getOauthClientSecret() {
-        return "iZvbPnzRyWb7wpUXU4JQ1fRN";
+        return "bm7mREEzRnukgCYqTgcg_BsX";
     }
 
 
