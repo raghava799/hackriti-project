@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 import com.alacriti.hackriti.api.handlers.BaseApiHandler;
-import com.alacriti.hackriti.calendar.api.CalendarApiHandler;
+import com.alacriti.hackriti.calendar.api.CreateCalendarEventApiHandler;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.dao.SlotDAO;
 import com.alacriti.hackriti.exceptions.BOException;
@@ -21,7 +21,7 @@ public class BookSlotApiHandler implements BaseApiHandler {
 
 			Slot slot = context.getContextContainer().getSlot();
 
-			slot = bookSlot(slot);
+			slot = bookSlot(slot,context);
 
 			//pushEventToCalendar(context);
 
@@ -30,29 +30,7 @@ public class BookSlotApiHandler implements BaseApiHandler {
 
 	}
 
-	private void pushEventToCalendar(RequestContext context) {
-
-		EventVO event = new EventVO();
-
-		context.getSlot().getDate();
-		context.getSlot().getSlotNumber();
-		context.getSlot().getDate();
-		context.getSlot().getDate();
-		context.getSlot().getDate();
-
-		event.setDate("");
-		event.setOwnerMailId("");
-		event.setUserMailId("");
-		event.setSlotMailId("");
-		event.setSlotNumber("");
-		event.setSlotName("");
-
-		CalendarApiHandler handler = new CalendarApiHandler();
-		handler.createCalendarEvent(context, event);
-
-	}
-
-	public Slot bookSlot(Slot slot) throws BOException, ParseException {
+	public Slot bookSlot(Slot slot,RequestContext context) throws BOException, ParseException {
 
 		SlotDAO dao = new SlotDAO();
 		// Connection conn = BaseDAO.getConnection();
@@ -60,7 +38,7 @@ public class BookSlotApiHandler implements BaseApiHandler {
 
 		try {
 
-			return dao.bookSlot(slot);
+			return dao.bookSlot(slot, context);
 
 		} catch (SQLException e) {
 

@@ -1,8 +1,7 @@
 package com.alacriti.hackriti.utils.response;
 
 import com.alacriti.hackriti.context.RequestContext;
-import com.alacriti.hackriti.employee.forms.EmployeeResponseForm;
-import com.alacriti.hackriti.employee.forms.ParkingInfo;
+import com.alacriti.hackriti.employee.forms.EmployeeMinimalResponse;
 import com.alacriti.hackriti.employee.forms.SlotsResponseForm;
 import com.alacriti.hackriti.response.forms.BaseResponseForm;
 import com.alacriti.hackriti.vo.Slot;
@@ -17,8 +16,8 @@ public class SlotResponseGenerator implements BaseResponseFormGenerator {
 		if (context.getContextContainer() != null && context.getContextContainer().getSlot() != null) {
 
 				Slot slot = context.getContextContainer().getSlot();
-				EmployeeResponseForm employee = new EmployeeResponseForm();
-				ParkingInfo parkingInfo = new ParkingInfo();
+				EmployeeMinimalResponse employee = new EmployeeMinimalResponse();
+				//ParkingInfo parkingInfo = new ParkingInfo();
 
 				slotResponse.setDate(slot.getDate());
 				slotResponse.setOwner_id(slot.getEmpId());
@@ -36,15 +35,15 @@ public class SlotResponseGenerator implements BaseResponseFormGenerator {
 					employee.setEmployee_number(slot.getEmployee().getEmployeeNumber());
 					employee.setEmployee_role(slot.getEmployee().getEmployeeRole());
 					
-					if (slot.getEmployee().getParkingInfo() != null) {
-
-						parkingInfo.setParking_level(slot.getEmployee().getParkingInfo().getParkingLevel());
-						parkingInfo.setParking_slot_id(slot.getEmployee().getParkingInfo().getParkingSlotId());
-						parkingInfo.setParking_slot_number(slot.getEmployee().getParkingInfo().getParkingSlotNumber());
-						parkingInfo.setParking_type(slot.getEmployee().getParkingInfo().getParkingType());
-						employee.setParking_info(parkingInfo);
-
-					}
+//					if (slot.getEmployee().getParkingInfo() != null) {
+//
+//						parkingInfo.setParking_level(slot.getEmployee().getParkingInfo().getParkingLevel());
+//						parkingInfo.setParking_slot_id(slot.getEmployee().getParkingInfo().getParkingSlotId());
+//						parkingInfo.setParking_slot_number(slot.getEmployee().getParkingInfo().getParkingSlotNumber());
+//						parkingInfo.setParking_type(slot.getEmployee().getParkingInfo().getParkingType());
+//						employee.setParking_info(parkingInfo);
+//
+//					}
 				}
 
 				

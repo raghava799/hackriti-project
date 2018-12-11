@@ -7,7 +7,10 @@ import javax.ws.rs.PathParam;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.utils.constants.StringConstants;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class GetAvailableSlotsRequestForm implements BaseRequestForm, Serializable{
 
@@ -34,7 +37,7 @@ public class GetAvailableSlotsRequestForm implements BaseRequestForm, Serializab
 		if (this.date == null || !Validations.isValidDate(this.date)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 		
 		return context;

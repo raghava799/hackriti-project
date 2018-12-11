@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alacriti.hackriti.context.RequestContext;
+import com.alacriti.hackriti.employee.forms.EmployeeMinimalResponse;
 import com.alacriti.hackriti.employee.forms.EmployeeResponseForm;
 import com.alacriti.hackriti.employee.forms.GetAailableSlotsResponseForm;
 import com.alacriti.hackriti.employee.forms.ParkingInfo;
@@ -26,8 +27,8 @@ public class GetAvailableSlotsResponseGenerator implements BaseResponseFormGener
 			for (Slot slot : context.getContextContainer().getSlots()) {
 
 				SlotsResponseForm slotResponse = new SlotsResponseForm();
-				EmployeeResponseForm employee = new EmployeeResponseForm();
-				ParkingInfo parkingInfo = new ParkingInfo();
+				EmployeeMinimalResponse employee = new EmployeeMinimalResponse();
+				//ParkingInfo parkingInfo = new ParkingInfo();
 				
 				slotResponse.setDate(slot.getDate());
 				slotResponse.setOwner_id(slot.getEmpId());
@@ -45,15 +46,15 @@ public class GetAvailableSlotsResponseGenerator implements BaseResponseFormGener
 					employee.setEmployee_number(slot.getEmployee().getEmployeeNumber());
 					employee.setEmployee_role(slot.getEmployee().getEmployeeRole());
 					
-					if(slot.getEmployee().getParkingInfo()!=null){
-						
-						parkingInfo.setParking_level(slot.getEmployee().getParkingInfo().getParkingLevel());
-						parkingInfo.setParking_slot_id(slot.getEmployee().getParkingInfo().getParkingSlotId());
-						parkingInfo.setParking_slot_number(slot.getEmployee().getParkingInfo().getParkingSlotNumber());
-						parkingInfo.setParking_type(slot.getEmployee().getParkingInfo().getParkingType());
-						employee.setParking_info(parkingInfo);
-						
-					}
+//					if(slot.getEmployee().getParkingInfo()!=null){
+//						
+//						parkingInfo.setParking_level(slot.getEmployee().getParkingInfo().getParkingLevel());
+//						parkingInfo.setParking_slot_id(slot.getEmployee().getParkingInfo().getParkingSlotId());
+//						parkingInfo.setParking_slot_number(slot.getEmployee().getParkingInfo().getParkingSlotNumber());
+//						parkingInfo.setParking_type(slot.getEmployee().getParkingInfo().getParkingType());
+//						employee.setParking_info(parkingInfo);
+//						
+//					}
 				}
 				
 				

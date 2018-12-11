@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.alacriti.hackriti.vo.EmpParkingRespVO;
 import com.alacriti.hackriti.vo.Employee;
+import com.alacriti.hackriti.vo.EventVO;
 import com.alacriti.hackriti.vo.Slot;
 
 public class ContextContainer {
@@ -16,6 +17,8 @@ public class ContextContainer {
 	private List<Slot> slots;
 	
 	private Map<String, EmpParkingRespVO> empDetail;
+	
+	private EventVO calendarEvent;
 	
 	
 
@@ -50,7 +53,14 @@ public class ContextContainer {
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
-	
+
+	public EventVO getCalendarEvent() {
+		return calendarEvent;
+	}
+
+	public void setCalendarEvent(EventVO calendarEvent) {
+		this.calendarEvent = calendarEvent;
+	}
 	
 
 }

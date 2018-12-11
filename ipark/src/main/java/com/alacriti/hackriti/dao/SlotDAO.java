@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alacriti.hackriti.calendar.api.CreateCalendarEventApiHandler;
+import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.exceptions.BOException;
 import com.alacriti.hackriti.utils.SqlQueryHelper;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.vo.Employee;
+import com.alacriti.hackriti.vo.EventVO;
 import com.alacriti.hackriti.vo.ParkingInfo;
 import com.alacriti.hackriti.vo.Slot;
 
@@ -125,14 +128,17 @@ public class SlotDAO extends BaseDAO {
 				while (rs.next()) {
 
 					Slot slotResponse = new Slot();
+					
+					                                                                     
 
 					slotResponse.setSlotNumber(rs.getString("parking_slot_no"));
 					slotResponse.setEmpId(rs.getString("owner_id"));
-					// slot.setParkerId(rs.getString("parker_id"));
-					// slot.setDate(rs.getString("date_of_availability"));
+					//slotResponse.setParkerId(rs.getString("parker_id"));
+					slotResponse.setDate(slot.getDate()); // taking from request
 					slotResponse.setParkingType(rs.getString("parking_type"));
 					slotResponse.setParkingLevel(rs.getString("parking_level"));
-
+					slotResponse.setParkingSlotId(rs.getString("parking_slot_id"));
+					
 					Employee employee = new Employee();
 
 					employee.setEmployeeNumber(rs.getString("emp_no"));
@@ -140,15 +146,15 @@ public class SlotDAO extends BaseDAO {
 					employee.setDateOfJoining(rs.getString("date_of_joining"));
 					employee.setEmployeeMail(rs.getString("emp_email"));
 					employee.setEmployeeId(rs.getString("owner_id"));
-
-					ParkingInfo parkingInfo = new ParkingInfo();
-
-					parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
-					parkingInfo.setParkingType(rs.getString("parking_type"));
-					parkingInfo.setParkingLevel(rs.getString("parking_level"));
-					parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
-
-					employee.setParkingInfo(parkingInfo);
+					employee.setEmployeeRole(rs.getString("emp_role"));
+//					ParkingInfo parkingInfo = new ParkingInfo();
+//
+//					parkingInfo.setParkingSlotId(rs.getString("parking_slot_id"));
+//					parkingInfo.setParkingType(rs.getString("parking_type"));
+//					parkingInfo.setParkingLevel(rs.getString("parking_level"));
+//					parkingInfo.setParkingSlotNumber(rs.getString("parking_slot_no"));
+//
+//					employee.setParkingInfo(parkingInfo);
 
 					slotResponse.setEmployee(employee);
 					slots.add(slotResponse);
@@ -178,7 +184,7 @@ public class SlotDAO extends BaseDAO {
 
 	}
 
-	public Slot bookSlot(Slot slot) throws SQLException, BOException, ParseException {
+	public Slot bookSlot(Slot slot,RequestContext context) throws SQLException, BOException, ParseException {
 
 		Connection conn = getConnection();
 
@@ -213,6 +219,8 @@ public class SlotDAO extends BaseDAO {
 					conn.commit();
 				}
 			}
+			
+			pushEventToCalendar(context);
 
 			System.out.println("number of records updated " + recordsUpdated);
 
@@ -303,4 +311,27 @@ public class SlotDAO extends BaseDAO {
 		return slot;
 	}
 
+	
+	private void pushEventToCalendar(RequestContext context) {
+
+		EventVO event = new EventVO();
+
+		context.getSlot().getDate();
+		context.getSlot().getSlotNumber();
+		context.getSlot().getDate();
+		context.getSlot().getDate();
+		context.getSlot().getDate();
+
+		event.setToDate("");
+		event.setOwnerMailId("");
+		event.setUserMailId("");
+		event.setSlotMailId("");
+		event.setSlotNumber("");
+		event.setFloor("");
+		event.setParkingType("");
+
+		CreateCalendarEventApiHandler handler = new CreateCalendarEventApiHandler();
+		handler.createCalendarEvent(context, event);
+
+	}
 }

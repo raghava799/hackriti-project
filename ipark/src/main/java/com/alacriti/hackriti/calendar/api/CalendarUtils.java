@@ -10,7 +10,7 @@ public class CalendarUtils {
 
 	public static Date getJavaDate(String eventDate) {
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
 		try {
 			date = format.parse(eventDate);
@@ -22,7 +22,7 @@ public class CalendarUtils {
 
 	public static String getNextDay(String oldDate) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
 		java.util.Calendar c = java.util.Calendar.getInstance();
 		try {

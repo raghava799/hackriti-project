@@ -44,12 +44,12 @@ public class GetEmployeeRequestForm implements BaseRequestForm, Serializable {
 		if (!(this.employee_mail_id == null) && !Validations.isValidEmail(this.employee_mail_id)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_MAIL_ID, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_MAIL_ID,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 		if (!(this.employee_id == null) && !Validations.isValidEmployeeNumber(this.employee_id)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER, StringConstants.ErrorConstants.ERROR_MESSAGE,context);
 		}
 
 		return context;

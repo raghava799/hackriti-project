@@ -5,7 +5,7 @@ import com.alacriti.hackriti.employee.forms.SlotResponseForm;
 import com.alacriti.hackriti.response.forms.BaseResponseForm;
 import com.alacriti.hackriti.vo.Slot;
 
-public class OwnerSlotDetailsResponseGenerator implements BaseResponseFormGenerator{
+public class SlotDetailsResponseGenerator implements BaseResponseFormGenerator{
 	
 	@Override
 	public BaseResponseForm generateResponse(RequestContext context) {

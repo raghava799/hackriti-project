@@ -8,6 +8,8 @@ public class Slot {
 	private String parkerId;
 	private String parkingLevel;
 	private String parkingType;
+	private String parkingSlotId;
+	
 
 	private Employee employee; // owner
 	
@@ -53,5 +55,13 @@ public class Slot {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
+	public String getParkingSlotId() {
+		return parkingSlotId;
+	}
+	public void setParkingSlotId(String parkingSlotId) {
+		this.parkingSlotId = parkingSlotId;
+	}
+	
+	
 
 }

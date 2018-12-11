@@ -18,9 +18,6 @@ public class SlotResponseForm implements BaseResponseForm, Serializable {
 	@JsonProperty("employee_id")
 	private String employee_id;
 	
-	@JsonProperty("employee_number")
-	private String employee_number;
-	
 	@JsonProperty("date")
 	private String date;
 	
@@ -47,17 +44,6 @@ public class SlotResponseForm implements BaseResponseForm, Serializable {
 	public void setEmployee_id(String employee_id) {
 		this.employee_id = employee_id;
 	}
-
-
-	public String getEmployee_number() {
-		return employee_number;
-	}
-
-
-	public void setEmployee_number(String employee_number) {
-		this.employee_number = employee_number;
-	}
-
 
 
 	public String getDate() {

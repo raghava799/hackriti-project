@@ -4,8 +4,7 @@ public class SqlQueryHelper {
 
 	public static String getEmployeeDetailsQuery() {
 
-		return "select emp_id, emp_no,emp_name,emp_email,emp_role,date_of_joining \n "
-				+ "from r_employee_tbl ";
+		return "select emp_id, emp_no,emp_name,emp_email,emp_role,date_of_joining \n " + "from r_employee_tbl ";
 
 	}
 
@@ -25,8 +24,7 @@ public class SqlQueryHelper {
 				+ "from parking_slot_mgmt_tbl psmt join r_parking_slot_tbl pst "
 				+ "on pst.parking_slot_no=psmt.parking_slot_no where psmt.date_of_availability=? and psmt.owner_id=?";
 	}
-	
-	
+
 	public static String getUserSlotDetailsQuery() {
 
 		// get all the records with date
@@ -40,7 +38,7 @@ public class SqlQueryHelper {
 
 		// get all the records with date
 
-		return "select psmt.parking_slot_no,psmt.owner_id,pst.parking_slot_id,pst.parking_type,pst.parking_level,et.emp_no,et.emp_name,et.emp_email,et.date_of_joining "
+		return "select psmt.parking_slot_no,psmt.owner_id,pst.parking_slot_id,pst.parking_type,pst.parking_level,et.emp_no,et.emp_name,et.emp_email,et.date_of_joining,et.emp_role "
 				+ "from parking_slot_mgmt_tbl psmt "
 				+ "join r_parking_slot_tbl pst join r_employee_tbl et on (psmt.parking_slot_no=pst.parking_slot_no and et.emp_id=psmt.owner_id) "
 				+ "where psmt.parker_id is NULL and psmt.date_of_availability=?";
@@ -58,7 +56,7 @@ public class SqlQueryHelper {
 		return "update parking_slot_mgmt_tbl set parker_id=? where date_of_availability = ? and owner_id=? and parking_slot_no=?";
 
 	}
-	
+
 	public static String getCancelUserSlotQuery() {
 
 		return "update parking_slot_mgmt_tbl set parker_id=NULL where parking_slot_no=? and owner_id=? and  date_of_availability = ?";
@@ -69,6 +67,13 @@ public class SqlQueryHelper {
 
 		return "insert into parking_slot_mgmt_tbl (parking_slot_no,owner_id,date_of_availability,date_created)"
 				+ " values(?,?,?,now());";
+
+	}
+
+	public static String getEventDetailsQuery() {
+
+		return "select et.emp_email as owner_mail,pt.parking_slot_no,pt.parking_type,pt.parking_level,pt.slot_mail_id,ut.emp_email as parker_mail from r_employee_tbl ut, employee_parking_tbl ept,r_parking_slot_tbl pt,r_employee_tbl et "+
+		"where ept.parking_slot_id=pt.parking_slot_id and ept.emp_id=? and et.emp_id = ept.emp_id and ut.emp_id=?";
 
 	}
 

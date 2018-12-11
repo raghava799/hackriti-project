@@ -65,6 +65,7 @@ public class EmployeeHandler {
 
 		return response;
 	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -78,7 +79,8 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.GET_USER_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, slotForm,StringConstants.ApiConstants.GET_USER_SLOT);
+		Response response = BaseRequestHandler.process(requestContext, slotForm,
+				StringConstants.ApiConstants.GET_USER_SLOT);
 
 		return response;
 	}
@@ -114,7 +116,8 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.BOOK_SLOT);
 
-		Response response = BaseRequestHandler.process(requestContext, form, StringConstants.ApiConstants.BOOK_SLOT);
+		Response response = BaseRequestHandler.process(requestContext, form, StringConstants.ApiConstants.BOOK_SLOT,
+				StringConstants.ApiConstants.PUSH_CALENDAR_EVENT);
 
 		return response;
 	}
@@ -131,7 +134,7 @@ public class EmployeeHandler {
 		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
 
 		Response response = BaseRequestHandler.process(requestContext, form,
-				StringConstants.ApiConstants.CANCEL_OWNER_SLOT);
+				StringConstants.ApiConstants.CANCEL_OWNER_SLOT,StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT);
 
 		return response;
 	}
@@ -148,10 +151,11 @@ public class EmployeeHandler {
 		requestContext.setApiName(StringConstants.ApiConstants.CANCEL_USER_SLOT);
 
 		Response response = BaseRequestHandler.process(requestContext, form,
-				StringConstants.ApiConstants.CANCEL_USER_SLOT);
+				StringConstants.ApiConstants.CANCEL_USER_SLOT,StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT);
 
 		return response;
 	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -163,7 +167,8 @@ public class EmployeeHandler {
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.EMP_SLOT_ALLOCATION);
 
-		Response response = BaseRequestHandler.process(requestContext, form,StringConstants.ApiConstants.EMP_SLOT_ALLOCATION);
+		Response response = BaseRequestHandler.process(requestContext, form,
+				StringConstants.ApiConstants.EMP_SLOT_ALLOCATION);
 
 		return response;
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alacriti.hackriti.response.forms.Error;
 import com.alacriti.hackriti.vo.Employee;
+import com.alacriti.hackriti.vo.EventVO;
 import com.alacriti.hackriti.vo.Slot;
 
 public class RequestContext {
@@ -77,5 +78,13 @@ public class RequestContext {
 	public void setError(boolean isError) {
 		this.isError = isError;
 	}
+	
+	public EventVO getCalendarEvent() {
+		return this.contextContainer.getCalendarEvent();
+	}
 
+	public void setCalendarEvent(EventVO calendarEvent) {
+		this.contextContainer.setCalendarEvent(calendarEvent);
+	}
+	
 }

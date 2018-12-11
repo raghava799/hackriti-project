@@ -11,8 +11,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.exceptions.BOException;
 import com.alacriti.hackriti.utils.SqlQueryHelper;
+import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.utils.constants.Excelconstants;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.vo.Employee;
@@ -23,7 +25,7 @@ import com.alacriti.hackriti.vo.ParkingSlotVO;
 public class EmployeeDAO extends BaseDAO {
 	final static Logger logger = Logger.getLogger(EmployeeDAO.class);
 
-	public Employee getEmployeeDetails(Employee employee) throws SQLException, BOException {
+	public Employee getEmployeeDetails(Employee employee,RequestContext context) throws SQLException, BOException {
 
 		Connection conn = getConnection();
 
@@ -51,6 +53,10 @@ public class EmployeeDAO extends BaseDAO {
 				employee.setEmployeeRole(rs.getString("emp_role"));
 				employee.setEmployeeMail(rs.getString("emp_email"));
 
+			}
+			else{
+				context.setError(true);
+				Validations.addErrorToContext("employee","Employee Not Found with the details given, Please provide valid details and try again.", context);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -100,6 +106,9 @@ public class EmployeeDAO extends BaseDAO {
 				employee.setParkingInfo(parkingInfo);
 
 			}
+			else{
+				System.out.println("Parking Details Not Found");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -124,7 +133,7 @@ public class EmployeeDAO extends BaseDAO {
 		logger.info("getEmployeeDetails start");
 		Connection con = getConnection();
 		List<EmployeeVO> empDetailsList = new ArrayList<EmployeeVO>();
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			String sql = "SELECT emp_id,emp_no,emp_name,emp_email,date_of_joining FROM r_employee_tbl order by date_of_joining";
@@ -149,6 +158,7 @@ public class EmployeeDAO extends BaseDAO {
 		} finally {
 			try {
 				if (con != null) {
+					ps.close();
 					con.close();
 				}
 
@@ -166,7 +176,7 @@ public class EmployeeDAO extends BaseDAO {
 		ArrayList<ParkingSlotVO> twoWheelerSlotDetailsList = new ArrayList<ParkingSlotVO>();
 		ArrayList<ParkingSlotVO> fourWheelerSlotDetailsList = new ArrayList<ParkingSlotVO>();
 		Map<Integer, ArrayList<ParkingSlotVO>> slotDetailsList = new HashMap<Integer, ArrayList<ParkingSlotVO>>();
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			String sql = "SELECT parking_slot_id,parking_slot_no,parking_type,parking_level FROM r_parking_slot_tbl order by parking_slot_no";
@@ -199,6 +209,7 @@ public class EmployeeDAO extends BaseDAO {
 				logger.info("con :" + con);
 				if (con != null) {
 					con.close();
+					ps.close();
 				}
 
 			} catch (SQLException e) {
@@ -211,7 +222,7 @@ public class EmployeeDAO extends BaseDAO {
 	public void postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException {
 		logger.info("getEmployeeDetails start");
 		Connection con = getConnection();
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder(
 					"INSERT INTO employee_parking_tbl(emp_id,parking_slot_id,date_created) VALUES(");
@@ -240,6 +251,7 @@ public class EmployeeDAO extends BaseDAO {
 		} finally {
 			try {
 				if (con != null) {
+					ps.close();
 					con.close();
 				}
 

@@ -31,23 +31,23 @@ public class AuthenticationFilter implements ContainerRequestFilter
     {
 
         System.out.println("Security filter is running!!");
-        if (isAvailable(requestContext.getUriInfo(), getAllowedPaths())) return;
-
-        JWTconstants jwTconstants = new JWTconstants();
-        requestContext.getCookies();
-        List<String> authHeaders = requestContext.getHeaders().get(RestConstants.UrlConstants.AUTH_HEADER);
-        if (authHeaders != null && authHeaders.size() > 0) {
-            System.out.println("Varifying JWT ");
-            String token = authHeaders.get(0);
-            JWThandler jwThandler = new JWThandler();
-            if (jwThandler.varifyToken(token)) {
-                return;
-            }
-            System.out.println(" INVALID TOKEN: " + token);
-        }
-
-        Response unAuthorized = Response.status(Response.Status.UNAUTHORIZED).build();
-        requestContext.abortWith(unAuthorized);
+//        if (isAvailable(requestContext.getUriInfo(), getAllowedPaths())) return;
+//
+//        JWTconstants jwTconstants = new JWTconstants();
+//        requestContext.getCookies();
+//        List<String> authHeaders = requestContext.getHeaders().get(RestConstants.UrlConstants.AUTH_HEADER);
+//        if (authHeaders != null && authHeaders.size() > 0) {
+//            System.out.println("Varifying JWT ");
+//            String token = authHeaders.get(0);
+//            JWThandler jwThandler = new JWThandler();
+//            if (jwThandler.varifyToken(token)) {
+//                return;
+//            }
+//            System.out.println(" INVALID TOKEN: " + token);
+//        }
+//
+//        Response unAuthorized = Response.status(Response.Status.UNAUTHORIZED).build();
+//        requestContext.abortWith(unAuthorized);
 
 
     }

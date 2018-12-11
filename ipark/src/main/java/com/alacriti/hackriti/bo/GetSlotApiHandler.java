@@ -10,7 +10,7 @@ import com.alacriti.hackriti.dao.SlotDAO;
 import com.alacriti.hackriti.exceptions.BOException;
 import com.alacriti.hackriti.vo.Slot;
 
-public class GetOwnerSlotApiHandler implements BaseApiHandler{
+public class GetSlotApiHandler implements BaseApiHandler{
 
 	@Override
 	public void handleRequest(RequestContext context) throws BOException, Exception {

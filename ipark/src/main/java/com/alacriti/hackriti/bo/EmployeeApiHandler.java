@@ -17,18 +17,18 @@ public class EmployeeApiHandler implements BaseApiHandler {
 
 			Employee employee = context.getContextContainer().getEmployee();
 
-			employee = getEmployeeDetails(employee);
+			employee = getEmployeeDetails(employee,context);
 		}
 
 	}
 
-	public Employee getEmployeeDetails(Employee employee) throws BOException {
+	public Employee getEmployeeDetails(Employee employee,RequestContext context) throws BOException {
 
 		EmployeeDAO dao = new EmployeeDAO();
 
 		try {
 
-			employee = dao.getEmployeeDetails(employee);
+			employee = dao.getEmployeeDetails(employee,context);
 
 		} catch (SQLException e) {
 

@@ -39,7 +39,7 @@ public class SlotsResponseForm  implements BaseResponseForm,Serializable{
 	private String parking_type;
 	
 	@JsonProperty("owner")
-	private EmployeeResponseForm owner;
+	private EmployeeMinimalResponse owner;
 
 	public String getOwner_id() {
 		return owner_id;
@@ -97,11 +97,11 @@ public class SlotsResponseForm  implements BaseResponseForm,Serializable{
 		this.parking_type = parking_type;
 	}
 
-	public EmployeeResponseForm getOwner() {
+	public EmployeeMinimalResponse getOwner() {
 		return owner;
 	}
 
-	public void setOwner(EmployeeResponseForm employee) {
+	public void setOwner(EmployeeMinimalResponse employee) {
 		this.owner = employee;
 	}
 

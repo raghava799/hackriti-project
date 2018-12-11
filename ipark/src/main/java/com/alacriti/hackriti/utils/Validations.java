@@ -32,12 +32,17 @@ public class Validations {
 	}
 
 
-	public static RequestContext addErrorToContext(String errorField, RequestContext context) {
+	public static RequestContext addErrorToContext(String errorField,String errorMsg, RequestContext context) {
 
 		Error error = new Error();
 		error.setError_field(errorField);
 		// will be same for all
-		error.setError_message(StringConstants.ErrorConstants.ERROR_MESSAGE);
+		if(errorMsg==null){
+			error.setError_message(StringConstants.ErrorConstants.ERROR_MESSAGE);
+		}
+		else{
+			error.setError_message(errorMsg);
+		}
 
 		if (context.getErrors() != null && context.getErrors().size() > 0) {
 

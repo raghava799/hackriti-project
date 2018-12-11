@@ -29,24 +29,24 @@ public class ManageSlotRequestForm extends GetSlotRequestForm {
 		if (this.parker_id == null || !Validations.isValidEmployeeNumber(this.parker_id)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.OWNER_ID, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.OWNER_ID,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 		if (super.getEmployee_id() == null || !Validations.isValidEmployeeNumber(super.getEmployee_id())) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER, StringConstants.ErrorConstants.ERROR_MESSAGE,context);
 		}
 		
 		if (super.getDate() == null || !Validations.isValidDate(super.getDate())) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 		
 		if (super.getSlot_number() == null || !Validations.isValidSlotNumber(super.getSlot_number())) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.SLOT_NUMBER, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.SLOT_NUMBER, StringConstants.ErrorConstants.ERROR_MESSAGE,context);
 		}
 
 		return context;

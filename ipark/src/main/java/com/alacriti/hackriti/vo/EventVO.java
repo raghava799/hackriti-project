@@ -2,19 +2,31 @@ package com.alacriti.hackriti.vo;
 
 public class EventVO {
 
-	private String date;
+	private String fromDate;
+	private String toDate;
 	private String ownerMailId;
 	private String userMailId;
 	private String slotMailId;
 	private String slotNumber;
-	private String slotName;
+	private String floor; 
+	private String parkingType;
 
-	public String getDate() {
-		return date;
+
+	
+	public String getFromDate() {
+		return fromDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String date) {
+		this.toDate = date;
 	}
 
 	public String getOwnerMailId() {
@@ -49,12 +61,21 @@ public class EventVO {
 		this.slotNumber = slotNumber;
 	}
 
-	public String getSlotName() {
-		return slotName;
+	public String getFloor() {
+		return floor;
 	}
 
-	public void setSlotName(String slotName) {
-		this.slotName = slotName;
+	public void setFloor(String floor) {
+		this.floor = floor;
 	}
+
+	public String getParkingType() {
+		return parkingType;
+	}
+
+	public void setParkingType(String parkingType) {
+		this.parkingType = parkingType;
+	}
+
 
 }

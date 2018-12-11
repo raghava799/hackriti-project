@@ -72,19 +72,19 @@ public class GetSlotRequestForm implements BaseRequestForm, Serializable {
 		if (this.employee_id == null || !Validations.isValidEmployeeNumber(this.employee_id)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.EMPLOYEE_NUMBER,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 		
 		if (this.date == null || !Validations.isValidDate(this.date)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.DATE,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 		
 		if (!(this.slot_number == null) && !Validations.isValidSlotNumber(this.slot_number)) {
 
 			context.setError(true);
-			Validations.addErrorToContext(StringConstants.ReqeustConstants.SLOT_NUMBER, context);
+			Validations.addErrorToContext(StringConstants.ReqeustConstants.SLOT_NUMBER,StringConstants.ErrorConstants.ERROR_MESSAGE, context);
 		}
 
 		return context;
