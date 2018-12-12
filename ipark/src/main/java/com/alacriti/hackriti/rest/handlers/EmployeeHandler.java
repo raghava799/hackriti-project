@@ -156,7 +156,7 @@ public class EmployeeHandler {
 		return response;
 	}
 
-	@POST
+	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/slotallocation")
