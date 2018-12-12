@@ -121,7 +121,7 @@ public class EmpSlotAllocation implements BaseApiHandler{
 						empParkingRespVO.setEmpId(empDetail.getEmployeeRollId());
 						empParkingRespVO.setEmpName(empDetail.getEmployeeName());
 						empParkingRespVO.setEmailId(empDetail.getEmailId());
-						String parkingNo = parkingMap.get(twoWheelParkingNos.get(a));
+						String parkingNo = parkingMap.get(fourWheelParkingNos.get(a));
 						if(parkingNo!=null)
 						{
 							String arr[]=parkingNo.split("-");
