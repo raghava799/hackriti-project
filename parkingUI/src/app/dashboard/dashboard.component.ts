@@ -18,10 +18,13 @@ export class DashboardComponent implements OnInit {
     loggedInUserEmail: string;
     availableSlots: any;
     parkerEmployeeDetails: Employee;
+    ownerEmployeeDetails: Employee;
     isloading = true;
     isOwnerSlotBookedByUser = false;
     isSlotsAvailable = false;
+    isOwnerSlotFreedAndNotBooked = false;
     tableHeaders = ['Parking Type', 'Parking Level', 'Parking Slot Number', 'Owner Email', 'Owner Name'];
+    selectedSlot: Object;
 
     constructor(private http: HttpService) {
 
@@ -54,26 +57,83 @@ export class DashboardComponent implements OnInit {
             } else if (this.employeeDetails.employee_role === 'user') {
                 this.getUserSlotDetails();
             }
+        }).catch(error => {
+            console.log(error);
+            throw error;
         });
     }
 
-    bookSlot(slotDetails) {
-        console.log(slotDetails)
-        this.http.bookSlot({}).then(res => {
+    bookSlot() {
+        this.isloading = true;
+        const slotDetails = {
+            parker_id: this.employeeDetails.employee_id,
+            employee_id: this.selectedSlot['owner_id'],
+            date: this.selectedSlot['date'],
+            slot_number: this.selectedSlot['slot_number']
+        };
+        this.http.bookSlot(slotDetails).then(res => {
             console.log(res);
+            if (res && res['owner_id']) {
+                this.http.getEmployeeDetails({employee_id: res['owner_id']}).then(response => {
+                    this.isOwnerSlotBookedByUser = true;
+                    this.ownerEmployeeDetails = response;
+                    this.isloading = false;
+                });
+            }
+        }).catch(error => {
+            this.isOwnerSlotBookedByUser = false;
+            console.log(error);
+            throw error;
         });
 
     }
 
     cancelUserSlot() {
-        this.http.cancelUserSlot({}).then(res => {
+        this.isloading = true;
+        const slotDetails = {
+            parker_id: this.employeeDetails.employee_id,
+            employee_id: this.ownerEmployeeDetails.employee_id,
+            date: this.selectedDate,
+            slot_number: this.ownerEmployeeDetails.parking_info.parking_slot_number
+        };
+        this.http.cancelUserSlot(slotDetails).then(res => {
+            if (res) {
+                this.isOwnerSlotBookedByUser = false;
+                this.getAvailableSlots();
+            }
             console.log(res);
+        }).catch(error => {
+            console.log(error);
+            throw error;
         });
     }
 
+    cancelSlot() {
+        if (this.isOwner) {
+            this.cancelOwnerSlot();
+        } else {
+            this.cancelUserSlot();
+        }
+    }
+
     cancelOwnerSlot() {
-        this.http.cancelOwnerSlot({}).then(res => {
-            console.log(res);
+        this.isloading = true;
+        const slotDetails = {
+            employee_id: this.employeeDetails.employee_id,
+            date: this.selectedDate,
+            slot_number: this.employeeDetails.parking_info.parking_slot_number
+
+        };
+        this.http.cancelOwnerSlot(slotDetails).then(res => {
+            if (res['owner_id']) {
+                this.getOwnerSlotDetails();
+            } else {
+                this.isOwnerSlotBookedByUser = false;
+                this.isOwnerSlotFreedAndNotBooked = false;
+            }
+        }).catch(error => {
+            console.log(error);
+            throw error;
         });
     }
 
@@ -88,6 +148,9 @@ export class DashboardComponent implements OnInit {
                 this.isSlotsAvailable = true;
             }
             this.isloading = false;
+        }).catch(error => {
+            console.log(error);
+            throw error;
         });
     }
 
@@ -98,18 +161,34 @@ export class DashboardComponent implements OnInit {
             slot_number: this.employeeDetails.parking_info.parking_slot_number
         };
         this.http.getOwnerSlot(slotDetails).then(res => {
-            if (res['parker_id'] && res['parking_type']) {
-                this.http.getEmployeeDetails({employee_id: res['parker_id']}).then(response => {
-                    this.parkerEmployeeDetails = response;
-                    this.isOwnerSlotBookedByUser = true;
-                });
+            if (res['parking_type']) {
+                if (res['parker_id']) {
+                    this.http.getEmployeeDetails({employee_id: res['parker_id']}).then(response => {
+                        this.parkerEmployeeDetails = response;
+                        this.isOwnerSlotBookedByUser = true;
+                        this.isOwnerSlotFreedAndNotBooked = false;
+                    }).catch(error => {
+                        console.log(error);
+                        throw error;
+                    });
+                } else {
+                    this.isOwnerSlotFreedAndNotBooked = true;
+
+                }
+            } else {
+                this.isOwnerSlotFreedAndNotBooked = false;
+                this.isOwnerSlotBookedByUser = false;
             }
             console.log(res);
             this.isloading = false;
+        }).catch(error => {
+            console.log(error);
+            throw error;
         });
     }
 
     getUserSlotDetails() {
+        this.isOwnerSlotBookedByUser = false;
         const employeeDetails = {
             date: this.selectedDate,
             employee_id: this.employeeDetails.employee_id
@@ -117,11 +196,17 @@ export class DashboardComponent implements OnInit {
         this.http.getUserSlot(employeeDetails).then(res => {
             console.log(res);
             if (res['parking_level'] && res['parking_type'] && res['parker_id'] && res['slot_number']) {
-                this.isOwnerSlotBookedByUser = true;
-                this.isloading = false;
+                this.http.getEmployeeDetails({employee_id: res['employee_id']}).then(response => {
+                    this.ownerEmployeeDetails = response;
+                    this.isOwnerSlotBookedByUser = true;
+                    this.isloading = false;
+                });
             } else {
                 this.getAvailableSlots();
             }
+        }).catch(error => {
+            console.log(error);
+            throw error;
         });
     }
 
@@ -134,6 +219,7 @@ export class DashboardComponent implements OnInit {
     }
 
     onDateChange() {
+        this.isloading = true;
         this.changeDateFormat();
         if (this.isOwner) {
             this.getOwnerSlotDetails();
@@ -150,11 +236,22 @@ export class DashboardComponent implements OnInit {
                 parking_level: slot['parking_level'],
                 slot_number: slot['slot_number'],
                 owner_email: slot['owner']['employee_mail_id'],
-                owner_name: slot['owner']['employee_name']
+                owner_name: slot['owner']['employee_name'],
+                owner_id: slot['owner_id'],
+                date: slot['date'],
+
             };
             this.availableSlots.push(slotDetails);
             console.log(this.availableSlots);
 
         });
+    }
+
+    availableSelectedSlot(slot) {
+        this.selectedSlot = slot;
+    }
+
+    clearSelectedSlot() {
+        this.selectedSlot = {};
     }
 }

@@ -22,15 +22,28 @@
                     <div class="col-sm-8 col-sm-offset-2">
                         <mat-card class="matcard">
                             <div *ngIf="employeeDetails?.employee_name">
-                                Hi {{employeeDetails.employee_name}}
+                                <h3>Hi {{employeeDetails.employee_name}}</h3>
                             </div>
                             <br>
-                            your slot is reserved by {{parkerEmployeeDetails.employee_name}}
+                            <h4>your slot is reserved by {{parkerEmployeeDetails.employee_name}}</h4>
                         </mat-card>
                     </div>
                 </div>
             </div>
-            <div *ngIf="!isOwnerSlotBookedByUser">
+            <div *ngIf="isOwnerSlotFreedAndNotBooked">
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <mat-card class="matcard">
+                            <div *ngIf="employeeDetails?.employee_name">
+                                Hi {{employeeDetails.employee_name}}
+                            </div>
+                            <br>
+                            you Have Freed Your Slot , No User booked.
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isOwnerSlotBookedByUser && !isOwnerSlotFreedAndNotBooked">
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-8 col-sm-offset-2">
                         <mat-card class="matcard">
@@ -38,21 +51,24 @@
                             <div class="row">
                                 <div class="col-sm-6 col-sm-offset-3">
                                     <div class="row">
-                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">Parking Type
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Parking Type
                                             : </p></div>
                                         <div class="col-sm-6"><p class="text-left-align">
                                             {{employeeDetails.parking_info.parking_type}}</p>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">Parking Level
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Parking Level
                                             : </p></div>
                                         <div class="col-sm-6"><p class="text-left-align">
                                             {{employeeDetails.parking_info.parking_level}}</p>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">Parking Slot
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Parking Slot
                                             Number : </p></div>
                                         <div class="col-sm-6"><p class="text-left-align">
                                             {{employeeDetails.parking_info.parking_slot_number}}</p></div>
@@ -61,7 +77,8 @@
                                 <span class="clearfix"></span>
                             </div>
                             <div style="text-align: end">
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">Free Slot</button>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">Free Slot
+                                </button>
                             </div>
                         </mat-card>
 
@@ -70,7 +87,61 @@
             </div>
         </div>
         <div class="row" *ngIf="!isOwner" style="padding-top: 10px;">
-            <div class="col-sm-8 col-sm-offset-2" *ngIf="isSlotsAvailable">
+            <div *ngIf="isOwnerSlotBookedByUser">
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <mat-card class="matcard">
+                            <h3><span>{{employeeDetails.employee_name}}</span>, Your Parking Details</h3>
+                            <div class="row">
+                                <div class="col-sm-6 col-sm-offset-3">
+                                    <div class="row">
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Parking Type
+                                            : </p></div>
+                                        <div class="col-sm-6"><p class="text-left-align">
+                                            {{ownerEmployeeDetails.parking_info.parking_type}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Parking Level
+                                            : </p></div>
+                                        <div class="col-sm-6"><p class="text-left-align">
+                                            {{ownerEmployeeDetails.parking_info.parking_level}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Parking Slot
+                                            Number : </p></div>
+                                        <div class="col-sm-6"><p class="text-left-align">
+                                            {{ownerEmployeeDetails.parking_info.parking_slot_number}}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Owner Name : </p></div>
+                                        <div class="col-sm-6"><p class="text-left-align">
+                                            {{ownerEmployeeDetails.employee_name}}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 text-right-align"><p class="text-right-align headings">
+                                            Owner Email : </p></div>
+                                        <div class="col-sm-6"><p class="text-left-align">
+                                            {{ownerEmployeeDetails.employee_mail_id}}</p></div>
+                                    </div>
+                                </div>
+                                <span class="clearfix"></span>
+                            </div>
+                            <div style="text-align: end">
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">Cancel Slot
+                                </button>
+                            </div>
+                        </mat-card>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2" *ngIf="isSlotsAvailable && !isOwnerSlotBookedByUser">
                 <mat-card class="matcard">
                     <div class="">
                         <h2>Available Slots</h2>
@@ -88,7 +159,9 @@
                                 <td>{{slot.slot_number}}</td>
                                 <td>{{slot.owner_email}}</td>
                                 <td>{{slot.owner_name}}</td>
-                                <td class="btn btn-success">Book Slot</td>
+                                <td class="btn btn-success" (click)="availableSelectedSlot(slot)" data-toggle="modal"
+                                    data-target="#bookSlotModal">Book Slot
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -96,8 +169,8 @@
 
                 </mat-card>
             </div>
-            <div class="col-sm-8 col-sm-offset-2" *ngIf="!isSlotsAvailable">
-                <mat-card>OOPs No Slots Are Available</mat-card>
+            <div class="col-sm-8 col-sm-offset-2" *ngIf="!isSlotsAvailable && !isOwnerSlotBookedByUser">
+                <mat-card class="matcard">OOPs No Slots Are Available</mat-card>
             </div>
 
         </div>
@@ -106,17 +179,33 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
-                </div>
                 <div class="modal-body">
-                    <p>This is a small modal.</p>
+                    <h4 *ngIf="isOwner">Are You sure You Would Like To Free Your Slot</h4>
+                    <h4 *ngIf="!isOwner">Are You sure You Would Like To Cancel Your Slot</h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="cancelSlot()">Yes
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="bookSlotModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>Are You sure You Would Like To Book Slot</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="bookSlot()">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearSelectedSlot()">
+                        Dismiss
+                    </button>
+
                 </div>
             </div>
         </div>
