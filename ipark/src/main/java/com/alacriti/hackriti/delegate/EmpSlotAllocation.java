@@ -134,7 +134,8 @@ public class EmpSlotAllocation implements BaseApiHandler{
 				}
 				empDetailResp.put(empDetail.getEmployeeId(), empParkingRespVO);
 			}			
-			employeeDelegate.postEmpSlotMapDetails(empSlotMapping);
+			int count =employeeDelegate.postEmpSlotMapDetails(empSlotMapping);
+			if(count > 0){
 			for (Map.Entry<String,String> entry : empSlotMapping.entrySet())
 			{
 				System.out.println("entry :"+entry);
@@ -143,19 +144,21 @@ public class EmpSlotAllocation implements BaseApiHandler{
 			for (Map.Entry<String, EmpParkingRespVO> entry : empDetailResp.entrySet())
 			{
 				System.out.println("response :"+entry.getKey()+" "+entry.getValue().getEmpId()+" "+entry.getValue().getEmpName()+" "+entry.getValue().getParkingNO()+" "+entry.getValue().getEmailId());
-				InputVO inputVO=new InputVO();
-				inputVO.setFromAddress("kusumavanicool@gmail.com");
-				inputVO.setToAddress(entry.getValue().getEmailId());
-				inputVO.setSubject("Parking Slot Allocation");
-				//inputVO.setHtmlBody("Hi "+entry.getValue().getEmpName()+", \n\n You have been assigned to parking slot no "+entry.getValue().getParkingNO());
-				inputVO.setHtmlBody("<h3>Hi "+entry.getValue().getEmpName()+",</h3>"+
-						"<h3>You have been assigned to parking slot no "+entry.getValue().getParkingNO()+".</h3>");
-				inputVO.setTextBody("Thanks,\n Alacriti Management.");
-				AmazonSESSample.sendEmail(inputVO);
-			}	
-			
-						
-		} catch (EncryptedDocumentException e) 
+				if(entry.getKey() != null)
+				{
+					InputVO inputVO=new InputVO();
+					inputVO.setFromAddress("kusumavanicool@gmail.com");
+					inputVO.setToAddress(entry.getValue().getEmailId());
+					inputVO.setSubject("Parking Slot Allocation");
+					//inputVO.setHtmlBody("Hi "+entry.getValue().getEmpName()+", \n\n You have been assigned to parking slot no "+entry.getValue().getParkingNO());
+					inputVO.setHtmlBody("<h3>Hi "+entry.getValue().getEmpName()+",</h3>"+
+							"<h3>You have been assigned to parking slot no "+entry.getValue().getParkingNO()+".</h3>");
+					inputVO.setTextBody("Thanks,\n Alacriti Management.");
+					AmazonSESSample.sendEmail(inputVO);
+				}				
+			}			
+		}
+		}catch (EncryptedDocumentException e) 
 		{
 			e.printStackTrace();
 		} catch (Exception e)

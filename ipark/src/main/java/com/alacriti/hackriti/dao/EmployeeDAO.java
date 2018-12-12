@@ -272,10 +272,11 @@ public class EmployeeDAO extends BaseDAO
 		return slotDetailsList;
 	}
 
-	public void postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException {
+	public int postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException {
 		logger.info("getEmployeeDetails start");
 		Connection con = getConnection();
 		PreparedStatement ps = null;
+		int count=0;
 		try {
 			StringBuilder sql = new StringBuilder(
 					"INSERT INTO employee_parking_tbl(emp_id,parking_slot_id,date_created) VALUES(");
@@ -297,7 +298,7 @@ public class EmployeeDAO extends BaseDAO
 				ps.setString(++i, entry.getValue());
 				ps.setDate(++i, getCurrentDate());
 			}
-			int count = ps.executeUpdate();
+			count = ps.executeUpdate();
 			logger.info(count + "values inserted");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -313,6 +314,7 @@ public class EmployeeDAO extends BaseDAO
 			}
 		}
 		logger.info("getEmployeeDetails end");
+		return count;
 	}
 
 	private static java.sql.Date getCurrentDate() {

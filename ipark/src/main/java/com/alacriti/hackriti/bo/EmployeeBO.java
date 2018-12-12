@@ -27,9 +27,10 @@ public class EmployeeBO {
 		return parkingSlotDetails;
 	}
 
-	public void postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException
+	public int postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException
 	{	
-		employeeDAO.postEmpSlotMapDetails(empSlotMapping);
+		int count =employeeDAO.postEmpSlotMapDetails(empSlotMapping);
+		return count;
 	}
 
 }

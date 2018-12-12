@@ -34,9 +34,10 @@ public class EmployeeDelegate
 		return parkingSlotList;
 	}
 	
-	public void postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException
+	public int postEmpSlotMapDetails(Map<String, String> empSlotMapping) throws BOException
 	{
-		empBO.postEmpSlotMapDetails(empSlotMapping);
+		int count = empBO.postEmpSlotMapDetails(empSlotMapping);
+		return count;
 	}
 	
 
