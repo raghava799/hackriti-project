@@ -31,8 +31,9 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 	@Override
 	public void handleRequest(RequestContext context) throws BOException, Exception {
 
-		getEventDetails(context);
-
+		if (context.getCalendarEvent() == null) {
+			getEventDetails(context);
+		}
 		if (!context.isError()) {
 
 			System.out.println("going to cancel calendar event ....");
@@ -172,6 +173,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 							System.out.println("**** found slot mail id ****");
 							return event.getId();
 						}
+
 					}
 				}
 			}

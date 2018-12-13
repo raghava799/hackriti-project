@@ -220,7 +220,7 @@ public class SlotDAO extends BaseDAO {
 				System.out.println("Got errors in creating calendar event, so rollback the connection...!");
 				conn.rollback();
 			}
-			
+
 			else if (recordsUpdated == 1 && !context.isError()) {
 				if (!conn.getAutoCommit()) {
 					System.out.println("commiting ....");
@@ -285,15 +285,14 @@ public class SlotDAO extends BaseDAO {
 
 			System.out.println("query" + sqlQuery);
 
-			
 			cancelCalendarEvent(context);
-			
+
 			if (context.isError()) {
 
 				System.out.println("Got errors in cancelling calendar event, so rollback the connection...!");
 				conn.rollback();
 			}
-			
+
 			int recordsUpdated = preparedStmt.executeUpdate();
 
 			if (recordsUpdated == 1) {
@@ -304,6 +303,81 @@ public class SlotDAO extends BaseDAO {
 			}
 
 			System.out.println("number of records updated/inserted " + recordsUpdated);
+
+		}
+
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+
+			try {
+				if (conn != null) {
+					preparedStmt.close();
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+
+		return slot;
+	}
+
+	public Slot denyAndRebookSlot(Slot slot, RequestContext context) throws SQLException, BOException, ParseException {
+
+		Connection conn = getConnection();
+		conn.setAutoCommit(false);
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		Date parsed = format.parse(slot.getDate());
+		java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+
+		System.out.println("sqlDate : " + sqlDate.toString());
+		System.out.println("slot.getEmpId() : " + slot.getEmpId());
+
+		PreparedStatement preparedStmt = null;
+
+		try {
+			String sqlQuery = SqlQueryHelper.getDeletSlotQuery();
+
+			preparedStmt = conn.prepareStatement(sqlQuery);
+
+			preparedStmt.setDate(3, sqlDate);
+			preparedStmt.setString(2, slot.getEmpId());
+			preparedStmt.setString(1, slot.getSlotNumber());
+
+			System.out.println("preparedStmt.toString()" + preparedStmt.toString());
+
+			System.out.println("query" + sqlQuery);
+
+			pushEventToCalendar(context);
+
+			if (context.isError()) {
+
+				System.out.println("Got errors in creating calendar event, so rollback the connection...!");
+				conn.rollback();
+			} else {
+				cancelCalendarEvent(context);
+			}
+			if (context.isError()) {
+
+				System.out.println("Got errors in cancelling calendar event, so rollback the connection...!");
+				conn.rollback();
+			}
+
+			int recordsDeleted = preparedStmt.executeUpdate();
+
+			if (recordsDeleted == 1) {
+				if (!conn.getAutoCommit()) {
+					System.out.println("commiting ....");
+					conn.commit();
+				}
+			}
+
+			System.out.println("number of records deleted " + recordsDeleted);
 
 		}
 
@@ -341,7 +415,7 @@ public class SlotDAO extends BaseDAO {
 		}
 
 	}
-	
+
 	private void cancelCalendarEvent(RequestContext context) {
 
 		CancelCalendarEventApiHandler handler = new CancelCalendarEventApiHandler();

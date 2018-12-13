@@ -53,6 +53,7 @@ public class ResourceFactory {
 		responseGenerators.put(StringConstants.ApiConstants.BOOK_SLOT, new SlotResponseGenerator());
 		responseGenerators.put(StringConstants.ApiConstants.CANCEL_OWNER_SLOT, new SlotResponseGenerator());
 		responseGenerators.put(StringConstants.ApiConstants.CANCEL_USER_SLOT, new SlotResponseGenerator());
+		responseGenerators.put(StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT, new SlotResponseGenerator());
 		responseGenerators.put(StringConstants.ApiConstants.EMP_SLOT_ALLOCATION, new EmpSlotAllocationResp());
 
 	}
@@ -71,6 +72,8 @@ public class ResourceFactory {
 //		apiHandlers.put(StringConstants.ApiConstants.PUSH_CALENDAR_EVENT, new CreateCalendarEventApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.EMP_SLOT_ALLOCATION, new EmpSlotAllocation());
 		apiHandlers.put(StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT, new CancelCalendarEventApiHandler());
+		apiHandlers.put(StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT, new DenyAndRebookApiHandler());
+
 	}
 
 }

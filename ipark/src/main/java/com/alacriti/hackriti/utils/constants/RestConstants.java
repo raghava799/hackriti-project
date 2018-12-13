@@ -24,6 +24,7 @@ public class RestConstants {
 		public static final String BOOK_SLOT = "/book/slot";
 		public static final String CANCEL_OWNER_SLOT = "/cancel/owner/slot";
 		public static final String CANCEL_USER_SLOT = "/cancel/user/slot";
+		public static final String DENY_SLOT = "/deny/slot";
 
 
 

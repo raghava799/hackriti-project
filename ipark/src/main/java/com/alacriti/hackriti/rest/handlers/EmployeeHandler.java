@@ -155,6 +155,24 @@ public class EmployeeHandler {
 
 		return response;
 	}
+	
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/deny/slot")
+	public Response denyAndRebookSlot(ManageSlotRequestForm form) {
+
+		logger.info("got date in request :" + form.getDate());
+
+		RequestContext requestContext = new RequestContext();
+		requestContext.setApiName(StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT);
+
+		Response response = BaseRequestHandler.process(requestContext, form,
+				StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT);
+
+		return response;
+	}
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)

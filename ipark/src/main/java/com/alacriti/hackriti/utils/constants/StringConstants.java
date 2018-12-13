@@ -34,6 +34,8 @@ public class StringConstants {
 		public static final String CANCEL_USER_SLOT = "CANCEL_USER_SLOT";
 		public static final String PUSH_CALENDAR_EVENT = "PUSH_CALENDAR_EVENT";
 		public static final String CANCEL_CALENDAR_EVENT = "CANCEL_CALENDAR_EVENT";
+		public static final String DENY_AND_REBOOK_SLOT = "DEBY_AND_REBOOK_SLOT";
+
 
 		public static final String EMP_SLOT_ALLOCATION = "EMP_SLOT_ALLOCATION";
 		
