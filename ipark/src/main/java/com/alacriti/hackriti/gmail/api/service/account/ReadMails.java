@@ -15,12 +15,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alacriti.hackriti.calendar.api.CancelCalendarEventApiHandler;
+import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.dao.BaseDAO;
 import com.alacriti.hackriti.dao.EmployeeDAO;
 import com.alacriti.hackriti.exceptions.BOException;
+import com.alacriti.hackriti.factory.ResourceFactory;
+import com.alacriti.hackriti.logging.utils.ResourceInitServlet;
 import com.alacriti.hackriti.utils.DateConverterUtils;
+import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.vo.EmployeeParkingVO;
-import com.alacriti.hackriti.vo.EventVO;
+
+import com.alacriti.hackriti.vo.Slot;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -41,7 +47,7 @@ public class ReadMails {
 	private static final String SERVICE_ACCOUNT = "raghavaserviceaccount@elm-system.iam.gserviceaccount.com";
 	private static final String SERVICE_ACCOUNT_USER = "atchyutakiran@alacriti.co.in";
 	private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_READONLY);
-	private static final String CREDENTIALS_P12_FILE_NAME = "/src/main/resources/credentials.p12";
+	private static final String CREDENTIALS_P12_FILE = ResourceInitServlet.CREDENTIALS_FILE_PATH;
 
 	private static long currentEpochTime;
 	private static long beforeEpochTime;
@@ -104,20 +110,14 @@ public class ReadMails {
 		datePattern.put("[0-9]{1,2}[a-z]{2} [a-zA-Z]{3}", "dd MMM");
 	}
 
-	public static void main(String[] args)
-			throws IOException, GeneralSecurityException, BOException, ParseException, SQLException {
-
-
-		String absoluteFilePath = "";
-
-		String workingDirectory = System.getProperty("user.dir");
-
-		absoluteFilePath = workingDirectory + File.separator + CREDENTIALS_P12_FILE_NAME;
+	public void freeParkingSlot()
+			throws IOException, GeneralSecurityException,  ParseException {
+		System.out.println("Entered Freeing Parking slot");
 
 		final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 
 		Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-				getCredentials(HTTP_TRANSPORT, absoluteFilePath)).setApplicationName(APPLICATION_NAME).build();
+				getCredentials(HTTP_TRANSPORT, CREDENTIALS_P12_FILE)).setApplicationName(APPLICATION_NAME).build();
 
 		List<Message> messages = getMessagesWithLabels(service, SERVICE_ACCOUNT_USER, Arrays.asList(LABEL_INBOX));
 
@@ -129,7 +129,7 @@ public class ReadMails {
 
 				if (message != null && message.getPayload() != null && message.getPayload().getHeaders().size() > 0) {
 					System.out.println("snippet :" + message.getSnippet());
-					System.out.println(message.decodeRaw());
+					
 					String sentFrom = "";
 					String messageSubject = "";
 					String sentOn = "";
@@ -137,7 +137,6 @@ public class ReadMails {
 					boolean isLeaveMail = false;
 					for (int i = 0; i < message.getPayload().getHeaders().size(); i++) {
 
-						System.out.println();
 						if ("From".equalsIgnoreCase(message.getPayload().getHeaders().get(i).getName())) {
 							sentFrom = message.getPayload().getHeaders().get(i).getValue();
 							System.out.println(sentFrom);
@@ -162,11 +161,10 @@ public class ReadMails {
 
 						EmployeeDAO dao = new EmployeeDAO();
 						Connection conn = null;
+
 						try {
 							conn = BaseDAO.getConnection();
-							// DBInitializer dbInit = new DBInitializer();
-							// Connection conn = dbInit.initializeDataSource();
-							// ParkingDAO dao = new ParkingDAO();
+
 							dao.setConnection(conn);
 							EmployeeParkingVO vo = dao.getEmployeeParkingSlotDetails(sentFrom);
 							if (vo == null) {
@@ -176,30 +174,50 @@ public class ReadMails {
 										sentFrom + " is having parking slot " + vo.getEmpParkingSlotId() + "\n");
 								ArrayList<Date> leaveList = extractLeaveDates(mailContent);
 								System.out.println("Leave Size: "+leaveList.size());
-								int updatedCount = dao.insertLeaveDates(vo, leaveList, messageSubject);
+								int updatedCount = 0;
+								if (dao.isNewMail(vo, leaveList, messageSubject))
+									updatedCount = dao.insertLeaveDates(vo, leaveList, messageSubject);
+
 								if (updatedCount>0)
 								{
 									int leaveCount = (int) ((leaveList.get(1).getTime() - leaveList.get(0).getTime())/ (1000*60*60*24)) + 1;
 									System.out.println(leaveCount);
-									dao.insertLeaveDataForParking(vo, leaveList.get(0), leaveCount);
+									dao.insertLeaveDataForParking(vo, leaveList, leaveCount);
+									
 								}
-								EventVO eventVO = new EventVO();
+
 								
 							}
 						}
 						catch(Exception e)
 						{
+							e.printStackTrace();
+							System.out.println(e.getMessage());
 							if (conn!=null)
 							{
 								System.out.println("rollback connection");
-								conn.rollback();
+								try {
+									conn.rollback();
+									conn.close();
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
 							}
 						}
 						finally{
 							if (conn!=null)
 							{
 								System.out.println("Committing connection");
-								conn.commit();
+								try {
+									conn.commit();
+									conn.close();
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+
 							}
 						}
 					}
@@ -207,6 +225,19 @@ public class ReadMails {
 			}
 		}
 
+	}
+
+	public void cancelCalanderEvent(EmployeeParkingVO vo, Date date) throws BOException, Exception {
+		// CANCEL MY SLOT
+		RequestContext context = new RequestContext();
+		context.setApiName(StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT);
+		Slot slot = new Slot();
+		slot.setEmpId(vo.getEmpId()+"");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		slot.setDate(format.format(date));
+		context.setSlot(slot);
+		CancelCalendarEventApiHandler handler = (CancelCalendarEventApiHandler) ResourceFactory.getApiHandlers().get(StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT);
+		handler.handleRequest(context);
 	}
 
 	private static ArrayList<Date> extractLeaveDates(String mailContent) throws ParseException {

@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
 
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.exceptions.BOException;
+import com.alacriti.hackriti.gmail.api.service.account.ReadMails;
 import com.alacriti.hackriti.utils.SqlQueryHelper;
 import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.utils.constants.Excelconstants;
@@ -330,11 +332,7 @@ public class EmployeeDAO extends BaseDAO
         PreparedStatement ps = null;
         try
         {
-        	System.out.println("Date 1 : "+new java.sql.Date(leaveList.get(0).getTime()));
-        	System.out.println("Date 2 : "+new java.sql.Date(leaveList.get(1).getTime()));
-        	
-        	System.out.println("Utis Date: "+leaveList.get(0).getTime());
-        	System.out.println("Utis Date: "+leaveList.get(1).getTime());
+
 //        	Date date = leaveList.get(0).toLocaleString();
             ps = connection.prepareStatement(command);
             ps.setInt(1, vo.getEmpId());
@@ -357,9 +355,54 @@ public class EmployeeDAO extends BaseDAO
             close(ps);
         }
     }
+	
+	public boolean isNewMail(EmployeeParkingVO vo, ArrayList<Date> leaveList, String messageSubject) {
+        
+		System.out.println("isNewMail");
+		String command = SqlQueryHelper.getEmployeeLeaveData();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean isNewMail = true;
+        try
+        {
+            ps = connection.prepareStatement(command);
+            ps.setInt(1, vo.getEmpId());
+            ps.setDate(2, new java.sql.Date(leaveList.get(0).getTime()));
+            ps.setDate(3, new java.sql.Date(leaveList.get(1).getTime()));
+            ps.setString(4, messageSubject);
+            
+            rs=ps.executeQuery();
+            if (rs!=null && rs.next())
+            {
+            	int count = rs.getInt(1);
+            	System.out.println("employee leave mail count: "+count);
+            	if (count > 0)
+            	{
+            		logger.info("Existing Mail :" );
+            		isNewMail = false;
+            	}
+            }
 
-	public void insertLeaveDataForParking(EmployeeParkingVO vo, java.util.Date date, int leaveCount) {
+            
+            return isNewMail;
+            
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	System.out.println("Exception Caught while checking if the existing leave mail : "+e.getMessage());
+        	return isNewMail;
+        }
+        finally
+        {
+            close(ps);
+            close(rs);
+        }
+    }
+
+	public void insertLeaveDataForParking(EmployeeParkingVO vo, ArrayList<Date> leaveList, int leaveCount) {
 		String command = SqlQueryHelper.insertLeaveDataForParkingFromMail();
+		java.util.Date date = leaveList.get(0);
         PreparedStatement ps = null;
         PreparedStatement parkCheckingPreparedStatement = null;
         ResultSet rs = null;
@@ -387,6 +430,8 @@ public class EmployeeDAO extends BaseDAO
             	}
             	if (count == 0)
             	{
+					ReadMails mail =  new ReadMails();
+					
             		ps.setInt(1, vo.getParkingSlotNo());
             		ps.setInt(2, vo.getEmpId());
             		ps.setDate(3, new java.sql.Date(cal.getTime().getTime()));
@@ -394,6 +439,15 @@ public class EmployeeDAO extends BaseDAO
             		int updatedCount = ps.executeUpdate();
             		cal.add(Calendar.DATE, 1);
             		System.out.println("dates inserted count: "+updatedCount);
+            		try
+            		{
+            			mail.cancelCalanderEvent(vo, cal.getTime());
+            		}
+            		catch(Exception e)
+            		{
+            			logger.debug("Exception caught while cancelling event: "+e.getMessage());
+            		}
+            		
             	}
             	else
             	{

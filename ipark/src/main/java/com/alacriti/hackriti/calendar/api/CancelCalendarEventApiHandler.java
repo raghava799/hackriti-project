@@ -45,7 +45,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 	public void getEventDetails(RequestContext context) throws BOException {
 
 		CalendarDAO dao = new CalendarDAO();
-
+		System.out.println("Cancel Calender Handler. getEventDetails()");
 		try {
 
 			EventVO event = null;
@@ -53,7 +53,8 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 				event = dao.getEventDetails(context);
 			}
 
-			if (StringConstants.ApiConstants.CANCEL_OWNER_SLOT.equals(context.getApiName())) {
+			if (StringConstants.ApiConstants.CANCEL_OWNER_SLOT.equals(context.getApiName())
+					|| StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT.equals(context.getApiName())) {
 				event = dao.getEventDetailsToCancelOwnerEvent(context);
 			}
 			if (event != null) {
@@ -71,12 +72,12 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 
 	}
 
-	public RequestContext cancelCalendarEvent(RequestContext context, EventVO event)
-			throws GeneralSecurityException, IOException {
-		
+	public RequestContext cancelCalendarEvent(RequestContext context, EventVO event) {
+
 		String mailId = null;
 
-		if (StringConstants.ApiConstants.CANCEL_OWNER_SLOT.equals(context.getApiName())) {
+		if (StringConstants.ApiConstants.CANCEL_OWNER_SLOT.equals(context.getApiName())
+				|| StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT.equals(context.getApiName())) {
 			mailId = event.getOwnerMailId();
 		}
 
@@ -88,12 +89,17 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 
 		String absoluteFilePath = workingDirectory + File.separator + CalendarUtils.CREDENTIALS_P12_FILE_NAME;
 
-
 		if (mailId != null && event.getSlotMailId() != null) {
 
-			Calendar service = CalendarUtils.getCalendarService(mailId, absoluteFilePath);
+			Calendar service;
+			try {
+				service = CalendarUtils.getCalendarService(mailId, absoluteFilePath);
+				cancelEvent(service, context, event);
 
-			cancelEvent(service, context, event);
+			} catch (GeneralSecurityException | IOException e) {
+				System.out.println("Exception occured in cancelling calendar event");
+				e.printStackTrace();
+			}
 
 		} else {
 			context.setError(true);
@@ -104,13 +110,12 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 		return context;
 	}
 
-	
-
 	private void cancelEvent(Calendar service, RequestContext context, EventVO eventVo) throws IOException {
 
-		String eventId = getEventIdToCancel(service, eventVo.getFromDate(), eventVo);
+		String eventId = getEventIdToCancel(service, eventVo.getFromDate(), eventVo.getToDate(), eventVo);
 
 		if (eventId == null) {
+			System.out.println("event id is null not going to cancel  ....");
 			context.setError(true);
 			Validations.addErrorToContext("event_id_not_found", "event not found to cancel", context);
 		} else {
@@ -119,34 +124,54 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 		}
 	}
 
-	private String getEventIdToCancel(Calendar service, String date, EventVO eventVO) throws IOException {
+	private String getEventIdToCancel(Calendar service, String fromDate, String toDate, EventVO eventVO)
+			throws IOException {
 
 		String eventIdToCancel = null;
+		System.out.println("slot mail id :" + eventVO.getSlotMailId());
 
-		Date javaDate = CalendarUtils.getJavaDate(date);
+		Date javaFromDate = CalendarUtils.getJavaDate(fromDate);
+		Date javaToDate = null;
+		if (toDate != null) {
+			javaToDate = CalendarUtils.getJavaDate(toDate);
+		}
+		System.out.println("from Date:" + fromDate);
+		System.out.println("to Date:" + toDate);
 
-		Events events = service.events().list(eventVO.getOwnerMailId()).setMaxResults(100)
-				.setTimeMin(new DateTime(javaDate)).setOrderBy("startTime").setSingleEvents(true).execute();
+		System.out.println("javaFrom Date:" + javaFromDate);
+		System.out.println("javato Date:" + javaToDate);
 
-		List<Event> items = events.getItems();
+		Events events;
+		if (javaToDate != null) {
+			events = service.events().list(eventVO.getOwnerMailId()).setMaxResults(100)
+					.setTimeMin(new DateTime(javaFromDate)).setTimeMax(new DateTime(javaToDate)).setOrderBy("startTime")
+					.setSingleEvents(true).execute();
+		} else {
+			events = service.events().list(eventVO.getOwnerMailId()).setMaxResults(100)
+					.setTimeMin(new DateTime(javaFromDate)).setOrderBy("startTime").setSingleEvents(true).execute();
+		}
+
+		List<Event> items = events.getItems(); // TODO need to handle NPE
 
 		if (items.isEmpty()) {
 			System.out.println("No upcoming events found.");
 		} else {
 			System.out.println("Upcoming events");
 			for (Event event : items) {
-				DateTime start = event.getStart().getDateTime();
-				if (start == null) {
-					start = event.getStart().getDate();
-				}
-				System.out.printf("Event Summury : ", event.getSummary(), start);
+				// DateTime start = event.getStart().getDateTime();
+				// if (start == null) {
+				// start = event.getStart().getDate();
+				// }
+				System.out.println("Event Summury : " + event.getSummary());
 				System.out.println("organizer :" + event.getOrganizer().getEmail());
-				List<EventAttendee> lists = event.getAttendees();
-				for (EventAttendee attendee : lists) {
-					if (attendee.getEmail().equals(eventVO.getSlotMailId())) {
-						
-						System.out.println("**** found slot mail id ****");
-						return event.getId();
+				List<EventAttendee> list = event.getAttendees();
+				if (list != null && list.size() > 0) {
+
+					for (EventAttendee attendee : list) {
+						if (eventVO.getSlotMailId().equals(attendee.getEmail())) {
+							System.out.println("**** found slot mail id ****");
+							return event.getId();
+						}
 					}
 				}
 			}

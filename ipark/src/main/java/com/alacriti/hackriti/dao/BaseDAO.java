@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import com.alacriti.hackriti.exceptions.BOException;
+import com.alacriti.hackriti.logging.utils.ResourceInitServlet;
 
 public class BaseDAO {
 	
@@ -35,12 +36,8 @@ public class BaseDAO {
 //		return con;
 //	}
 	
-	private static final String RDS_INSTANCE_HOSTNAME = "hacriti.cb8bmzqnvpfv.us-east-2.rds.amazonaws.com";
-    private static final int RDS_INSTANCE_PORT = 3306;
-    private static final String DB_NAME = "user";
-    private static final String DB_USER = "AWSRDS";
-    private static final String DB_PWD = "Hacriti123";
-    private static final String JDBC_URL = "jdbc:mysql://" + RDS_INSTANCE_HOSTNAME + ":" + RDS_INSTANCE_PORT+"/"+DB_NAME;
+
+    private static final String JDBC_URL = "jdbc:mysql://" + ResourceInitServlet.HOST_NAME + ":" + ResourceInitServlet.PORT+"/"+ResourceInitServlet.DB_NAME;
     
     /** The connection used by this DAO */
     protected static Connection connection;
@@ -53,7 +50,7 @@ public class BaseDAO {
 	public static Connection getConnection() throws BOException {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PWD);
+			connection=DriverManager.getConnection(JDBC_URL, ResourceInitServlet.LOGIN_USER, ResourceInitServlet.LOGIN_PWD);
 			connection.setAutoCommit(false);
 			System.out.println("Connection established");
 		} catch (ClassNotFoundException e) {

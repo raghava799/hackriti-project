@@ -43,7 +43,15 @@
 		<servlet-class>com.alacriti.hackriti.logging.utils.ResourceInitServlet</servlet-class>
 		<init-param>
 			<param-name>log4j-properties-location</param-name>
-			<param-value>WEB-INF/log4j.properties</param-value>
+			<param-value>/opt/hackriti/conf/log4j.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>db-conf</param-name>
+			<param-value>/opt/hackriti/conf/db-config.properties</param-value>
+		</init-param>
+		<init-param>
+			<param-name>secure_key</param-name>
+			<param-value>/opt/hackriti/conf/credentials.p12</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

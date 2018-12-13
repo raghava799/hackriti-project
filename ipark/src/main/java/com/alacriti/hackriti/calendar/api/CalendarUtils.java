@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.alacriti.hackriti.factory.ResourceFactory;
+import com.alacriti.hackriti.logging.utils.ResourceInitServlet;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -42,7 +43,7 @@ public class CalendarUtils {
 
 		return new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT).setJsonFactory(CalendarUtils.JSON_FACTORY)
 				.setServiceAccountId(CalendarUtils.SERVICE_ACCOUNT)
-				.setServiceAccountPrivateKeyFromP12File(new File(absoluteFilePath))
+				.setServiceAccountPrivateKeyFromP12File(new File(ResourceInitServlet.CREDENTIALS_FILE_PATH))
 				.setServiceAccountScopes(CalendarUtils.SCOPES).setServiceAccountUser(sender).build();
 
 	}
@@ -66,6 +67,10 @@ public class CalendarUtils {
 		try {
 			date = format.parse(eventDate);
 		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 		return date;

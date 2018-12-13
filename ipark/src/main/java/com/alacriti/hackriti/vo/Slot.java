@@ -9,8 +9,15 @@ public class Slot {
 	private String parkingLevel;
 	private String parkingType;
 	private String parkingSlotId;
-	
+	private String toDate;
 
+	
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	private Employee employee; // owner
 	
 	public String getEmpId() {

@@ -110,5 +110,9 @@ public class SqlQueryHelper {
 		return "SELECT COUNT(*) FROM parking_slot_mgmt_tbl WHERE parking_slot_no = ? AND owner_id = ? AND date_of_availability = ?";
 	}
 
+	public static String getEmployeeLeaveData() 
+	{
+		return "SELECT COUNT(*) FROM employee_leave_tbl WHERE emp_id = ? AND from_date = ? AND to_date = ? AND leave_desc = ?";
+	}
 
 }

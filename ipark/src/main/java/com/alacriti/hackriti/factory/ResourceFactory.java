@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alacriti.hackriti.bo.*;
+import com.alacriti.hackriti.calendar.api.CancelCalendarEventApiHandler;
 import com.alacriti.hackriti.calendar.api.CreateCalendarEventApiHandler;
 
 import org.apache.log4j.Logger;
@@ -24,8 +25,6 @@ public class ResourceFactory {
 
 	public static Map<String, Object> responseGenerators = new HashMap<String, Object>();
 
-	private static Map<String, String> resourceEMails = new HashMap<String, String>();
-
 	public static Map<String, Object> getApiHandlers() {
 		return apiHandlers;
 	}
@@ -34,9 +33,6 @@ public class ResourceFactory {
 		return responseGenerators;
 	}
 
-	public static Map<String, String> getResourceEMails() {
-		return resourceEMails;
-	}
 
 	public ResourceFactory() {
 
@@ -44,24 +40,7 @@ public class ResourceFactory {
 		logger.info("************** Initializing ResourceFactory ... ****************");
 		loadApiHandlers();
 		loadResponseGenerators();
-		loadResourceEmails();
 	};
-
-	private void loadResourceEmails() {
-		// loading resource mailId's with resourceId as key
-
-		resourceEMails.put("1", "alacriti.co.in_3937343532363838393230@resource.calendar.google.com");
-		resourceEMails.put("2", "alacriti.co.in_3937353734323231313731@resource.calendar.google.com");
-		resourceEMails.put("3", "alacriti.co.in_3832393937383932333535@resource.calendar.google.com");
-		resourceEMails.put("4", "alacriti.co.in_35363335323035363730@resource.calendar.google.com");
-		resourceEMails.put("6", "alacriti.co.in_3137383734373933383632@resource.calendar.google.com");
-		resourceEMails.put("7", "");
-		resourceEMails.put("8", "");
-		resourceEMails.put("9", "");
-		resourceEMails.put("10", "");
-		resourceEMails.put("11", "");
-		resourceEMails.put("12", "");
-	}
 
 	private void loadResponseGenerators() {
 
@@ -91,7 +70,7 @@ public class ResourceFactory {
 		apiHandlers.put(StringConstants.ApiConstants.CANCEL_USER_SLOT, new CancelSlotApiHandler());
 //		apiHandlers.put(StringConstants.ApiConstants.PUSH_CALENDAR_EVENT, new CreateCalendarEventApiHandler());
 		apiHandlers.put(StringConstants.ApiConstants.EMP_SLOT_ALLOCATION, new EmpSlotAllocation());
-
+		apiHandlers.put(StringConstants.ApiConstants.CANCEL_CALENDAR_EVENT, new CancelCalendarEventApiHandler());
 	}
 
 }

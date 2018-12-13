@@ -95,7 +95,7 @@ public class CalendarDAO extends BaseDAO {
 				event.setParkingType(rs.getString("parking_type"));
 				event.setSlotMailId(rs.getString("slot_mail_id"));
 				event.setSlotNumber(rs.getString("parking_slot_no"));
-				event.setToDate(""); // need to get from request
+				event.setToDate(context.getSlot().getToDate()); 
 
 			} else {
 				context.setError(true);
@@ -104,8 +104,7 @@ public class CalendarDAO extends BaseDAO {
 						context);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception caught while getting employee details : "+e.getMessage());
 			throw e;
 		} finally {
 

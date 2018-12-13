@@ -12,6 +12,7 @@ import com.alacriti.hackriti.api.handlers.BaseApiHandler;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.dao.CalendarDAO;
 import com.alacriti.hackriti.exceptions.BOException;
+import com.alacriti.hackriti.logging.utils.ResourceInitServlet;
 import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.vo.EventVO;
 import com.google.api.client.auth.oauth2.Credential;
@@ -72,8 +73,7 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		String workingDirectory = System.getProperty("user.dir");
 
 		String absoluteFilePath = workingDirectory + File.separator + CalendarUtils.CREDENTIALS_P12_FILE_NAME;
-
-
+		
 		if (event.getUserMailId() != null && event.getOwnerMailId() != null && event.getSlotMailId() != null) {
 
 			Calendar service = CalendarUtils.getCalendarService(event.getUserMailId(), absoluteFilePath);
