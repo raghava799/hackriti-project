@@ -146,6 +146,8 @@ export class DashboardComponent implements OnInit {
             if (res['slots']) {
                 this.modifyAvailableSlotsData(res['slots']);
                 this.isSlotsAvailable = true;
+            } else {
+                this.isSlotsAvailable = false;
             }
             this.isloading = false;
         }).catch(error => {
@@ -188,6 +190,7 @@ export class DashboardComponent implements OnInit {
     }
 
     getUserSlotDetails() {
+        this.availableSlots = [];
         this.isOwnerSlotBookedByUser = false;
         const employeeDetails = {
             date: this.selectedDate,

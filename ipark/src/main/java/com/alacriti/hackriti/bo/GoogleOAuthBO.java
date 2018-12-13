@@ -1,6 +1,7 @@
 package com.alacriti.hackriti.bo;
 
 
+import com.alacriti.hackriti.resource.handlers.GoogleAuthorizationCodeTokenV4Request;
 import com.alacriti.hackriti.utils.constants.EnvVarConfig;
 import com.alacriti.hackriti.vo.UserTokenData;
 import com.google.api.client.auth.oauth2.*;
@@ -73,6 +74,7 @@ public class GoogleOAuthBO {
 			userTokenData.setEmailId(email);
 			userTokenData.setClientKey(pictureUrl);
 			userTokenData.setRole(familyName);
+			userTokenData.setPictureUrl(pictureUrl	);
 		} else {
 			System.out.println("Invalid ID token.");
 		}
@@ -89,8 +91,7 @@ public class GoogleOAuthBO {
 			System.out.println("Client Secret : " + EnvVarConfig.getOauthClientSecret());
 			System.out.println("redirect uri: " + EnvVarConfig.getOauthRedirectUri());
 			GoogleTokenResponse response =
-					new GoogleAuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(),
-//							EnvVarConfig.getOauthTokenServerEncodedUrl(),
+					new GoogleAuthorizationCodeTokenV4Request(new NetHttpTransport(), new JacksonFactory(),
 							EnvVarConfig.getOauthClientId(),
 							EnvVarConfig.getOauthClientSecret(),
 							code, EnvVarConfig.getOauthRedirectUri())

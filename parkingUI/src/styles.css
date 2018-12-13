@@ -18,8 +18,8 @@
 body {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
-    color: #333;
-    background: #fff;
+
+    background: #f4f5f9;
 }
 
 .login-form {
@@ -224,7 +224,12 @@ label {
 }
 #header-right {
     float: right;
-    padding-right: 15px;
+    /* padding-right: 28px; */
+    color: white;
+    cursor: pointer;
+    padding: 16px;
+    font-weight: 600;
+    font-size: 17px;
 }
 .prod-title {
     float: left;
@@ -456,7 +461,7 @@ body {
     padding-top: 20px;
 }
 .matcard {
-    background: aliceblue;
+    background-color: white;
 }
 .text-left-align {
     text-align: left;
@@ -470,4 +475,9 @@ body {
 }
 .modal {
     top: 35%;
+}
+.header-class {
+    border-bottom: 1px solid #ececec;
+    padding-bottom: 10px;
+    text-align: center;
 }

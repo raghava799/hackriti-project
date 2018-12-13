@@ -1,98 +1,48 @@
 <div fxLayout="row"
      fxLayout.xs="column"
-     fxFlexFill>
+     fxFlexFill class="login">
 
-  <div fxFlex="30">
+    <div fxFlex="30">
 
-  </div>
+    </div>
 
-  <div fxFlex="40" class="login-card-container">
-    <mat-progress-bar mode="query" *ngIf="loading"></mat-progress-bar>
-    <mat-card class="login-card">
-      <mat-card-header class="no-margin">
+    <div fxFlex="40" class="login-card-container">
+        <mat-progress-bar mode="query" *ngIf="loading"></mat-progress-bar>
+        <mat-card class="">
 
-        <mat-card-title><h2><span style="
-    color: brown;
-    /* font-size: 45px; */
+
+            <div class="col-sm-12 login-card"><h2 class="text-center"><span style="
+    color: #fff;
+     font-size: 53px;
 ">I</span><span style="
-    color: darkgreen;
-    font-size: 38px;
-">Park</span></h2></mat-card-title>
-<!--
-        <mat-card-subtitle>Hackriti</mat-card-subtitle>
--->
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="!isLoggedIn">
-          <div class="signBlock">
-            <h2>You Are Not Logged In !!!</h2>
-            <br>
+    color: #fff;
+    font-size: 65px;
+">Park</span></h2>
+            </div>
 
-            <mat-toolbar class="gmail-btn"   *ngIf="!code">
-              <img style="width: 40px; height: 40px; margin: 10px;"
-                   src="assets/images/google_symbol.jpg">
-<!--
-              <div class="g-signin2"></div>
--->
-              <a  [href]="googleUrl" >Sign In With Google</a>
-            </mat-toolbar>
+            <mat-card-content>
+                <div *ngIf="!isLoggedIn">
+                    <div *ngIf="!code" class="text-center">
+                        <button mat-raised-button style="margin-top: 20px;">
+                            <img style="width: 40px; height: 40px; margin: 10px;"
+                                 src="assets/images/google_symbol.jpg">
+                            <a [href]="googleUrl">Sign In With Google</a>
+                        </button>
+                        <p class="text-center col-offset-8" *ngIf="code">
+                            <i class="fa fa-refresh fa-spin" style="font-size:24px"></i> Please Wait...</p>
+                    </div>
+                </div>
 
-            <p class="text-center col-offset-8" *ngIf="code">
-              <i class="fa fa-refresh fa-spin" style="font-size:24px"></i> Please Wait...</p>
-          </div>
-        </div>
+                <div *ngIf="isLoggedIn" class="text-center" >
+                    <button mat-raised-button color="accent" style="margin-top: 25px" (click)="goToSite()">Go to Dashbord</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
 
-        <div *ngIf="isLoggedIn">
-          <h2>Hii {{getUserName()}}</h2>
-          <br>
-          <table>
-            <tr *ngIf="admin?.emailId">
-              <td>email id :</td>
-              <td>{{admin.emailId}}</td>
-            </tr>
-            <tr *ngIf="admin.role">
-              <td>role :</td>
-              <td>{{admin.role}}</td>
-            </tr>
-            <tr *ngIf="admin.clientKey">
-              <td>client key :</td>
-              <td>{{admin.clientKey}}</td>
-            </tr>
-          </table>
-          <br>
-          <button mat-raised-button color="primary" (click)="goToSite()">Go to Dashbord</button>
-          <!--<button class="btn btn-info" (click)="goToSite()">Go to Dashbord</button>-->
-        </div>
-      </mat-card-content>
-    </mat-card>
+    </div>
 
-  </div>
+    <div fxFlex="30">
 
-  <div fxFlex="30">
-
-  </div>
+    </div>
 
 </div>
-
-
-<!--        <div>
-          <qr-code [value]="'this is my qr code data'"  [size]="150"></qr-code>
-
-
-          {
-  "mfaKey": {
-    "id": 2,
-    "googleId": "109496070412299594252",
-    "mfaKey": "TTFGTQGSMSONIYI7",
-    "createdON": 1507098777000
-  },
-  "otpAuthURL": "https://chart.googleapis.com/chart?chs=200x200&chld=M%7C0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2FAlacriti.com%3Aadmin%40alacriti.com%3Fsecret%3DTTFGTQGSMSONIYI7%26issuer%3DAlacriti.com"
-}
-
-{
-  "userName": "109496070412299594252",
-  "emailId": "rahulkumar.kumawat@alacriti.com",
-  "role": "admin",
-  "mfaVerified": true
-}
-        </div>-->

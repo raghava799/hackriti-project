@@ -6,6 +6,7 @@ public class UserTokenData {
     private String clientKey;
     private String emailId;
     private String role;
+    private String pictureUrl;
 
     public UserTokenData() {
     }
@@ -54,6 +55,14 @@ public class UserTokenData {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
 }

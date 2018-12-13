@@ -18,6 +18,7 @@ public class JWThandler {
     public static final String CLAIM_CLIENT_KEY = "client_key";
     public static final String CLAIM_EMAIL = "email";
     public static final String CLAIM_ROLE = "role";
+    public static final String CLAIM_PICTURE_URL = "picture_url";
     public static final String AUTH_HEADER_PREFIX = "Basic ";
 
 
@@ -35,6 +36,7 @@ public class JWThandler {
                     .withClaim(CLAIM_CLIENT_KEY,user.getClientKey())
                     .withClaim(CLAIM_EMAIL,user.getEmailId())
                     .withClaim(CLAIM_ROLE,user.getRole())
+                    .withClaim(CLAIM_PICTURE_URL,user.getPictureUrl())
                     .withIssuedAt(issuetime)
                     .withExpiresAt(expirationTime)
                     .sign(algorithm);
@@ -59,6 +61,7 @@ public class JWThandler {
             user.setClientKey(jwt.getClaim(CLAIM_CLIENT_KEY).asString());
             user.setEmailId(jwt.getClaim(CLAIM_EMAIL).asString());
             user.setRole(jwt.getClaim(CLAIM_ROLE).asString());
+            user.setRole(jwt.getClaim(CLAIM_PICTURE_URL).asString());
             expirationTime = jwt.getExpiresAt();
             long milisecond = (new Date()).getTime() - expirationTime.getTime();
             if(milisecond < EnvVarConfig.getJwtTokenRefreshGracePeriod()) newToken = newToken(user); // 10 minute
@@ -78,6 +81,7 @@ public class JWThandler {
             user.setClientKey(jwt.getClaim(CLAIM_CLIENT_KEY).asString());
             user.setEmailId(jwt.getClaim(CLAIM_EMAIL).asString());
             user.setRole(jwt.getClaim(CLAIM_ROLE).asString());
+            user.setRole(jwt.getClaim(CLAIM_PICTURE_URL).asString());
         } catch (JWTDecodeException exception){
             System.out.println(exception.getMessage());
         }
