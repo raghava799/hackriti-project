@@ -4,8 +4,23 @@
     </div>
     <div class="col-sm-10 no-padding">
         <h1 class="prod-title"> Parking Management</h1>
-        <div id="header-right" (click)="logout()">
-            <span class="glyphicon glyphicon-log-out" ></span> Log out
+        <div id="header-right">
+            <ul class="pull-right" id="user-nav">
+                <li class="dropdown">
+                    <a class="dropdown-i" role="button" data-toggle="collapse" data-target="#profile_wrap" data-parent="user-nav"><span class="profile-thumb"><img [src]="user['pictureUrl']" alt=""></span></a>
+                    <div id="profile_wrap" class="dropdown_wrap dropdown-menu">
+                        <div class="profile-thumb-l"><img [src]="user['pictureUrl']" alt=""></div>
+                        <div class="profile-info">
+                            <p><strong>{{user['name'] | uppercase}}</strong> <br>{{role | uppercase}}</p>
+                        </div>
+                        <span class="clearfix"></span>
+                        <div class="buttons_user" (click)="logout()">
+                            <a  class="btn btn-default pull-right">Log Off</a>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

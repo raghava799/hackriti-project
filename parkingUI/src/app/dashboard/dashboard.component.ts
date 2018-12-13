@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {HttpService} from '../httpService';
 import {Employee} from '../models/employee';
+import {AuthService} from '../services/auth.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class DashboardComponent implements OnInit {
     tableHeaders = ['Parking Type', 'Parking Level', 'Parking Slot Number', 'Owner Email', 'Owner Name'];
     selectedSlot: Object;
 
-    constructor(private http: HttpService) {
+    constructor(private http: HttpService, private auth: AuthService) {
 
         if (sessionStorage.getItem('admin')) {
             const admin = JSON.parse(sessionStorage.getItem('admin'));
@@ -51,6 +52,7 @@ export class DashboardComponent implements OnInit {
         this.http.getEmployeeDetails(body).then(res => {
             this.employeeDetails = res;
             console.log(this.employeeDetails);
+            this.auth.setRole(this.employeeDetails.employee_role);
             if (this.employeeDetails.employee_role === 'owner') {
                 this.isOwner = true;
                 this.getOwnerSlotDetails();
@@ -169,20 +171,24 @@ export class DashboardComponent implements OnInit {
                         this.parkerEmployeeDetails = response;
                         this.isOwnerSlotBookedByUser = true;
                         this.isOwnerSlotFreedAndNotBooked = false;
+                        this.isloading = false;
                     }).catch(error => {
                         console.log(error);
                         throw error;
                     });
                 } else {
                     this.isOwnerSlotFreedAndNotBooked = true;
+                    this.isOwnerSlotBookedByUser = false;
+                    this.isloading = false;
 
                 }
             } else {
                 this.isOwnerSlotFreedAndNotBooked = false;
                 this.isOwnerSlotBookedByUser = false;
+                this.isloading = false;
             }
             console.log(res);
-            this.isloading = false;
+
         }).catch(error => {
             console.log(error);
             throw error;
@@ -248,6 +254,31 @@ export class DashboardComponent implements OnInit {
             console.log(this.availableSlots);
 
         });
+    }
+
+    denyUserSlot() {
+        this.isloading = true;
+        const slotDetails = {
+            parker_id: this.parkerEmployeeDetails.employee_id,
+            date: this.selectedDate,
+            employee_id: this.employeeDetails.employee_id,
+            slot_number: this.employeeDetails.parking_info.parking_slot_number
+        };
+        this.http.cancelUserSlot(slotDetails).then(res => {
+            if (res) {
+                this.isOwnerSlotBookedByUser = false;
+                this.isOwnerSlotFreedAndNotBooked = true;
+                this.isloading = false;
+            } else {
+                this.isOwnerSlotFreedAndNotBooked = false;
+                this.isOwnerSlotBookedByUser = true;
+                this.isloading = false;
+            }
+        }).catch(error => {
+            console.log(error);
+            throw error;
+        });
+
     }
 
     availableSelectedSlot(slot) {

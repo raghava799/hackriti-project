@@ -17,7 +17,7 @@
     <span class="clearfix"></span>
     <div *ngIf="!isloading">
         <div *ngIf="isOwner">
-            <div *ngIf="isOwnerSlotBookedByUser">
+            <div *ngIf="isOwnerSlotBookedByUser && !isOwnerSlotFreedAndNotBooked">
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-8 col-sm-offset-2">
                         <mat-card class="matcard">
@@ -26,11 +26,15 @@
                             </div>
                             <br>
                             <h4>your slot is reserved by {{parkerEmployeeDetails.employee_name}}</h4>
+                            <br>
+                            <div class="text-right">
+                                <span class="btn btn-danger text-right" data-toggle="modal" data-target="#denySlotModal">Deny Slot to {{parkerEmployeeDetails.employee_name}}</span>
+                            </div>
                         </mat-card>
                     </div>
                 </div>
             </div>
-            <div *ngIf="isOwnerSlotFreedAndNotBooked">
+            <div *ngIf="isOwnerSlotFreedAndNotBooked && !isOwnerSlotBookedByUser">
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-8 col-sm-offset-2">
                         <mat-card class="matcard">
@@ -47,7 +51,8 @@
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-8 col-sm-offset-2">
                         <mat-card class="matcard">
-                            <h3 class="header-class"><span>{{employeeDetails.employee_name}}</span>, Your Parking Details</h3>
+                            <h3 class="header-class"><span>{{employeeDetails.employee_name}}</span>, Your Parking
+                                Details</h3>
                             <div class="row">
                                 <div class="col-sm-6 col-sm-offset-3">
                                     <div class="row">
@@ -91,7 +96,8 @@
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-8 col-sm-offset-2">
                         <mat-card class="matcard">
-                            <h3 class="header-class"><span>{{employeeDetails.employee_name}}</span>, Your Parking Details</h3>
+                            <h3 class="header-class"><span>{{employeeDetails.employee_name}}</span>, Your Parking
+                                Details</h3>
                             <div class="row">
                                 <div class="col-sm-6 col-sm-offset-3">
                                     <div class="row">
@@ -144,7 +150,8 @@
             <div class="col-sm-8 col-sm-offset-2" *ngIf="isSlotsAvailable && !isOwnerSlotBookedByUser">
                 <mat-card class="matcard">
                     <div class="">
-                        <h3 class="header-class text-left" style="text-align: left !important;" >Available Parking Slots</h3>
+                        <h3 class="header-class text-left" style="text-align: left !important;">Available Parking
+                            Slots</h3>
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -159,7 +166,7 @@
                                 <td>{{slot.slot_number}}</td>
                                 <td>{{slot.owner_email}}</td>
                                 <td>{{slot.owner_name}}</td>
-                                <td  (click)="availableSelectedSlot(slot)" data-toggle="modal"
+                                <td (click)="availableSelectedSlot(slot)" data-toggle="modal"
                                     data-target="#bookSlotModal"><span class="btn btn-success">Book Slot</span>
                                 </td>
                             </tr>
@@ -203,6 +210,22 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="bookSlot()">Yes</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="clearSelectedSlot()">
+                        Dismiss
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="denySlotModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h4>Are You sure You Would Like Deny User Slot</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="denyUserSlot()">Yes</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">
                         Dismiss
                     </button>
 

@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import { HttpHeaders} from '@angular/common/http';
+import {HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class GlobalService {
 
 
-    constructor() {}
+    constructor() {
+    }
 
     static getBaseURL(): string {
         return 'http://localhost:8080/ipark/';
@@ -31,13 +32,14 @@ export class GlobalService {
 
     static removeToken() {
         sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('admin');
         console.log('Token Removed');
     }
 
     static jwtHeader() {
         let headers = new HttpHeaders();
         headers = headers.set('Content-Type', 'application/json');
-        return {headers: headers };
+        return {headers: headers};
     }
 
     handleError(error: any): Promise<any> {
@@ -45,5 +47,6 @@ export class GlobalService {
         console.log(error);
         return Promise.reject(error.message || error);
     }
+
 
 }
