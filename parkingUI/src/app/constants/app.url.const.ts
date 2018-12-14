@@ -1,6 +1,6 @@
 // api calls
 
-export const BASE_URL = 'http://localhost:8080/ipark';
+export const BASE_URL = 'http://ec2-54-90-88-8.compute-1.amazonaws.com:8080/ipark';
 export const GET_EMPLOYEE = '/parking/getemployee';
 export const ADD_SLOT = '/parking/book/slot';
 export const CANCEL_USER_SLOT = '/parking/cancel/user/slot';
