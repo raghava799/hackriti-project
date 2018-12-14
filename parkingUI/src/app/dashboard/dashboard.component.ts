@@ -318,7 +318,6 @@ export class DashboardComponent implements OnInit {
                 this.isOwnerSlotFreedAndNotBooked = false;
             }
             this.isloading = false;
-            this.alertService.success('');
         }).catch(error => {
             this.isloading = false;
             this.alertService.error('Unable to book slot , Try again');
