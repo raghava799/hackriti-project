@@ -6,25 +6,16 @@ import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import com.alacriti.hackriti.api.handlers.BaseApiHandler;
 import com.alacriti.hackriti.context.RequestContext;
 import com.alacriti.hackriti.dao.CalendarDAO;
 import com.alacriti.hackriti.exceptions.BOException;
-import com.alacriti.hackriti.logging.utils.ResourceInitServlet;
 import com.alacriti.hackriti.utils.Validations;
 import com.alacriti.hackriti.utils.constants.StringConstants;
 import com.alacriti.hackriti.vo.EventVO;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
@@ -35,6 +26,7 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 	public void handleRequest(RequestContext context) throws BOException, Exception {
 
 		if (context.getCalendarEvent() == null) {
+			System.out.println("GETTTING EVENT DETAILS :::::::: CreateCalendarEventApiHandler");
 			getEventDetails(context);
 		}
 		

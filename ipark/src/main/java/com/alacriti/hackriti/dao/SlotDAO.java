@@ -285,7 +285,7 @@ public class SlotDAO extends BaseDAO {
 
 			System.out.println("query" + sqlQuery);
 
-			cancelCalendarEvent(context);
+			cancelUserCalendarEvent(context);
 
 			if (context.isError()) {
 
@@ -330,48 +330,48 @@ public class SlotDAO extends BaseDAO {
 
 		Connection conn = getConnection();
 		conn.setAutoCommit(false);
-
+		
+		
+		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		Date parsed = format.parse(slot.getDate());
 		java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
 
 		System.out.println("sqlDate : " + sqlDate.toString());
-		System.out.println("slot.getEmpId() : " + slot.getEmpId());
 
 		PreparedStatement preparedStmt = null;
+
 
 		try {
 			String sqlQuery = SqlQueryHelper.getDeletSlotQuery();
 
 			preparedStmt = conn.prepareStatement(sqlQuery);
-
-			preparedStmt.setDate(3, sqlDate);
-			preparedStmt.setString(2, slot.getEmpId());
+			
 			preparedStmt.setString(1, slot.getSlotNumber());
+			preparedStmt.setString(2, slot.getEmpId());
+			preparedStmt.setDate(3, sqlDate);
 
-			System.out.println("preparedStmt.toString()" + preparedStmt.toString());
+			//System.out.println("preparedStmt.toString()" + preparedStmt.toString());
 
 			System.out.println("query" + sqlQuery);
 
-			pushEventToCalendar(context);
+			int recordsDeleted = preparedStmt.executeUpdate();
 
-			if (context.isError()) {
+			// first cancel user event as the owner of event is user.
+			cancelUserCalendarEvent(context);
 
-				System.out.println("Got errors in creating calendar event, so rollback the connection...!");
-				conn.rollback();
-			} else {
-
-				if(slot.getParkerId()!=null) {
-					cancelCalendarEvent(context);
-				}
-			}
 			if (context.isError()) {
 
 				System.out.println("Got errors in cancelling calendar event, so rollback the connection...!");
 				conn.rollback();
+			} else {
+				pushEventToCalendar(context);
 			}
+			if (context.isError()) {
 
-			int recordsDeleted = preparedStmt.executeUpdate();
+				System.out.println("Got errors in pushing calendar event, so rollback the connection...!");
+				conn.rollback();
+			}
 
 			if (recordsDeleted == 1) {
 				if (!conn.getAutoCommit()) {
@@ -419,7 +419,7 @@ public class SlotDAO extends BaseDAO {
 
 	}
 
-	private void cancelCalendarEvent(RequestContext context) {
+	private void cancelUserCalendarEvent(RequestContext context) {
 
 		CancelCalendarEventApiHandler handler = new CancelCalendarEventApiHandler();
 		try {

@@ -25,9 +25,12 @@ public class CalendarDAO extends BaseDAO {
 			String sqlQuery;
 
 			if(context.getSlot().getParkerId()==null){
+				
+				System.out.println("***** OWNER REBOOKING CASE *****");
+				System.out.println(" context.getSlot().getParkerId()==null in getEmployee Details query ......");
+				
 				sqlQuery = SqlQueryHelper.getEventDetails();
-				preparedStmt = conn.prepareStatement(sqlQuery);
-				preparedStmt.setString(1, context.getSlot().getEmpId());
+				
 				preparedStmt = conn.prepareStatement(sqlQuery);
 				preparedStmt.setString(1, context.getSlot().getEmpId());
 
@@ -43,8 +46,8 @@ public class CalendarDAO extends BaseDAO {
 					event.setParkingType(rs.getString("parking_type"));
 					event.setSlotMailId(rs.getString("slot_mail_id"));
 					event.setSlotNumber(rs.getString("parking_slot_no"));
-					event.setToDate(""); // need to get from request
-					event.setUserMailId(rs.getString("parker_mail"));
+					//event.setToDate(""); // need to get from request
+					//event.setUserMailId(rs.getString("parker_mail"));
 
 				} else {
 					context.setError(true);
@@ -58,9 +61,6 @@ public class CalendarDAO extends BaseDAO {
 				preparedStmt = conn.prepareStatement(sqlQuery);
 				preparedStmt.setString(1, context.getSlot().getEmpId());
 				preparedStmt.setString(2, context.getSlot().getParkerId());
-				preparedStmt = conn.prepareStatement(sqlQuery);
-				preparedStmt.setString(1, context.getSlot().getEmpId());
-				preparedStmt.setString(2, context.getSlot().getParkerId());
 
 				ResultSet rs = preparedStmt.executeQuery();
 
@@ -74,7 +74,7 @@ public class CalendarDAO extends BaseDAO {
 					event.setParkingType(rs.getString("parking_type"));
 					event.setSlotMailId(rs.getString("slot_mail_id"));
 					event.setSlotNumber(rs.getString("parking_slot_no"));
-					event.setToDate(""); // need to get from request
+					//event.setToDate(""); // need to get from request
 					event.setUserMailId(rs.getString("parker_mail"));
 
 				} else {

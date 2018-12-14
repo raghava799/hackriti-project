@@ -28,7 +28,7 @@ public class EmployeeHandler {
 	public Response healthChecker() {
 
 		logger.info("log4j is initialized ....!!!");
-		return Response.status(200).entity("Application is up....!").build();
+		return Response.status(200).entity("UP").build();
 	}
 
 	@POST

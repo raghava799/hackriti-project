@@ -59,13 +59,13 @@ public class SqlQueryHelper {
 
 	public static String getCancelUserSlotQuery() {
 
-		return "update parking_slot_mgmt_tbl set parker_id=NULL where parking_slot_no=? and owner_id=? and  date_of_availability = ?";
+		return "update parking_slot_mgmt_tbl set parker_id=NULL where parking_slot_no=? and owner_id=? and  date_of_availability=?";
 
 	}
 	
 	public static String getDeletSlotQuery() {
 
-		return "delete parking_slot_mgmt_tbl where parking_slot_no=? and owner_id=? and  date_of_availability = ?";
+		return "delete from parking_slot_mgmt_tbl where parking_slot_no=? and owner_id=? and date_of_availability=?";
 
 	}
 

@@ -32,6 +32,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 	public void handleRequest(RequestContext context) throws BOException, Exception {
 
 		if (context.getCalendarEvent() == null) {
+			System.out.println("GETTTING EVENT DETAILS :::::::: CancelCalendarEventApiHandler");
 			getEventDetails(context);
 		}
 		if (!context.isError()) {
@@ -50,7 +51,8 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 		try {
 
 			EventVO event = null;
-			if (StringConstants.ApiConstants.CANCEL_USER_SLOT.equals(context.getApiName())) {
+			if (StringConstants.ApiConstants.CANCEL_USER_SLOT.equals(context.getApiName())
+					|| StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT.equals(context.getApiName())) {
 				event = dao.getEventDetails(context);
 			}
 
@@ -62,7 +64,8 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 				context.setCalendarEvent(event);
 			} else {
 				context.setError(true);
-				Validations.addErrorToContext("", "Unable to get event details to push calendar event", context);
+				Validations.addErrorToContext("EVENT_DETAILS_EMPTY",
+						"Unable to get event details SO NOT ABLE TO CANCLE calendar event", context);
 			}
 
 		} catch (SQLException e) {
@@ -82,7 +85,8 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 			mailId = event.getOwnerMailId();
 		}
 
-		if (StringConstants.ApiConstants.CANCEL_USER_SLOT.equals(context.getApiName()) || StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT.equals(context.getApiName())) {
+		if (StringConstants.ApiConstants.CANCEL_USER_SLOT.equals(context.getApiName())
+				|| StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT.equals(context.getApiName())) {
 			mailId = event.getUserMailId();
 		}
 
@@ -133,7 +137,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 
 		Date javaFromDate = CalendarUtils.getJavaDate(fromDate);
 		Date javaToDate = null;
-		if (toDate != null) {
+		if (toDate != null && !toDate.isEmpty()) {
 			javaToDate = CalendarUtils.getJavaDate(toDate);
 		}
 		System.out.println("from Date:" + fromDate);
