@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-
 /*body {
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -34,12 +33,15 @@ body {
     top: -15%;
     left: 35%;
 }
-.no-margin, .mat-card-header-text{
-    margin:0 !important;
+
+.no-margin, .mat-card-header-text {
+    margin: 0 !important;
 }
-.no-padding{
-    padding:0;
+
+.no-padding {
+    padding: 0;
 }
+
 .head img {
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -153,26 +155,32 @@ label {
     color: #252c32;
     font-weight: 400;
 }
+
 .clearfix {
     clear: both;
     overflow: hidden;
     width: 100%;
 }
+
 .btn {
     font-size: 14px !important;
 }
+
 .no-margin {
     margin: 0 !important;
 }
+
 .no-margin-top {
     margin-top: 0 !important;
 }
+
 .select.form-control {
     border: 0 !important;
     color: #333;
     padding: 0 !important;
 }
-.bootstrap-select>.dropdown-toggle,
+
+.bootstrap-select > .dropdown-toggle,
 .form-control {
     border-radius: 3px;
     border-color: #5b616b !important;
@@ -181,14 +189,17 @@ label {
     height: 33px;
     background: #fff;
 }
+
 .form-control:focus {
     border-color: #155aca;
     box-shadow: 0 0 0 #fff;
     border-width: 2px;
 }
+
 .input-group-addon {
     border-color: #5b616b;
 }
+
 .btn-default {
     border-color: #bac2cd !important;
     text-shadow: 0 0 0 #fff;
@@ -205,6 +216,7 @@ label {
     background: #ddd;
     color: #252c32;
 }
+
 #top_section {
     position: relative;
     z-index: 999999;
@@ -214,22 +226,26 @@ label {
     max-height: 54px;
     background: #485C74;
 }
+
 #brand-wrapper {
     float: left;
     line-height: 54px;
 }
+
 #brand-wrapper img {
     height: 50px !important;
     width: 45%;
 }
+
 #header-right {
     float: right;
-     padding-right: 28px;
+    padding-right: 28px;
     color: black;
     cursor: pointer;
     font-weight: 600;
     font-size: 17px;
 }
+
 .prod-title {
     float: left;
     font-size: 25px;
@@ -239,20 +255,24 @@ label {
     color: #fff;
     font-weight: 600;
 }
+
 .prod-title img {
-    width: 24px!important;
+    width: 24px !important;
 }
+
 #user-nav {
     margin: 0;
     padding: 0;
 }
-#user-nav>li {
+
+#user-nav > li {
     position: relative;
     float: left;
     margin: 0 0 0 15px;
     padding: 10px 0 0 0;
     list-style: none;
 }
+
 .profile-thumb {
     float: left;
     width: 32px;
@@ -260,10 +280,12 @@ label {
     border-radius: 32px;
     background: #ddd;
 }
+
 .profile-thumb img {
     width: 32px;
     border-radius: 32px;
 }
+
 .menu_ic {
     float: left;
     width: 24px;
@@ -282,12 +304,15 @@ label {
     width: 330px;
     margin-top: 10px;
 }
+
 #menu_wrap {
     width: 300px;
 }
+
 .buttons_user {
     padding-top: 10px;
 }
+
 #menu_wrap.in::after,
 #profile_wrap.in::after,
 .open .dropdown-i::after {
@@ -305,6 +330,7 @@ label {
     height: 0;
     width: 0;
 }
+
 #menu_wrap.in::before,
 #profile_wrap.in::before,
 .open .dropdown-i::before {
@@ -322,6 +348,7 @@ label {
     height: 0;
     width: 0;
 }
+
 .open .dropdown_wrap {
     position: absolute;
     right: 0 !important;
@@ -329,17 +356,19 @@ label {
     top: 56px !important;
     background: #fff;
     border: 1px solid #ccc !important;
-    border-color: rgba(0,0,0,.2) !important;
+    border-color: rgba(0, 0, 0, .2) !important;
     color: #000;
     width: 330px;
     display: block;
     padding: 15px;
     z-index: 997
 }
+
 .dropdown-menu {
     border-radius: 0;
     margin: 0;
 }
+
 .profile-thumb-l {
     width: 100px;
     height: 100px;
@@ -347,15 +376,18 @@ label {
     border-radius: 100px;
     float: left;
 }
+
 .profile-thumb-l img {
     width: 100px;
     border-radius: 100px;
 }
+
 .profile-info {
     float: right;
     width: 175px;
     padding-top: 20px;
 }
+
 .profile-hdng {
     display: inline-block;
     width: 50px;
@@ -365,10 +397,12 @@ label {
 #menu_wrap {
     width: 300px;
 }
+
 #menu_wrap ul {
     margin: 0;
     padding: 0;
 }
+
 #menu_wrap li {
     width: 50%;
     float: left;
@@ -377,18 +411,22 @@ label {
     padding: 0;
     text-align: center;
 }
+
 #menu_wrap li img {
     width: 50%;
 }
+
 #menu_wrap li span {
     display: block;
 }
+
 #menu_wrap li a {
     color: #444;
     display: block;
     padding: 5px;
     border: 1px solid #fff;
 }
+
 /*#menu_wrap li:first-child a {
 	min-height: 113px;
 }*/
@@ -396,7 +434,6 @@ label {
     text-decoration: none;
     border-color: #f0f0f0;
 }
-
 
 body {
     font-family: Roboto, Arial, sans-serif;
@@ -414,44 +451,44 @@ body {
 
 /*loading*/
 
-   .response-loading {
-     height: 200px;
-     /*display: block;*/
-     opacity: 0.7;
-     /*background-color: #fff;*/
-     z-index: 99;
-     text-align: center;
-   }
+.response-loading {
+    height: 200px;
+    /*display: block;*/
+    opacity: 0.7;
+    /*background-color: #fff;*/
+    z-index: 99;
+    text-align: center;
+}
 
 .response-loading-div {
-  position: relative;
-  top: 50%;
-  margin: auto;
-  z-index: 100;
-  padding: 2px 6px;
-  padding-bottom: 4px;
-  /*border: 1px solid #E7E7E7;
-  background-color: #E7E7E7;*/
-  font-size: 20px;
-  color: #2164B2;
-  display: table;
+    position: relative;
+    top: 50%;
+    margin: auto;
+    z-index: 100;
+    padding: 2px 6px;
+    padding-bottom: 4px;
+    /*border: 1px solid #E7E7E7;
+    background-color: #E7E7E7;*/
+    font-size: 20px;
+    color: #2164B2;
+    display: table;
 }
 
 .response-loading-div > span {
-  position: relative;
-  top: 2px;
-  margin-left: 5px;
+    position: relative;
+    top: 2px;
+    margin-left: 5px;
 }
 
 .response-loading-div > img {
-  width: 100px;
-  height: 100px;
-  user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+    width: 100px;
+    height: 100px;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 /* dashboard styles */
@@ -459,24 +496,41 @@ body {
 .main_block {
     padding-top: 20px;
 }
+
 .matcard {
     background-color: white;
 }
+
 .text-left-align {
     text-align: left;
 }
+
 .text-right-align {
     text-align: right;
 }
+
 .headings {
     font-size: 15px;
     font-weight: 600;
 }
+
 .modal {
     top: 35%;
 }
+
 .header-class {
     border-bottom: 1px solid #ececec;
     padding-bottom: 10px;
     text-align: center;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    z-index: 9999;
+    position: fixed;
+    margin-top: 77px;
+    margin-left: 33%;
 }
