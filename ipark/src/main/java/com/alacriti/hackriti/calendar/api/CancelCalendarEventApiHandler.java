@@ -90,6 +90,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 			mailId = event.getUserMailId();
 		}
 
+		System.out.println("User who is cancelling the event *************************: " + mailId);
 		String workingDirectory = System.getProperty("user.dir");
 
 		String absoluteFilePath = workingDirectory + File.separator + CalendarUtils.CREDENTIALS_P12_FILE_NAME;
@@ -99,7 +100,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 			Calendar service;
 			try {
 				service = CalendarUtils.getCalendarService(mailId, absoluteFilePath);
-				cancelEvent(service, context, event);
+				cancelEvent(service, context, event,mailId);
 
 			} catch (GeneralSecurityException | IOException e) {
 				System.out.println("Exception occured in cancelling calendar event");
@@ -115,25 +116,27 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 		return context;
 	}
 
-	private void cancelEvent(Calendar service, RequestContext context, EventVO eventVo) throws IOException {
+	private void cancelEvent(Calendar service, RequestContext context, EventVO eventVo,String mailId) throws IOException {
 
-		String eventId = getEventIdToCancel(service, eventVo.getFromDate(), eventVo.getToDate(), eventVo);
+		String eventId = getEventIdToCancel(service, eventVo.getFromDate(), eventVo.getToDate(), eventVo,mailId);
 
 		if (eventId == null) {
 			System.out.println("event id is null not going to cancel  ....");
 			context.setError(true);
 			Validations.addErrorToContext("event_id_not_found", "event not found to cancel", context);
 		} else {
+			System.out.println("got event id to cancel event :" + eventId);
 			service.events().delete(CalendarUtils.CALENDAR_ID, eventId).setSendNotifications(true).execute();
 			System.out.println("event has been canclled successfully :");
 		}
 	}
 
-	private String getEventIdToCancel(Calendar service, String fromDate, String toDate, EventVO eventVO)
+	private String getEventIdToCancel(Calendar service, String fromDate, String toDate, EventVO eventVO,String mailId)
 			throws IOException {
 
 		String eventIdToCancel = null;
 		System.out.println("slot mail id :" + eventVO.getSlotMailId());
+		System.out.println("to get events passing  mailid :" + mailId);
 
 		Date javaFromDate = CalendarUtils.getJavaDate(fromDate);
 		Date javaToDate = null;
@@ -148,11 +151,11 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 
 		Events events;
 		if (javaToDate != null) {
-			events = service.events().list(eventVO.getOwnerMailId()).setMaxResults(100)
+			events = service.events().list(mailId).setMaxResults(100)
 					.setTimeMin(new DateTime(javaFromDate)).setTimeMax(new DateTime(javaToDate)).setOrderBy("startTime")
 					.setSingleEvents(true).execute();
 		} else {
-			events = service.events().list(eventVO.getOwnerMailId()).setMaxResults(100)
+			events = service.events().list(mailId).setMaxResults(100)
 					.setTimeMin(new DateTime(javaFromDate)).setOrderBy("startTime").setSingleEvents(true).execute();
 		}
 
