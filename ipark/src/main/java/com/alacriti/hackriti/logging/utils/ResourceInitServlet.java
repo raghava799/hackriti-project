@@ -33,7 +33,7 @@ public class ResourceInitServlet extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
 		System.out.println("Inside INIT");
-		initLog4j(config);
+//		initLog4j(config);
 		initResources();
 		initDBResources(config);
 		initSecureKey(config);
