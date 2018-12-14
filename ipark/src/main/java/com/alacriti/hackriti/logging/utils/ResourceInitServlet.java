@@ -27,18 +27,18 @@ public class ResourceInitServlet extends HttpServlet {
 	public static String DB_NAME;
 	public static String LOGIN_USER;
 	public static String LOGIN_PWD;
-	
+
 	public static String CREDENTIALS_FILE_PATH;
 	private Properties dbConfProp = new Properties();
-	
+
 	public void init(ServletConfig config) throws ServletException {
 		System.out.println("Inside INIT");
-//		initLog4j(config);
+		// initLog4j(config);
 		initResources();
 		initDBResources(config);
 		initSecureKey(config);
-		//invokeReadMails();
-		
+		invokeReadMails();
+
 		super.init(config);
 	}
 
@@ -48,31 +48,26 @@ public class ResourceInitServlet extends HttpServlet {
 	}
 
 	private void invokeReadMails() {
-		
-		/*Thread t = new Thread() {
-		    @Override
-		    public void run() {
-		        while(true) {
-		            try {
-		                log.debug("Invoking read mails...");
-		               
-		        		Thread.sleep(1000*60*3);
-		            } catch (InterruptedException ie) {
-		            }
-		        }
-		    }
-		};
-		t.start();*/
-		
+
 		System.out.println("invoking read mails");
-		ReadMails mails = new ReadMails();
-         
- 		try {
- 			mails.freeParkingSlot();
- 		} catch (IOException | GeneralSecurityException | ParseException  e) {
- 			System.out.println("Exception caught while reading mail");
- 			log.error("Exception caught while reading mails: "+e.getMessage());
- 		}
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						log.debug("Invoking read mails...");
+						ReadMails mails = new ReadMails();
+						mails.freeParkingSlot();
+						Thread.sleep(1000 * 60 * 3);
+					} catch (InterruptedException | IOException | GeneralSecurityException | ParseException ie) {
+						System.out.println("Exception caught while reading mail");
+						log.error("Exception caught while reading mails: " + ie.getMessage());
+					}
+				}
+			}
+		};
+		t.start();
+
 	}
 
 	private void initDBResources(ServletConfig config) {
@@ -90,9 +85,8 @@ public class ResourceInitServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
 
+	}
 
 	private void initResources() {
 
@@ -101,39 +95,31 @@ public class ResourceInitServlet extends HttpServlet {
 		new ResourceFactory();
 	}
 
-	
-
 	private void initLog4j(ServletConfig config) {
 		System.out.println("Log4JInitServlet is initializing log4j");
 		String log4jLocation = config.getInitParameter("log4j-properties-location");
 
-//		ServletContext sc = config.getServletContext();
+		// ServletContext sc = config.getServletContext();
 		// TODO Auto-generated method stub
 		if (log4jLocation == null) {
-			System.err.println(
-					"*** No log4j-properties-location init param");
-		} 
-		else 
-		{
-//			String webAppPath = sc.getRealPath(File.separator);
-//			System.out.println("webAppPath:--->" + webAppPath);
-//			String log4jProp = webAppPath + log4jLocation;
-//			File log4jConfigFile = new File(log4jLocation);
-				System.out.println("Initializing log4j with: " + log4jLocation);
-				log.info("Hi");
-				try
-		        {
-					System.out.println("Before init");
-					log.info("before init");
-		            DOMConfigurator.configure(log4jLocation);
-		            log.info("initialized");
-		            log.debug("Hi This is success");
-		        }
-		        catch (Exception exp)
-		        {
-		            log.error("Error ", exp);
-		        }
-			
+			System.err.println("*** No log4j-properties-location init param");
+		} else {
+			// String webAppPath = sc.getRealPath(File.separator);
+			// System.out.println("webAppPath:--->" + webAppPath);
+			// String log4jProp = webAppPath + log4jLocation;
+			// File log4jConfigFile = new File(log4jLocation);
+			System.out.println("Initializing log4j with: " + log4jLocation);
+			log.info("Hi");
+			try {
+				System.out.println("Before init");
+				log.info("before init");
+				DOMConfigurator.configure(log4jLocation);
+				log.info("initialized");
+				log.debug("Hi This is success");
+			} catch (Exception exp) {
+				log.error("Error ", exp);
+			}
+
 		}
 	}
 }
