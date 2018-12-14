@@ -17,7 +17,7 @@ export class GlobalService {
         const AUTHORIZATION = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=799023887043-blv26lmp2q5ml00ti58' +
             '7q3bum508ks2a.apps.googleusercontent.com&response_type=code&include_granted_scopes' +
             '=true&state=state_parameter_passthrough_value&scope=' +
-            'https://www.googleapis.com/auth/userinfo.email' + '&redirect_uri=https://dnpjnivbi5kz1.cloudfront.net&access_type=offline';
+            'https://www.googleapis.com/auth/userinfo.email' + '&redirect_uri=http://dnpjnivbi5kz1.cloudfront.net&access_type=offline';
         return AUTHORIZATION;
     }
 
