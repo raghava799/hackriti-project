@@ -22,33 +22,70 @@ public class CalendarDAO extends BaseDAO {
 
 		try {
 			
-			String sqlQuery = SqlQueryHelper.getEventDetailsQuery();
+			String sqlQuery;
 
-			preparedStmt = conn.prepareStatement(sqlQuery);
-			preparedStmt.setString(1, context.getSlot().getEmpId());
-			preparedStmt.setString(2, context.getSlot().getParkerId());
+			if(context.getSlot().getParkerId()==null){
+				sqlQuery = SqlQueryHelper.getEventDetails();
+				preparedStmt = conn.prepareStatement(sqlQuery);
+				preparedStmt.setString(1, context.getSlot().getEmpId());
+				preparedStmt = conn.prepareStatement(sqlQuery);
+				preparedStmt.setString(1, context.getSlot().getEmpId());
 
-			ResultSet rs = preparedStmt.executeQuery();
+				ResultSet rs = preparedStmt.executeQuery();
 
-			if (rs != null && rs.next()) {
-				
-				 event = new EventVO();
-				
-				event.setFloor(rs.getString("parking_level"));
-				event.setFromDate(context.getSlot().getDate()); // setting request value
-				event.setOwnerMailId(rs.getString("owner_mail"));
-				event.setParkingType(rs.getString("parking_type"));
-				event.setSlotMailId(rs.getString("slot_mail_id"));
-				event.setSlotNumber(rs.getString("parking_slot_no"));
-				event.setToDate(""); // need to get from request
-				event.setUserMailId(rs.getString("parker_mail"));
+				if (rs != null && rs.next()) {
 
-			} else {
-				context.setError(true);
-				Validations.addErrorToContext("employee",
-						"Employee Not Found with the details given, Please provide valid details and try again.",
-						context);
+					event = new EventVO();
+
+					event.setFloor(rs.getString("parking_level"));
+					event.setFromDate(context.getSlot().getDate()); // setting request value
+					event.setOwnerMailId(rs.getString("owner_mail"));
+					event.setParkingType(rs.getString("parking_type"));
+					event.setSlotMailId(rs.getString("slot_mail_id"));
+					event.setSlotNumber(rs.getString("parking_slot_no"));
+					event.setToDate(""); // need to get from request
+					event.setUserMailId(rs.getString("parker_mail"));
+
+				} else {
+					context.setError(true);
+					Validations.addErrorToContext("employee",
+							"Employee Not Found with the details given, Please provide valid details and try again.",
+							context);
+				}
 			}
+			else{
+				sqlQuery = SqlQueryHelper.getEventDetailsQuery();
+				preparedStmt = conn.prepareStatement(sqlQuery);
+				preparedStmt.setString(1, context.getSlot().getEmpId());
+				preparedStmt.setString(2, context.getSlot().getParkerId());
+				preparedStmt = conn.prepareStatement(sqlQuery);
+				preparedStmt.setString(1, context.getSlot().getEmpId());
+				preparedStmt.setString(2, context.getSlot().getParkerId());
+
+				ResultSet rs = preparedStmt.executeQuery();
+
+				if (rs != null && rs.next()) {
+
+					event = new EventVO();
+
+					event.setFloor(rs.getString("parking_level"));
+					event.setFromDate(context.getSlot().getDate()); // setting request value
+					event.setOwnerMailId(rs.getString("owner_mail"));
+					event.setParkingType(rs.getString("parking_type"));
+					event.setSlotMailId(rs.getString("slot_mail_id"));
+					event.setSlotNumber(rs.getString("parking_slot_no"));
+					event.setToDate(""); // need to get from request
+					event.setUserMailId(rs.getString("parker_mail"));
+
+				} else {
+					context.setError(true);
+					Validations.addErrorToContext("employee",
+							"Employee Not Found with the details given, Please provide valid details and try again.",
+							context);
+				}
+			}
+
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

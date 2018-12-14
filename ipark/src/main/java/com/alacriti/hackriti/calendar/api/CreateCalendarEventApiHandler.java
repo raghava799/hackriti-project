@@ -77,19 +77,30 @@ public class CreateCalendarEventApiHandler implements BaseApiHandler {
 		String workingDirectory = System.getProperty("user.dir");
 
 		String absoluteFilePath = workingDirectory + File.separator + CalendarUtils.CREDENTIALS_P12_FILE_NAME;
-		if (event.getUserMailId() != null && event.getOwnerMailId() != null && event.getSlotMailId() != null) {
 
-			if (StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT.equals(context.getApiName())) {
+		if(StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT.equals(context.getApiName())){
+
+			if (event.getOwnerMailId() != null && event.getSlotMailId() != null) {
 				service = CalendarUtils.getCalendarService(event.getOwnerMailId(), absoluteFilePath);
-			} else {
-				service = CalendarUtils.getCalendarService(event.getUserMailId(), absoluteFilePath);
-			}
-			createEvent(service, context, event);
+				createEvent(service, context, event);
 
-		} else {
-			context.setError(true);
-			Validations.addErrorToContext("userMailId", "sufficient fields are not there to push calendar event",
-					context);
+			}
+			else {
+				context.setError(true);
+				Validations.addErrorToContext("userMailId", "sufficient fields are not there to push calendar event",
+						context);
+			}
+		}
+		else{
+			if (event.getUserMailId() != null && event.getOwnerMailId() != null && event.getSlotMailId() != null) {
+				service = CalendarUtils.getCalendarService(event.getUserMailId(), absoluteFilePath);
+				createEvent(service, context, event);
+
+			} else {
+				context.setError(true);
+				Validations.addErrorToContext("userMailId", "sufficient fields are not there to push calendar event",
+						context);
+			}
 		}
 
 		return context;

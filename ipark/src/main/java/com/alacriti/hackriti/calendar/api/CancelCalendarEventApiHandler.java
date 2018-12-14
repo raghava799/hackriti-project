@@ -82,7 +82,7 @@ public class CancelCalendarEventApiHandler implements BaseApiHandler {
 			mailId = event.getOwnerMailId();
 		}
 
-		if (StringConstants.ApiConstants.CANCEL_USER_SLOT.equals(context.getApiName())) {
+		if (StringConstants.ApiConstants.CANCEL_USER_SLOT.equals(context.getApiName()) || StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT.equals(context.getApiName())) {
 			mailId = event.getUserMailId();
 		}
 

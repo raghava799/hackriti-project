@@ -360,7 +360,10 @@ public class SlotDAO extends BaseDAO {
 				System.out.println("Got errors in creating calendar event, so rollback the connection...!");
 				conn.rollback();
 			} else {
-				cancelCalendarEvent(context);
+
+				if(slot.getParkerId()!=null) {
+					cancelCalendarEvent(context);
+				}
 			}
 			if (context.isError()) {
 

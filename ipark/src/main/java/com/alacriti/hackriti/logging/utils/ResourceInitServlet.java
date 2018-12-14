@@ -37,7 +37,7 @@ public class ResourceInitServlet extends HttpServlet {
 		initResources();
 		initDBResources(config);
 		initSecureKey(config);
-		invokeReadMails();
+		//invokeReadMails();
 		
 		super.init(config);
 	}

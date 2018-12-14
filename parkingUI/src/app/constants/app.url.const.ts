@@ -8,6 +8,7 @@ export const CANCEL_OWNER_SLOT = '/parking/cancel/owner/slot';
 export const AVAILABLE_SLOTS = '/parking/slots/available';
 export const OWNER_SLOT = '/parking/owner/slot';
 export const USER_SLOT = '/parking/user/slot';
+export const DENY_AND_REBOOK_SLOT = '/parking/deny/slot';
 
 
 

@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
     isOwnerSlotFreedAndNotBooked = false;
     tableHeaders = ['Parking Type', 'Parking Level', 'Parking Slot Number', 'Owner Email', 'Owner Name'];
     selectedSlot: Object;
+    isRebook = false;
 
     constructor(private http: HttpService, private auth: AuthService) {
 
@@ -229,6 +230,7 @@ export class DashboardComponent implements OnInit {
 
     onDateChange() {
         this.isloading = true;
+        this.isRebook = false;
         this.changeDateFormat();
         if (this.isOwner) {
             this.getOwnerSlotDetails();
@@ -279,6 +281,27 @@ export class DashboardComponent implements OnInit {
             throw error;
         });
 
+    }
+    denyAndRebookSlot() {
+        this.isloading = true;
+        const slotDetails = {
+            employee_id: this.employeeDetails.employee_id,
+            date: this.selectedDate,
+            slot_number: this.employeeDetails.parking_info.parking_slot_number
+        };
+        if (this.isOwnerSlotBookedByUser) {
+            slotDetails['parker_id'] = this.parkerEmployeeDetails.employee_id;
+        }
+        this.http.denyAndRebookSlot(slotDetails).then(res => {
+           if (res) {
+               this.isOwnerSlotBookedByUser = false;
+               this.isOwnerSlotFreedAndNotBooked = false;
+           }
+           this.isloading = false;
+        }).catch(error => {
+            console.log(error);
+            throw error;
+        });
     }
 
     availableSelectedSlot(slot) {

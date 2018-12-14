@@ -28,7 +28,11 @@
                             <h4>your slot is reserved by {{parkerEmployeeDetails.employee_name}}</h4>
                             <br>
                             <div class="text-right">
-                                <span class="btn btn-danger text-right" data-toggle="modal" data-target="#denySlotModal">Deny Slot to {{parkerEmployeeDetails.employee_name}}</span>
+                                <span class="btn btn-danger text-right" data-toggle="modal"
+                                      data-target="#denySlotModal" style="margin-right: 10px">Deny Slot to {{parkerEmployeeDetails.employee_name}}</span>
+                                <span class="btn btn-success text-right" data-toggle="modal"
+                                      data-target="#denySlotModal" (click)="isRebook = true">ReBook Slot</span>
+
                             </div>
                         </mat-card>
                     </div>
@@ -42,7 +46,11 @@
                                 Hi {{employeeDetails.employee_name}}
                             </div>
                             <br>
-                            you Have Freed Your Slot , No User booked.
+                            <h4>you Have Freed Your Slot , No User booked.</h4>
+                            <div class="text-right">
+                                <span class="btn btn-success text-right" data-toggle="modal"
+                                      data-target="#denySlotModal" (click)="isRebook = true">ReBook Slot</span>
+                            </div>
                         </mat-card>
                     </div>
                 </div>
@@ -221,10 +229,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <h4>Are You sure You Would Like Deny User Slot</h4>
+                    <h4 *ngIf="!isRebook">Are You sure You Would Like Deny User Slot</h4>
+                    <h4 *ngIf="isRebook">Are You sure You Would Like Deny & ReBook Slot</h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="denyUserSlot()">Yes</button>
+                    <button type="submit" class="btn btn-success" data-dismiss="modal" *ngIf="!isRebook"
+                            (click)="denyUserSlot()">Yes
+                    </button>
+                    <button type="submit" class="btn btn-success" data-dismiss="modal" *ngIf="isRebook"
+                            (click)="denyAndRebookSlot()">
+                        Yes
+                    </button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal">
                         Dismiss
                     </button>
