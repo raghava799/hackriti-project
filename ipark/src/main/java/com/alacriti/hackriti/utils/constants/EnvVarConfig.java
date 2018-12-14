@@ -17,12 +17,12 @@ public class EnvVarConfig {
 
 
     public static String getOauthRedirectUri() {
-        return "https://dnpjnivbi5kz1.cloudfront.net";
+        return "http://dnpjnivbi5kz1.cloudfront.net";
     }
 
 
     public static String getOauthUiLoginUrl() {
-        return "https://dnpjnivbi5kz1.cloudfront.net";
+        return "http://dnpjnivbi5kz1.cloudfront.net";
     }
 
 	public static Long getJwtTokenLifeSpan() {
