@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {HttpService} from '../httpService';
 import {Employee} from '../models/employee';
 import {AuthService} from '../services/auth.service';
+import {AlertService} from '../alert/alert.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit {
     selectedSlot: Object;
     isRebook = false;
 
-    constructor(private http: HttpService, private auth: AuthService) {
+    constructor(private http: HttpService, private auth: AuthService, private alertService: AlertService) {
 
         if (sessionStorage.getItem('admin')) {
             const admin = JSON.parse(sessionStorage.getItem('admin'));
@@ -61,6 +62,8 @@ export class DashboardComponent implements OnInit {
                 this.getUserSlotDetails();
             }
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Unable to get Your Details, Please login through alacriti.co.in domain');
             console.log(error);
             throw error;
         });
@@ -81,9 +84,12 @@ export class DashboardComponent implements OnInit {
                     this.isOwnerSlotBookedByUser = true;
                     this.ownerEmployeeDetails = response;
                     this.isloading = false;
+                    this.alertService.success('Booked slot Successfully');
                 });
             }
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Unable to book slot');
             this.isOwnerSlotBookedByUser = false;
             console.log(error);
             throw error;
@@ -106,6 +112,8 @@ export class DashboardComponent implements OnInit {
             }
             console.log(res);
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Unable to Cancel slot');
             console.log(error);
             throw error;
         });
@@ -135,6 +143,8 @@ export class DashboardComponent implements OnInit {
                 this.isOwnerSlotFreedAndNotBooked = false;
             }
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Unable to Cancel slot');
             console.log(error);
             throw error;
         });
@@ -154,6 +164,8 @@ export class DashboardComponent implements OnInit {
             }
             this.isloading = false;
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Server error, Try again');
             console.log(error);
             throw error;
         });
@@ -174,6 +186,7 @@ export class DashboardComponent implements OnInit {
                         this.isOwnerSlotFreedAndNotBooked = false;
                         this.isloading = false;
                     }).catch(error => {
+                        this.isloading = false;
                         console.log(error);
                         throw error;
                     });
@@ -191,6 +204,8 @@ export class DashboardComponent implements OnInit {
             console.log(res);
 
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Server error, Try again');
             console.log(error);
             throw error;
         });
@@ -215,6 +230,8 @@ export class DashboardComponent implements OnInit {
                 this.getAvailableSlots();
             }
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Server error, Try again');
             console.log(error);
             throw error;
         });
@@ -277,11 +294,14 @@ export class DashboardComponent implements OnInit {
                 this.isloading = false;
             }
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Unable to Deny Slot');
             console.log(error);
             throw error;
         });
 
     }
+
     denyAndRebookSlot() {
         this.isloading = true;
         const slotDetails = {
@@ -293,12 +313,15 @@ export class DashboardComponent implements OnInit {
             slotDetails['parker_id'] = this.parkerEmployeeDetails.employee_id;
         }
         this.http.denyAndRebookSlot(slotDetails).then(res => {
-           if (res) {
-               this.isOwnerSlotBookedByUser = false;
-               this.isOwnerSlotFreedAndNotBooked = false;
-           }
-           this.isloading = false;
+            if (res) {
+                this.isOwnerSlotBookedByUser = false;
+                this.isOwnerSlotFreedAndNotBooked = false;
+            }
+            this.isloading = false;
+            this.alertService.success('');
         }).catch(error => {
+            this.isloading = false;
+            this.alertService.error('Unable to book slot , Try again');
             console.log(error);
             throw error;
         });
