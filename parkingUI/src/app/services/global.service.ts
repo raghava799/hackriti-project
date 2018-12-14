@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpHeaders} from '@angular/common/http';
+import * as APP_URL_CONST from '../constants/app.url.const';
 
 @Injectable()
 export class GlobalService {
@@ -9,14 +10,14 @@ export class GlobalService {
     }
 
     static getBaseURL(): string {
-        return 'http://localhost:8080/ipark/';
+        return APP_URL_CONST.BASE_URL + '/';
     }
 
     static getGoogleLoginURL(): string {
         const AUTHORIZATION = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=799023887043-blv26lmp2q5ml00ti58' +
             '7q3bum508ks2a.apps.googleusercontent.com&response_type=code&include_granted_scopes' +
             '=true&state=state_parameter_passthrough_value&scope=' +
-            'https://www.googleapis.com/auth/userinfo.email' + '&redirect_uri=http://localhost:4203&access_type=offline';
+            'https://www.googleapis.com/auth/userinfo.email' + '&redirect_uri=https://dnpjnivbi5kz1.cloudfront.net&access_type=offline';
         return AUTHORIZATION;
     }
 
