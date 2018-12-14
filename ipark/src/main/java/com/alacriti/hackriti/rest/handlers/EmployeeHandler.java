@@ -164,6 +164,9 @@ public class EmployeeHandler {
 	public Response denyAndRebookSlot(ManageSlotRequestForm form) {
 
 		logger.info("got date in request :" + form.getDate());
+		logger.info("got date in request :" + form.getEmployee_id());
+		logger.info("got date in request :" + form.getParker_id());
+
 
 		RequestContext requestContext = new RequestContext();
 		requestContext.setApiName(StringConstants.ApiConstants.DENY_AND_REBOOK_SLOT);

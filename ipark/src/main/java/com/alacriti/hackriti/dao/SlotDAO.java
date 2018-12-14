@@ -330,9 +330,7 @@ public class SlotDAO extends BaseDAO {
 
 		Connection conn = getConnection();
 		conn.setAutoCommit(false);
-		
-		
-		
+
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		Date parsed = format.parse(slot.getDate());
 		java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
@@ -341,30 +339,33 @@ public class SlotDAO extends BaseDAO {
 
 		PreparedStatement preparedStmt = null;
 
-
 		try {
 			String sqlQuery = SqlQueryHelper.getDeletSlotQuery();
 
 			preparedStmt = conn.prepareStatement(sqlQuery);
-			
+
 			preparedStmt.setString(1, slot.getSlotNumber());
 			preparedStmt.setString(2, slot.getEmpId());
 			preparedStmt.setDate(3, sqlDate);
 
-			//System.out.println("preparedStmt.toString()" + preparedStmt.toString());
+			// System.out.println("preparedStmt.toString()" +
+			// preparedStmt.toString());
 
 			System.out.println("query" + sqlQuery);
 
 			int recordsDeleted = preparedStmt.executeUpdate();
 
 			// first cancel user event as the owner of event is user.
-			cancelUserCalendarEvent(context);
-
+			if (slot.getParkerId() != null) {
+				//only in case where deny and rebook
+				cancelUserCalendarEvent(context);
+			}
 			if (context.isError()) {
 
 				System.out.println("Got errors in cancelling calendar event, so rollback the connection...!");
 				conn.rollback();
 			} else {
+				
 				pushEventToCalendar(context);
 			}
 			if (context.isError()) {
